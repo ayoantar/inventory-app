@@ -1,0 +1,15 @@
+{
+  "name": "database-scripts",
+  "version": "1.0.0",
+  "scripts": {
+    "examine": "tsx examine-asset-data.ts",
+    "fix-dry-run": "tsx fix-asset-names.ts",
+    "fix-execute": "tsx fix-asset-names.ts --execute",
+    "cleanup-dry-run": "tsx cleanup-descriptions.ts",
+    "cleanup-execute": "tsx cleanup-descriptions.ts --execute",
+    "final-cleanup-dry-run": "tsx final-cleanup.ts",
+    "final-cleanup-execute": "tsx final-cleanup.ts --execute",
+    "smart-descriptions-dry-run": "tsx smart-descriptions.ts",
+    "smart-descriptions-execute": "tsx smart-descriptions.ts --execute"
+  }
+}

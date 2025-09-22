@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  
+  /* LSVR Brand Colors - Eye-friendly version */
+  --brand-orange: #F54F29;
+  --brand-orange-soft: #FF6B4A;
+  --brand-dark-blue: #1A2332;
+  --brand-dark-blue-deep: #0F1621;
+  --brand-black: #0A0C0F;
+  --brand-primary-text: #F8F9FA;
+  --brand-secondary-text: #C5CAD6;
+  --brand-secondary-text-alt: #E2E4E7;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1A2332; /* Softer dark blue background */
+    --foreground: #F8F9FA; /* Softer primary text */
+  }
+}
+
+/* Dark mode class overrides */
+.dark {
+  --background: #1A2332; /* Softer dark blue background */
+  --foreground: #F8F9FA; /* Softer primary text */
+}
+
+/* Smooth theme transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Prevent transitions on page load */
+.no-transition * {
+  transition: none !important;
+}
+
+html {
+  transition: background-color 0.3s ease;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Enhanced text contrast utilities for better legibility */
+  .text-high-contrast {
+    color: #F8F9FA !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+    font-weight: 500;
+  }
+  
+  .text-high-contrast-secondary {
+    color: #E2E4E7 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    font-weight: 500;
+  }
+  
+  /* Special contrast for light grey backgrounds */
+  .text-on-light-grey {
+    color: #1F2937 !important; /* Very dark grey for light backgrounds */
+    font-weight: 600;
+    text-shadow: none;
+  }
+  
+  .text-on-grey {
+    color: #111827 !important; /* Almost black for grey backgrounds */
+    font-weight: 600;
+    text-shadow: none;
+  }
+  
+  /* Enhanced button contrast */
+  .btn-brand-primary {
+    background: linear-gradient(135deg, #F54F29 0%, #E63E1F 100%);
+    color: #FFFFFF !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+  }
+  
+  .btn-brand-primary:hover {
+    background: linear-gradient(135deg, #E63E1F 0%, #C2321A 100%);
+    box-shadow: 0 4px 12px rgba(245, 79, 41, 0.3);
+  }
+  
+  /* Dark mode text enhancements */
+  .dark .text-enhanced-primary {
+    color: #F8F9FA !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    font-weight: 500;
+  }
+  
+  .dark .text-enhanced-secondary {
+    color: #E2E4E7 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    font-weight: 500;
+  }
+  
+  /* Better contrast for white text on any background */
+  .text-white-enhanced {
+    color: #FFFFFF !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    font-weight: 500;
+  }
+  
+  /* Better contrast for secondary text on any background */
+  .text-secondary-enhanced {
+    color: #C5CAD6 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    font-weight: 500;
+  }
+}

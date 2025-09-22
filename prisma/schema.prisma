@@ -1,0 +1,434 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id                        String              @id @default(cuid())
+  name                      String?
+  email                     String?             @unique
+  emailVerified             DateTime?
+  image                     String?
+  password                  String?
+  role                      UserRole            @default(USER)
+  department                String?
+  isActive                  Boolean             @default(true)
+  lastLoginAt               DateTime?
+  createdAt                 DateTime            @default(now())
+  updatedAt                 DateTime            @updatedAt
+  departmentId              String?
+  accounts                  Account[]
+  createdAssetGroups        AssetGroup[]        @relation("AssetGroupCreatedBy")
+  transactions              AssetTransaction[]
+  createdAssets             Asset[]             @relation("AssetCreatedBy")
+  modifiedAssets            Asset[]             @relation("AssetModifiedBy")
+  createdMaintenanceRecords MaintenanceRecord[] @relation("MaintenanceCreatedBy")
+  maintenanceRecords        MaintenanceRecord[]
+  presetCheckouts           PresetCheckout[]
+  createdPresets            Preset[]            @relation("PresetCreatedBy")
+  createdCustomCategories   CustomCategory[]    @relation("CustomCategoryCreatedBy")
+  modifiedCustomCategories  CustomCategory[]    @relation("CustomCategoryModifiedBy")
+  sessions                  Session[]
+  departmentRel             Department?         @relation("UserDepartment", fields: [departmentId], references: [id])
+
+  @@map("users")
+}
+
+model Department {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  manager     String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  users       User[]   @relation("UserDepartment")
+
+  @@map("departments")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+model Client {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  code        String    @unique
+  description String?
+  contact     String?
+  email       String?
+  phone       String?
+  address     String?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  assets      Asset[]
+
+  @@map("clients")
+}
+
+model CustomCategory {
+  id               String   @id
+  name             String   @unique
+  description      String?
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  createdById      String
+  lastModifiedById String?
+  createdBy        User     @relation("CustomCategoryCreatedBy", fields: [createdById], references: [id])
+  lastModifiedBy   User?    @relation("CustomCategoryModifiedBy", fields: [lastModifiedById], references: [id])
+
+  @@map("custom_categories")
+}
+
+model Asset {
+  id                  String               @id @default(cuid())
+  name                String
+  description         String?
+  category            AssetCategory
+  assetNumber         String?              @unique
+  serialNumber        String?              @unique
+  barcode             String?              @unique
+  qrCode              String?              @unique
+  status              AssetStatus          @default(AVAILABLE)
+  location            String?
+  purchaseDate        DateTime?
+  purchasePrice       Float?
+  currentValue        Float?
+  condition           AssetCondition       @default(GOOD)
+  manufacturer        String?
+  model               String?
+  notes               String?
+  imageUrl            String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  createdById         String
+  lastModifiedById    String?
+  locationId          String?
+  clientId            String?
+  groupMemberships    AssetGroupMember[]
+  transactions        AssetTransaction[]
+  client              Client?              @relation(fields: [clientId], references: [id])
+  createdBy           User                 @relation("AssetCreatedBy", fields: [createdById], references: [id])
+  lastModifiedBy      User?                @relation("AssetModifiedBy", fields: [lastModifiedById], references: [id])
+  locationRef         Location?            @relation(fields: [locationId], references: [id])
+  maintenanceRecords  MaintenanceRecord[]
+  presetCheckoutItems PresetCheckoutItem[] @relation("PresetCheckoutAssets")
+  presetItems         PresetItem[]
+  substitutions       PresetSubstitution[] @relation("AssetSubstitutions")
+
+  @@map("assets")
+}
+
+model AssetTransaction {
+  id                 String            @id @default(cuid())
+  assetId            String
+  userId             String?
+  type               TransactionType
+  status             TransactionStatus @default(PENDING)
+  checkOutDate       DateTime?
+  expectedReturnDate DateTime?
+  actualReturnDate   DateTime?
+  notes              String?
+  location           String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  locationId         String?
+  asset              Asset             @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  locationRef        Location?         @relation(fields: [locationId], references: [id])
+  user               User?             @relation(fields: [userId], references: [id])
+
+  @@map("asset_transactions")
+}
+
+model MaintenanceRecord {
+  id                  String            @id @default(cuid())
+  assetId             String
+  type                MaintenanceType
+  description         String
+  scheduledDate       DateTime
+  completedDate       DateTime?
+  performedDate       DateTime?
+  cost                Float?
+  actualCost          Float?
+  performedById       String?
+  notes               String?
+  completionNotes     String?
+  nextMaintenanceDate DateTime?
+  status              MaintenanceStatus @default(SCHEDULED)
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  createdById         String
+  priority            String            @default("MEDIUM")
+  asset               Asset             @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  createdBy           User              @relation("MaintenanceCreatedBy", fields: [createdById], references: [id])
+  performedBy         User?             @relation(fields: [performedById], references: [id])
+
+  @@map("maintenance_records")
+}
+
+model AssetGroup {
+  id          String             @id @default(cuid())
+  name        String
+  description String?
+  category    String?
+  location    String?
+  notes       String?
+  isActive    Boolean            @default(true)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  createdById String
+  locationId  String?
+  members     AssetGroupMember[]
+  createdBy   User               @relation("AssetGroupCreatedBy", fields: [createdById], references: [id])
+  locationRef Location?          @relation(fields: [locationId], references: [id])
+
+  @@map("asset_groups")
+}
+
+model AssetGroupMember {
+  id       String     @id @default(cuid())
+  groupId  String
+  assetId  String
+  quantity Int        @default(1)
+  notes    String?
+  asset    Asset      @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  group    AssetGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, assetId])
+  @@map("asset_group_members")
+}
+
+model Preset {
+  id                String               @id @default(cuid())
+  name              String
+  description       String?
+  category          String?
+  department        String?
+  isActive          Boolean              @default(true)
+  isTemplate        Boolean              @default(false)
+  priority          Int                  @default(0)
+  estimatedDuration Int?
+  notes             String?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  createdById       String
+  checkouts         PresetCheckout[]
+  items             PresetItem[]
+  substitutions     PresetSubstitution[]
+  createdBy         User                 @relation("PresetCreatedBy", fields: [createdById], references: [id])
+
+  @@map("presets")
+}
+
+model PresetItem {
+  id            String               @id @default(cuid())
+  presetId      String
+  assetId       String?
+  category      AssetCategory?
+  name          String?
+  quantity      Int                  @default(1)
+  isRequired    Boolean              @default(true)
+  priority      Int                  @default(0)
+  notes         String?
+  checkoutItems PresetCheckoutItem[]
+  asset         Asset?               @relation(fields: [assetId], references: [id])
+  preset        Preset               @relation(fields: [presetId], references: [id], onDelete: Cascade)
+  substitutions PresetSubstitution[] @relation("PresetItemSubstitutions")
+
+  @@map("preset_items")
+}
+
+model PresetSubstitution {
+  id                String     @id @default(cuid())
+  presetId          String
+  presetItemId      String
+  substituteAssetId String
+  preferenceOrder   Int        @default(0)
+  notes             String?
+  preset            Preset     @relation(fields: [presetId], references: [id], onDelete: Cascade)
+  presetItem        PresetItem @relation("PresetItemSubstitutions", fields: [presetItemId], references: [id], onDelete: Cascade)
+  substituteAsset   Asset      @relation("AssetSubstitutions", fields: [substituteAssetId], references: [id])
+
+  @@unique([presetItemId, substituteAssetId])
+  @@map("preset_substitutions")
+}
+
+model PresetCheckout {
+  id                 String               @id @default(cuid())
+  presetId           String
+  userId             String
+  status             PresetCheckoutStatus @default(IN_PROGRESS)
+  checkoutDate       DateTime             @default(now())
+  expectedReturnDate DateTime?
+  actualReturnDate   DateTime?
+  completionPercent  Int                  @default(0)
+  notes              String?
+  items              PresetCheckoutItem[]
+  preset             Preset               @relation(fields: [presetId], references: [id])
+  user               User                 @relation(fields: [userId], references: [id])
+
+  @@map("preset_checkouts")
+}
+
+model PresetCheckoutItem {
+  id               String           @id @default(cuid())
+  presetCheckoutId String
+  presetItemId     String
+  assetId          String?
+  status           PresetItemStatus @default(PENDING)
+  isSubstitute     Boolean          @default(false)
+  notes            String?
+  createdAt        DateTime         @default(now())
+  asset            Asset?           @relation("PresetCheckoutAssets", fields: [assetId], references: [id])
+  presetCheckout   PresetCheckout   @relation(fields: [presetCheckoutId], references: [id], onDelete: Cascade)
+  presetItem       PresetItem       @relation(fields: [presetItemId], references: [id])
+
+  @@unique([presetCheckoutId, presetItemId])
+  @@map("preset_checkout_items")
+}
+
+model Location {
+  id                String             @id @default(cuid())
+  name              String             @unique
+  building          String?
+  floor             String?
+  room              String?
+  description       String?
+  capacity          Int?
+  isActive          Boolean            @default(true)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  assetGroups       AssetGroup[]
+  assetTransactions AssetTransaction[]
+  assets            Asset[]
+
+  @@map("locations")
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  USER
+  VIEWER
+}
+
+enum AssetCategory {
+  CAMERA
+  LENS
+  LIGHTING
+  AUDIO
+  COMPUTER
+  STORAGE
+  ACCESSORY
+  FURNITURE
+  SOFTWARE
+  INFORMATION_TECHNOLOGY
+  OTHER
+}
+
+enum AssetStatus {
+  AVAILABLE
+  CHECKED_OUT
+  IN_MAINTENANCE
+  RETIRED
+  MISSING
+  RESERVED
+}
+
+enum AssetCondition {
+  EXCELLENT
+  GOOD
+  FAIR
+  POOR
+  NEEDS_REPAIR
+}
+
+enum TransactionType {
+  CHECK_OUT
+  CHECK_IN
+  RESERVATION
+  MAINTENANCE
+  TRANSFER
+}
+
+enum TransactionStatus {
+  PENDING
+  ACTIVE
+  COMPLETED
+  OVERDUE
+  CANCELLED
+}
+
+enum MaintenanceType {
+  PREVENTIVE
+  CORRECTIVE
+  CALIBRATION
+  INSPECTION
+  CLEANING
+}
+
+enum MaintenanceStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  OVERDUE
+}
+
+enum PresetCheckoutStatus {
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  PARTIAL
+}
+
+enum PresetItemStatus {
+  PENDING
+  ASSIGNED
+  CHECKED_OUT
+  SUBSTITUTED
+  UNAVAILABLE
+  SKIPPED
+}
