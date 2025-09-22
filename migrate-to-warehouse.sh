@@ -116,9 +116,15 @@ else
     sudo mkdir -p "$TARGET_DIR"
 fi
 
-# Change ownership to current user
-sudo chown -R $USER:$USER "$TARGET_DIR"
-echo -e "${GREEN}✅ Directory setup complete${NC}"
+# Change ownership to current user (or apps user if exists)
+DEPLOY_USER=${DEPLOY_USER:-$USER}
+if id "apps" >/dev/null 2>&1; then
+    DEPLOY_USER="apps"
+    echo -e "${BLUE}📋 Using 'apps' user for deployment${NC}"
+fi
+
+sudo chown -R $DEPLOY_USER:$DEPLOY_USER "$TARGET_DIR"
+echo -e "${GREEN}✅ Directory setup complete for user: $DEPLOY_USER${NC}"
 
 echo ""
 
