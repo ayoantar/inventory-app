@@ -17,7 +17,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-TARGET_DIR="/var/www/lsvr-inventory"
+TARGET_DIR="/home/apps/lsvr-apps/lsvr-inventory"
 APP_PORT=4000
 SERVICE_NAME="lsvr-inventory-warehouse"
 
@@ -136,11 +136,9 @@ if [ -d ".git" ]; then
     echo "Updating existing repository..."
     git pull origin main
 else
-    echo "Please manually copy your code to this directory or clone from your repository:"
-    echo "  cd $TARGET_DIR"
-    echo "  git clone <your-repository-url> ."
-    echo ""
-    read -p "Press Enter when code is ready in $TARGET_DIR..."
+    echo "Cloning repository to $TARGET_DIR..."
+    git clone https://github.com/ayoantar/inventory-app.git .
+    git checkout main
 fi
 
 # Verify essential files exist

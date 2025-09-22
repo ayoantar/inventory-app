@@ -4,7 +4,7 @@ module.exports = {
     name: 'lsvr-inventory-warehouse',
     script: 'npm',
     args: 'run start:prod',
-    cwd: '/path/to/lsvr-inventory', // Update this path on target server
+    cwd: '/home/apps/lsvr-apps/lsvr-inventory',
     
     // Environment variables
     env: {
