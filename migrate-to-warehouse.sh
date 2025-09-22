@@ -134,7 +134,7 @@ cd "$TARGET_DIR"
 
 if [ -d ".git" ]; then
     echo "Updating existing repository..."
-    git pull origin main || git pull origin master
+    git pull origin main
 else
     echo "Please manually copy your code to this directory or clone from your repository:"
     echo "  cd $TARGET_DIR"
