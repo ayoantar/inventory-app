@@ -157,7 +157,7 @@ echo ""
 
 # Install dependencies
 echo -e "${BLUE}📦 Installing dependencies...${NC}"
-npm ci --only=production
+npm ci
 echo -e "${GREEN}✅ Dependencies installed${NC}"
 
 echo ""
