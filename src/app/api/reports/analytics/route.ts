@@ -27,18 +27,15 @@ export async function GET(request: NextRequest) {
       lte: endDate ? new Date(endDate) : new Date()
     }
 
-    // Get asset statistics
+    // Get focused asset statistics
     const [
       totalAssets,
       assetsByCategory,
       assetsByStatus,
-      assetsByCondition,
       totalValue,
       recentTransactions,
-      maintenanceStats,
-      checkoutStats,
-      topUsers,
-      categoryValues
+      overdueAssets,
+      recentTransactionDetails
     ] = await Promise.all([
       // Total assets count
       prisma.asset.count(),
@@ -55,85 +52,38 @@ export async function GET(request: NextRequest) {
         _count: { status: true }
       }),
 
-      // Assets by condition
-      prisma.asset.groupBy({
-        by: ['condition'],
-        _count: { condition: true }
-      }),
-
       // Total asset value
       prisma.asset.aggregate({
-        _sum: { currentValue: true, purchasePrice: true }
+        _sum: { currentValue: true }
       }),
 
-      // Recent transactions
+      // Recent transactions (last 7 days)
       prisma.assetTransaction.count({
         where: {
-          createdAt: dateFilter
+          createdAt: {
+            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+          }
         }
       }),
 
-      // Maintenance statistics
-      prisma.maintenanceRecord.groupBy({
-        by: ['status'],
-        _count: { status: true },
-        _sum: { cost: true }
-      }),
-
-      // Checkout statistics
-      prisma.assetTransaction.groupBy({
-        by: ['type'],
-        _count: { type: true },
+      // Overdue assets (checked out with expected return date in the past)
+      prisma.assetTransaction.count({
         where: {
-          createdAt: dateFilter
+          type: 'CHECK_OUT',
+          actualReturnDate: null,
+          expectedReturnDate: {
+            lt: new Date()
+          }
         }
-      }),
-
-      // Most active users
-      prisma.assetTransaction.groupBy({
-        by: ['userId'],
-        _count: { userId: true },
-        where: {
-          createdAt: dateFilter,
-          userId: { not: null }
-        },
-        orderBy: {
-          _count: { userId: 'desc' }
-        },
-        take: 5
-      }),
-
-      // Asset values by category
-      prisma.asset.groupBy({
-        by: ['category'],
-        _sum: { currentValue: true, purchasePrice: true },
-        _count: { category: true }
       })
     ])
 
-    // Get user details for top users (filter out null userIds)
-    const userIds = topUsers.map(u => u.userId).filter(id => id !== null)
-    const users = userIds.length > 0 ? await prisma.user.findMany({
-      where: { id: { in: userIds } },
-      select: { id: true, name: true, email: true }
-    }) : []
-
-    const topUsersWithDetails = topUsers.map(stat => ({
-      ...stat,
-      user: users.find(u => u.id === stat.userId)
-    }))
-
-    // Calculate utilization rate (checked out assets / total assets)
+    // Calculate key metrics
     const checkedOutAssets = assetsByStatus.find(s => s.status === 'CHECKED_OUT')?._count.status || 0
-    const utilizationRate = totalAssets > 0 ? (checkedOutAssets / totalAssets) * 100 : 0
+    const availableAssets = assetsByStatus.find(s => s.status === 'AVAILABLE')?._count.status || 0
+    const utilizationRate = totalAssets > 0 ? Math.round((checkedOutAssets / totalAssets) * 100) : 0
 
-    // Calculate maintenance cost efficiency
-    const totalMaintenanceCost = maintenanceStats.reduce((sum, stat) => 
-      sum + (stat._sum.cost || 0), 0
-    )
-    const maintenanceCostPerAsset = totalAssets > 0 ? totalMaintenanceCost / totalAssets : 0
-
-    // Recent activity trends (last 7 days)
+    // Activity trends (last 7 days) - track checkouts and checkins separately
     const last7Days = Array.from({ length: 7 }, (_, i) => {
       const date = new Date()
       date.setDate(date.getDate() - i)
@@ -146,85 +96,78 @@ export async function GET(request: NextRequest) {
         const dayEnd = new Date(date)
         dayEnd.setHours(23, 59, 59, 999)
 
-        const transactions = await prisma.assetTransaction.count({
-          where: {
-            createdAt: {
-              gte: dayStart,
-              lte: dayEnd
+        const [checkouts, checkins] = await Promise.all([
+          prisma.assetTransaction.count({
+            where: {
+              type: 'CHECK_OUT',
+              createdAt: {
+                gte: dayStart,
+                lte: dayEnd
+              }
             }
-          }
-        })
+          }),
+          prisma.assetTransaction.count({
+            where: {
+              type: 'CHECK_IN',
+              createdAt: {
+                gte: dayStart,
+                lte: dayEnd
+              }
+            }
+          })
+        ])
 
         return {
           date,
-          transactions
+          checkouts,
+          checkins
         }
       })
-    )
+    ),
+
+    // Recent transactions with user and asset details
+    prisma.assetTransaction.findMany({
+      take: 10,
+      orderBy: { createdAt: 'desc' },
+      include: {
+        user: { select: { name: true } },
+        asset: { select: { name: true } }
+      }
+    })
 
     const analytics = {
       overview: {
         totalAssets,
         totalValue: totalValue._sum.currentValue || 0,
-        totalPurchaseValue: totalValue._sum.purchasePrice || 0,
+        checkedOutAssets,
+        availableAssets,
+        utilizationRate,
         recentTransactions,
-        utilizationRate: Math.round(utilizationRate * 100) / 100,
-        maintenanceCostPerAsset: Math.round(maintenanceCostPerAsset * 100) / 100
+        overdueAssets
       },
       assets: {
         byCategory: assetsByCategory.map(item => ({
           category: item.category,
           count: item._count.category,
-          label: item.category.toLowerCase().replace('_', ' ')
+          label: item.category.toLowerCase().replace(/[_-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
         })),
         byStatus: assetsByStatus.map(item => ({
           status: item.status,
           count: item._count.status,
-          label: item.status.toLowerCase().replace('_', ' ')
-        })),
-        byCondition: assetsByCondition.map(item => ({
-          condition: item.condition,
-          count: item._count.condition,
-          label: item.condition.toLowerCase().replace('_', ' ')
+          label: item.status.toLowerCase().replace(/[_-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
         }))
       },
-      financial: {
-        categoryValues: categoryValues.map(item => ({
-          category: item.category,
-          currentValue: item._sum.currentValue || 0,
-          purchaseValue: item._sum.purchasePrice || 0,
-          count: item._count.category,
-          label: item.category.toLowerCase().replace('_', ' ')
-        })),
-        totalCurrentValue: totalValue._sum.currentValue || 0,
-        totalPurchaseValue: totalValue._sum.purchasePrice || 0,
-        depreciation: ((totalValue._sum.purchasePrice || 0) - (totalValue._sum.currentValue || 0))
-      },
-      maintenance: {
-        byStatus: maintenanceStats.map(item => ({
-          status: item.status,
-          count: item._count.status,
-          cost: item._sum.cost || 0,
-          label: item.status.toLowerCase().replace('_', ' ')
-        })),
-        totalCost: totalMaintenanceCost,
-        averageCostPerAsset: maintenanceCostPerAsset
-      },
       activity: {
-        transactions: checkoutStats.map(item => ({
-          type: item.type,
-          count: item._count.type,
-          label: item.type.toLowerCase().replace('_', ' ')
-        })),
-        topUsers: topUsersWithDetails.map(item => ({
-          userId: item.userId,
-          transactionCount: item._count.userId,
-          userName: item.user?.name || 'Unknown User',
-          userEmail: item.user?.email
-        })),
-        trends: activityTrends
+        trends: activityTrends,
+        recentTransactions: recentTransactionDetails.map(transaction => ({
+          userName: transaction.user.name,
+          assetName: transaction.asset.name,
+          type: transaction.type,
+          date: transaction.createdAt
+        }))
       }
     }
+
 
     return NextResponse.json(analytics)
 
