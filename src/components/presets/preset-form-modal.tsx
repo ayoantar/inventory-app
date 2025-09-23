@@ -217,15 +217,15 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-gray-50 dark:bg-white/5 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto">
+      <div className="bg-gray-900/5 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-brand-primary-text">
+            <h2 className="text-xl font-semibold text-brand-primary-text">
               Create New Preset
             </h2>
             <button
               onClick={handleClose}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              className="text-white/50 hover:text-white/80 transition-colors hover transition-colors"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -234,13 +234,13 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
           </div>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
               <div className="flex">
                 <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
                 <div className="ml-3">
-                  <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+                  <p className="text-sm text-red-800">{error}</p>
                 </div>
               </div>
             </div>
@@ -250,10 +250,10 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Preset Details */}
               <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">Preset Details</h3>
+                <h3 className="text-lg font-medium text-brand-primary-text">Preset Details</h3>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
                     Preset Name *
                   </label>
                   <input
@@ -262,20 +262,20 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="e.g., Camera Shoot Basic Kit"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
                     Category
                   </label>
                   <select
                     name="category"
                     value={formData.category}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">Select Category</option>
                     {categories.map(category => (
@@ -285,14 +285,14 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
                     Department
                   </label>
                   <select
                     name="department"
                     value={formData.department}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">Select Department</option>
                     {departments.map(department => (
@@ -302,7 +302,7 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
                     Duration (hours)
                   </label>
                   <input
@@ -311,13 +311,13 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                     value={formData.estimatedDuration}
                     onChange={handleInputChange}
                     min="1"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="24"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
                     Priority (0-10)
                   </label>
                   <input
@@ -327,12 +327,12 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                     onChange={handleInputChange}
                     min="0"
                     max="10"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
                     Description
                   </label>
                   <textarea
@@ -340,7 +340,7 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                     value={formData.description}
                     onChange={handleInputChange}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Describe what this preset is used for..."
                   />
                 </div>
@@ -352,14 +352,14 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                       name="isTemplate"
                       checked={formData.isTemplate}
                       onChange={handleInputChange}
-                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                      className="w-4 h-4 text-blue-600 border-gray-600 rounded focus:ring-blue-500 focus:ring-2"
                     />
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Use as template</span>
+                    <span className="text-sm font-medium text-gray-300">Use as template</span>
                   </label>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
                     Notes
                   </label>
                   <textarea
@@ -367,7 +367,7 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                     value={formData.notes}
                     onChange={handleInputChange}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Additional notes or instructions for this preset..."
                   />
                 </div>
@@ -375,29 +375,29 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
 
               {/* Asset Selection */}
               <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">Select Assets</h3>
+                <h3 className="text-lg font-medium text-brand-primary-text">Select Assets</h3>
                 
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
                       Search Assets
                     </label>
                     <input
                       type="text"
                       value={assetSearch}
                       onChange={(e) => setAssetSearch(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text placeholder-gray-600 dark:placeholder-gray-400"
+                      className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-600"
                       placeholder="Search by name, category, manufacturer, or ID..."
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
                       Filter by Status
                     </label>
                     <select
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                      className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="">All Statuses</option>
                       <option value="AVAILABLE">Available</option>
@@ -412,19 +412,19 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
 
                 {/* Selected Assets */}
                 {selectedAssets.length > 0 && (
-                  <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
-                    <h4 className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">
+                  <div className="bg-blue-50 rounded-lg p-4">
+                    <h4 className="text-sm font-medium text-blue-900 mb-2">
                       Selected Assets ({selectedAssets.length})
                     </h4>
                     <div className="max-h-32 overflow-y-auto space-y-2">
                       {selectedAssets.map((asset) => (
                         <div key={asset.id} className="flex items-center justify-between text-sm">
                           <div className="flex-1">
-                            <span className="text-blue-800 dark:text-blue-200 font-medium">
+                            <span className="text-blue-800 font-medium">
                               {asset.name || `Asset ${asset.id.slice(-4)}`}
                             </span>
                             {asset.description && (
-                              <div className="text-blue-600 dark:text-blue-400 text-xs mt-1">
+                              <div className="text-blue-600 text-xs mt-1">
                                 {asset.description.split('\n').slice(0, 2).map((line, lineIndex) => (
                                   <div key={`${asset.id}-selected-desc-${lineIndex}`}>{line}</div>
                                 ))}
@@ -434,7 +434,7 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                           <button
                             type="button"
                             onClick={() => handleAssetToggle(asset)}
-                            className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 ml-2"
+                            className="text-blue-600 hover ml-2"
                           >
                             Remove
                           </button>
@@ -445,13 +445,13 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                 )}
 
                 {/* Available Assets */}
-                <div className="border border-gray-300 dark:border-gray-600 rounded-lg max-h-64 overflow-y-auto">
+                <div className="border border-gray-600 rounded-lg max-h-64 overflow-y-auto">
                   {assetsLoading ? (
-                    <div className="p-4 text-center text-gray-700 dark:text-brand-secondary-text">
+                    <div className="p-4 text-center text-gray-600 dark:text-brand-secondary-text">
                       Loading assets...
                     </div>
                   ) : filteredAssets.length === 0 ? (
-                    <div className="p-4 text-center text-gray-700 dark:text-brand-secondary-text">
+                    <div className="p-4 text-center text-gray-600 dark:text-brand-secondary-text">
                       No available assets found
                     </div>
                   ) : (
@@ -463,8 +463,8 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                             key={asset.id}
                             className={`flex items-center p-2 rounded cursor-pointer transition-colors ${
                               isSelected
-                                ? 'bg-blue-100 dark:bg-blue-900/30'
-                                : 'hover:bg-white/10 dark:hover:bg-white/10'
+                                ? 'bg-blue-100'
+                                : 'hover'
                             }`}
                             onClick={() => handleAssetToggle(asset)}
                           >
@@ -475,26 +475,26 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                               className="mr-3"
                             />
                             <div className="flex-1">
-                              <div className="font-medium text-gray-900 dark:text-brand-primary-text">
+                              <div className="font-medium text-brand-primary-text">
                                 {asset.name || `Asset ${asset.id.slice(-4)}`}
                               </div>
                               {asset.description && (
-                                <div className="text-xs text-gray-400 mt-1">
+                                <div className="text-xs text-white/50 hover:text-white/80 transition-colors mt-1">
                                   {asset.description.split('\n').slice(0, 2).map((line, lineIndex) => (
                                     <div key={`${asset.id}-desc-${lineIndex}`}>{line}</div>
                                   ))}
                                 </div>
                               )}
-                              <div className="text-sm text-gray-700 dark:text-brand-secondary-text">
+                              <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
                                 {asset.category?.replace('_', ' ') || 'No Category'} • 
                                 <span className={`ml-1 px-2 py-1 rounded-full text-xs font-medium ${
                                   asset.status === 'AVAILABLE' 
-                                    ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                                    ? 'bg-green-100 text-green-800'
                                     : asset.status === 'CHECKED_OUT'
-                                    ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+                                    ? 'bg-yellow-100 text-yellow-800'
                                     : asset.status === 'IN_MAINTENANCE'
-                                    ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
-                                    : 'bg-gray-100 text-gray-800 dark:bg-white/5 dark:text-gray-300'
+                                    ? 'bg-red-100 text-red-800'
+                                    : 'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
                                 }`}>
                                   {asset.status?.replace('_', ' ') || 'Unknown'}
                                 </span>
@@ -517,18 +517,18 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end space-x-3 pt-6 border-t border-gray-300 dark:border-gray-700">
+            <div className="flex justify-end space-x-3 pt-6 border-t border-gray-700">
               <button
                 type="button"
                 onClick={handleClose}
-                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-white/5 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-white/10 dark:hover:bg-white/10 transition-colors"
+                className="px-4 py-2 text-sm font-medium text-gray-300 bg-gray-900 border border-gray-600 rounded-md hover transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading || !formData.name}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
               >
                 {loading ? 'Creating...' : 'Create Preset'}
               </button>

@@ -127,16 +127,16 @@ export default function UserTransferModal({
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
-      <div className="fixed inset-0 bg-black/25 dark:bg-black/50" />
+      <div className="fixed inset-0 bg-black/25" />
       
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <DialogPanel className="mx-auto max-w-2xl rounded-lg bg-white dark:bg-white/5 p-6 shadow-xl">
-          <DialogTitle className="text-lg font-medium text-gray-900 dark:text-brand-primary-text mb-4">
+        <DialogPanel className="mx-auto max-w-2xl rounded-lg bg-gray-900 p-6 shadow-xl">
+          <DialogTitle className="text-lg font-medium text-brand-primary-text mb-4">
             Transfer Checked-Out Items
           </DialogTitle>
 
           <div className="space-y-4">
-            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
                   <svg className="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
@@ -144,10 +144,10 @@ export default function UserTransferModal({
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                  <h3 className="text-sm font-medium text-amber-800">
                     Cannot delete user with checked-out items
                   </h3>
-                  <div className="mt-2 text-sm text-amber-700 dark:text-amber-300">
+                  <div className="mt-2 text-sm text-amber-700">
                     <p>
                       <strong>{userToDelete.name || userToDelete.email}</strong> has {activeTransactions.length} checked-out item{activeTransactions.length !== 1 ? 's' : ''} that must be transferred to another user before deletion.
                     </p>
@@ -158,19 +158,19 @@ export default function UserTransferModal({
 
             {loading ? (
               <div className="text-center py-4">
-                <div className="text-gray-600 dark:text-gray-400">Loading transactions...</div>
+                <div className="text-white/50 hover:text-white/80 transition-colors">Loading transactions...</div>
               </div>
             ) : (
               <>
                 {activeTransactions.length > 0 && (
                   <div>
-                    <h4 className="text-sm font-medium text-gray-900 dark:text-brand-primary-text mb-2">
+                    <h4 className="text-sm font-medium text-brand-primary-text mb-2">
                       Checked-out items ({activeTransactions.length}):
                     </h4>
-                    <div className="bg-gray-50 dark:bg-white/5 rounded-lg p-3 max-h-32 overflow-y-auto">
+                    <div className="bg-gray-900/5 rounded-lg p-3 max-h-32 overflow-y-auto">
                       <div className="space-y-1">
                         {activeTransactions.map((transaction) => (
-                          <div key={transaction.id} className="text-sm text-gray-600 dark:text-gray-300">
+                          <div key={transaction.id} className="text-sm text-gray-300">
                             • {transaction.asset.name} {transaction.asset.serialNumber && `(${transaction.asset.serialNumber})`}
                           </div>
                         ))}
@@ -180,14 +180,14 @@ export default function UserTransferModal({
                 )}
 
                 <div>
-                  <label htmlFor="transferUser" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label htmlFor="transferUser" className="block text-sm font-medium text-gray-300 mb-2">
                     Transfer to user:
                   </label>
                   <select
                     id="transferUser"
                     value={selectedUserId}
                     onChange={(e) => setSelectedUserId(e.target.value)}
-                    className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full border border-gray-600 rounded-md px-3 py-2 bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="">Select a user...</option>
                     {users.map((user) => (
@@ -199,8 +199,8 @@ export default function UserTransferModal({
                 </div>
 
                 {selectedUser && (
-                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
-                    <div className="text-sm text-blue-800 dark:text-blue-300">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <div className="text-sm text-blue-800">
                       <strong>Selected:</strong> {selectedUser.name || selectedUser.email} ({selectedUser.role})
                     </div>
                   </div>
@@ -212,14 +212,14 @@ export default function UserTransferModal({
           <div className="mt-6 flex justify-end space-x-3">
             <button
               onClick={onClose}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 bg-white dark:bg-white/5 transition-colors"
+              className="px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900 transition-colors"
             >
               Cancel
             </button>
             
             <button
               onClick={handleSkipTransfer}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 bg-white dark:bg-white/5 transition-colors"
+              className="px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900 transition-colors"
             >
               Skip Transfer (Deactivate User)
             </button>
@@ -227,7 +227,7 @@ export default function UserTransferModal({
             <button
               onClick={handleTransfer}
               disabled={!selectedUserId || transferring || activeTransactions.length === 0}
-              className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+              className="bg-blue-600 hover disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
             >
               {transferring ? 'Transferring...' : `Transfer & Delete User`}
             </button>

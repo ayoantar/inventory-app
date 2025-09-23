@@ -187,7 +187,7 @@ export default function PresetsPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-brand-dark-blue-deep dark:to-brand-black">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
         <Navbar />
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
@@ -201,7 +201,7 @@ export default function PresetsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-brand-dark-blue-deep dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       <Navbar />
       
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -210,7 +210,7 @@ export default function PresetsPage() {
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center space-x-3 mb-2">
-                <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
                   <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                   </svg>
@@ -255,17 +255,17 @@ export default function PresetsPage() {
               <button
                 onClick={() => handlePageChange(pagination.page - 1)}
                 disabled={pagination.page <= 1}
-                className="px-4 py-2 text-sm border border-gray-300 dark:border-brand-dark-blue-deep rounded-lg hover:bg-white/10 dark:hover:bg-white/10 bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-2 text-sm border border-gray-300 dark:border-brand-dark-blue-deep rounded-lg hover:bg-white/10 dark:hover:bg-white/10 bg-gray-900/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Previous
               </button>
-              <span className="px-4 py-2 text-sm border border-gray-300 dark:border-brand-dark-blue-deep rounded-lg bg-white/80 dark:bg-white/5 text-gray-700 dark:text-brand-secondary-text">
+              <span className="px-4 py-2 text-sm border border-gray-300 dark:border-brand-dark-blue-deep rounded-lg bg-gray-900/5 text-gray-700 dark:text-brand-secondary-text">
                 Page {pagination.page} of {pagination.pages}
               </span>
               <button
                 onClick={() => handlePageChange(pagination.page + 1)}
                 disabled={pagination.page >= pagination.pages}
-                className="px-4 py-2 text-sm border border-gray-300 dark:border-brand-dark-blue-deep rounded-lg hover:bg-white/10 dark:hover:bg-white/10 bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-2 text-sm border border-gray-300 dark:border-brand-dark-blue-deep rounded-lg hover:bg-white/10 dark:hover:bg-white/10 bg-gray-900/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Next
               </button>
@@ -276,7 +276,7 @@ export default function PresetsPage() {
         {/* Empty State */}
         {!loading && presets.length === 0 && (
           <div className="text-center py-16">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/20 rounded-2xl flex items-center justify-center mb-6">
+            <div className="w-24 h-24 mx-auto bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-2xl flex items-center justify-center mb-6 transition-colors">
               <svg className="w-12 h-12 text-purple-400 dark:text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>

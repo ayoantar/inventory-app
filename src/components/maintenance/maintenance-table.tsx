@@ -58,18 +58,18 @@ export default function MaintenanceTable({
   }
 
   const statusColors = {
-    SCHEDULED: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-700',
-    IN_PROGRESS: 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-700',
-    COMPLETED: 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border-green-200 dark:border-green-700',
-    CANCELLED: 'bg-gray-50 dark:bg-white/5 text-gray-800 dark:text-brand-secondary-text border-gray-200 dark:border-brand-dark-blue-deep',
-    OVERDUE: 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border-red-200 dark:border-red-700'
+    SCHEDULED: 'bg-blue-50 text-blue-700 border-blue-200',
+    IN_PROGRESS: 'bg-yellow-50 text-yellow-700 border-yellow-200',
+    COMPLETED: 'bg-green-50 text-green-700 border-green-200',
+    CANCELLED: 'bg-gray-900/5 text-gray-600 dark:text-brand-secondary-text border-gray-700',
+    OVERDUE: 'bg-red-50 text-red-700 border-red-200'
   }
 
   const priorityColors = {
-    LOW: 'bg-gray-100 text-gray-800 dark:bg-brand-dark-blue dark:text-brand-secondary-text',
-    MEDIUM: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-    HIGH: 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400',
-    CRITICAL: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+    LOW: 'bg-gray-100 dark:bg-gray-800 text-brand-primary-text',
+    MEDIUM: 'bg-yellow-100 text-yellow-800',
+    HIGH: 'bg-orange-100 text-orange-800',
+    CRITICAL: 'bg-red-100 text-red-800'
   }
 
   const typeIcons = {
@@ -82,12 +82,12 @@ export default function MaintenanceTable({
 
   if (maintenanceRecords.length === 0) {
     return (
-      <div className="bg-gray-50 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-brand-dark-blue-deep p-8 text-center">
-        <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="bg-gray-900/5 rounded-lg border border-gray-600 p-8 text-center">
+        <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
         </svg>
-        <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-brand-primary-text">No maintenance records</h3>
-        <p className="mt-1 text-sm text-gray-700 dark:text-brand-secondary-text">
+        <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No maintenance records</h3>
+        <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
           No maintenance has been scheduled for this asset yet.
         </p>
       </div>
@@ -95,67 +95,67 @@ export default function MaintenanceTable({
   }
 
   return (
-    <div className="bg-gray-50 dark:bg-white/5 shadow-sm rounded-lg border border-gray-300 dark:border-brand-dark-blue-deep overflow-hidden">
+    <div className="bg-gray-900/5 shadow-sm rounded-lg border border-gray-600 overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full divide-y divide-gray-300 dark:divide-brand-dark-blue-deep border-collapse">
-          <thead className="bg-gray-100 dark:bg-brand-dark-blue">
+        <table className="w-full divide-y divide-gray-300 border-collapse">
+          <thead className="bg-gray-100 dark:bg-gray-800">
             <tr>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-300 dark:border-brand-dark-blue-deep">
+              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600">
                 Type & Description
               </th>
               {showAssetColumn && (
-                <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-300 dark:border-brand-dark-blue-deep">
+                <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600">
                   Asset
                 </th>
               )}
-              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-300 dark:border-brand-dark-blue-deep">
+              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600">
                 Priority
               </th>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-300 dark:border-brand-dark-blue-deep">
+              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600">
                 Scheduled
               </th>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-300 dark:border-brand-dark-blue-deep">
+              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600">
                 Status
               </th>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-300 dark:border-brand-dark-blue-deep">
+              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600">
                 Cost
               </th>
-              <th className="px-3 py-3 text-right text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
+              <th className="px-3 py-3 text-right text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="bg-gray-50 dark:bg-white/5 divide-y divide-gray-300 dark:divide-brand-dark-blue-deep">
+          <tbody className="bg-gray-900/5 divide-y divide-gray-300">
             {maintenanceRecords.map((record) => (
               <tr key={record.id}>
-                <td className="px-3 py-3 border-r border-gray-300 dark:border-brand-dark-blue-deep">
+                <td className="px-3 py-3 border-r border-gray-600">
                   <div className="flex items-start space-x-3">
                     <span className="text-lg" title={record.type}>
                       {typeIcons[record.type as MaintenanceType]}
                     </span>
                     <div>
-                      <div className="text-sm font-medium text-gray-900 dark:text-brand-primary-text">
+                      <div className="text-sm font-medium text-brand-primary-text">
                         {record.description}
                       </div>
-                      <div className="text-sm text-gray-700 dark:text-brand-secondary-text capitalize">
+                      <div className="text-sm text-gray-600 dark:text-brand-secondary-text capitalize">
                         {record.type.toLowerCase().replace('_', ' ')}
                       </div>
                     </div>
                   </div>
                 </td>
                 {showAssetColumn && (
-                  <td className="px-3 py-3 border-r border-gray-300 dark:border-brand-dark-blue-deep">
-                    <div className="text-sm font-medium text-gray-900 dark:text-brand-primary-text">
+                  <td className="px-3 py-3 border-r border-gray-600">
+                    <div className="text-sm font-medium text-brand-primary-text">
                       {record.asset.name}
                     </div>
                     {record.asset.serialNumber && (
-                      <div className="text-sm text-gray-700 dark:text-brand-secondary-text font-mono">
+                      <div className="text-sm text-gray-600 dark:text-brand-secondary-text font-mono">
                         {record.asset.serialNumber}
                       </div>
                     )}
                   </td>
                 )}
-                <td className="px-3 py-3 border-r border-gray-300 dark:border-brand-dark-blue-deep">
+                <td className="px-3 py-3 border-r border-gray-600">
                   {onPriorityUpdate ? (
                     <select
                       value={record.priority}
@@ -170,10 +170,10 @@ export default function MaintenanceTable({
                         paddingRight: '1.5rem'
                       }}
                     >
-                      <option value="LOW" className="text-gray-900 dark:text-brand-primary-text bg-white dark:bg-white/5">Low</option>
-                      <option value="MEDIUM" className="text-gray-900 dark:text-brand-primary-text bg-white dark:bg-white/5">Medium</option>
-                      <option value="HIGH" className="text-gray-900 dark:text-brand-primary-text bg-white dark:bg-white/5">High</option>
-                      <option value="CRITICAL" className="text-gray-900 dark:text-brand-primary-text bg-white dark:bg-white/5">Critical</option>
+                      <option value="LOW" className="text-brand-primary-text bg-gray-900">Low</option>
+                      <option value="MEDIUM" className="text-brand-primary-text bg-gray-900">Medium</option>
+                      <option value="HIGH" className="text-brand-primary-text bg-gray-900">High</option>
+                      <option value="CRITICAL" className="text-brand-primary-text bg-gray-900">Critical</option>
                     </select>
                   ) : (
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${priorityColors[record.priority as keyof typeof priorityColors]}`}>
@@ -181,10 +181,10 @@ export default function MaintenanceTable({
                     </span>
                   )}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-900 dark:text-brand-primary-text">
+                <td className="px-6 py-4 text-sm text-brand-primary-text">
                   {record.scheduledDate ? new Date(record.scheduledDate).toLocaleDateString() : 'Not scheduled'}
                 </td>
-                <td className="px-3 py-3 border-r border-gray-300 dark:border-brand-dark-blue-deep">
+                <td className="px-3 py-3 border-r border-gray-600">
                   {onStatusUpdate ? (
                     <select
                       value={record.status}
@@ -199,11 +199,11 @@ export default function MaintenanceTable({
                         paddingRight: '1.5rem'
                       }}
                     >
-                      <option value="SCHEDULED" className="text-gray-900 dark:text-brand-primary-text bg-white dark:bg-white/5">Scheduled</option>
-                      <option value="IN_PROGRESS" className="text-gray-900 dark:text-brand-primary-text bg-white dark:bg-white/5">In Progress</option>
-                      <option value="COMPLETED" className="text-gray-900 dark:text-brand-primary-text bg-white dark:bg-white/5">Completed</option>
-                      <option value="CANCELLED" className="text-gray-900 dark:text-brand-primary-text bg-white dark:bg-white/5">Cancelled</option>
-                      <option value="OVERDUE" className="text-gray-900 dark:text-brand-primary-text bg-white dark:bg-white/5">Overdue</option>
+                      <option value="SCHEDULED" className="text-brand-primary-text bg-gray-900">Scheduled</option>
+                      <option value="IN_PROGRESS" className="text-brand-primary-text bg-gray-900">In Progress</option>
+                      <option value="COMPLETED" className="text-brand-primary-text bg-gray-900">Completed</option>
+                      <option value="CANCELLED" className="text-brand-primary-text bg-gray-900">Cancelled</option>
+                      <option value="OVERDUE" className="text-brand-primary-text bg-gray-900">Overdue</option>
                     </select>
                   ) : (
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${statusColors[record.status as MaintenanceStatus]}`}>
@@ -211,19 +211,19 @@ export default function MaintenanceTable({
                     </span>
                   )}
                 </td>
-                <td className="px-3 py-3 border-r border-gray-300 dark:border-brand-dark-blue-deep text-sm">
+                <td className="px-3 py-3 border-r border-gray-600 text-sm">
                   {record.cost ? (
-                    <span className="font-medium text-gray-900 dark:text-brand-primary-text">
+                    <span className="font-medium text-brand-primary-text">
                       ${(record.cost || 0).toLocaleString()}
                     </span>
                   ) : (
-                    <span className="text-gray-600 dark:text-brand-secondary-text italic">No cost recorded</span>
+                    <span className="text-white/50 hover:text-white/80 transition-colors italic">No cost recorded</span>
                   )}
                 </td>
                 <td className="px-3 py-3 text-center">
                   <button
                     onClick={() => handleViewDetails(record)}
-                    className="p-1.5 text-gray-600 dark:text-brand-secondary-text hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition-colors"
+                    className="p-1.5 text-white/50 hover:text-white/80 transition-colors hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800 rounded transition-colors"
                     title="View Details"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

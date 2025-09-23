@@ -28,13 +28,13 @@ export default function AdminRedirect() {
   }, [router, session, status])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black flex items-center justify-center">
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange mx-auto mb-4"></div>
-        <p className="text-gray-800 dark:text-gray-400">
+        <p className="text-brand-primary-text">
           {status === 'loading' ? 'Loading...' : 'Redirecting...'}
         </p>
-        <p className="text-sm text-gray-700 dark:text-gray-700 mt-2">
+        <p className="text-sm text-gray-300 mt-2">
           Admin functions are now available in your profile
         </p>
       </div>

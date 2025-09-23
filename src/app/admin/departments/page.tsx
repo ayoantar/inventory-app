@@ -161,7 +161,7 @@ export default function DepartmentManagement() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
       </div>
     )
@@ -177,28 +177,28 @@ export default function DepartmentManagement() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       {/* Header */}
-      <div className="bg-white/80 dark:bg-white/5 shadow-sm border-b border-gray-300 dark:border-gray-700">
+      <div className="bg-gray-900/5 shadow-sm border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => router.back()}
-                className="text-gray-700 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                className="text-white/60 dark:text-white/60 hover:text-slate-500 dark:hover:text-slate-200"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-brand-primary-text">Department Management</h1>
-                <p className="text-sm text-gray-700 dark:text-brand-secondary-text">Manage organizational departments</p>
+                <h1 className="text-2xl font-bold text-brand-primary-text">Department Management</h1>
+                <p className="text-sm text-gray-600 dark:text-brand-secondary-text">Manage organizational departments</p>
               </div>
             </div>
             <button
               onClick={() => setShowNewDepartmentForm(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2"
+              className="bg-blue-600 hover text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -211,10 +211,10 @@ export default function DepartmentManagement() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Filters */}
-        <div className="bg-white/80 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 p-6 mb-6">
+        <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Search Departments
               </label>
               <input
@@ -222,18 +222,18 @@ export default function DepartmentManagement() {
                 placeholder="Search by name, description, or manager..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Status
               </label>
               <select
                 value={activeFilter}
                 onChange={(e) => setActiveFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">All Status</option>
                 <option value="true">Active</option>
@@ -242,7 +242,7 @@ export default function DepartmentManagement() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Show Users
               </label>
               <label className="flex items-center">
@@ -250,9 +250,9 @@ export default function DepartmentManagement() {
                   type="checkbox"
                   checked={showUsers}
                   onChange={(e) => setShowUsers(e.target.checked)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 rounded"
                 />
-                <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">Include user details</span>
+                <span className="ml-2 text-sm text-gray-300">Include user details</span>
               </label>
             </div>
             
@@ -263,7 +263,7 @@ export default function DepartmentManagement() {
                   setActiveFilter('')
                   setShowUsers(false)
                 }}
-                className="w-full px-4 py-2 text-gray-800 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition-colors"
+                className="w-full px-4 py-2 text-brand-primary-text hover border border-gray-600 rounded-lg hover transition-colors"
               >
                 Clear Filters
               </button>
@@ -274,16 +274,16 @@ export default function DepartmentManagement() {
         {/* New Department Form Modal */}
         {showNewDepartmentForm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white/80 dark:bg-white/5 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div className="bg-gray-900/5 rounded-lg shadow-xl max-w-md w-full mx-4">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">Add New Department</h3>
+                  <h3 className="text-lg font-semibold text-brand-primary-text">Add New Department</h3>
                   <button
                     onClick={() => {
                       setShowNewDepartmentForm(false)
                       setCreateError('')
                     }}
-                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    className="text-white/50 hover:text-white/80 transition-colors hover"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -292,14 +292,14 @@ export default function DepartmentManagement() {
                 </div>
 
                 {createError && (
-                  <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                    <p className="text-sm text-red-700 dark:text-red-300">{createError}</p>
+                  <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-sm text-red-700">{createError}</p>
                   </div>
                 )}
 
                 <form onSubmit={createDepartment} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
                       Department Name *
                     </label>
                     <input
@@ -307,33 +307,33 @@ export default function DepartmentManagement() {
                       value={newDepartment.name}
                       onChange={(e) => setNewDepartment(prev => ({ ...prev, name: e.target.value }))}
                       required
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Enter department name"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
                       Description
                     </label>
                     <textarea
                       value={newDepartment.description}
                       onChange={(e) => setNewDepartment(prev => ({ ...prev, description: e.target.value }))}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Enter department description (optional)"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
                       Manager
                     </label>
                     <input
                       type="text"
                       value={newDepartment.manager}
                       onChange={(e) => setNewDepartment(prev => ({ ...prev, manager: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Enter manager name (optional)"
                     />
                   </div>
@@ -343,9 +343,9 @@ export default function DepartmentManagement() {
                       type="checkbox"
                       checked={newDepartment.isActive}
                       onChange={(e) => setNewDepartment(prev => ({ ...prev, isActive: e.target.checked }))}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 rounded"
                     />
-                    <label className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                    <label className="ml-2 block text-sm text-gray-300">
                       Department is active
                     </label>
                   </div>
@@ -357,14 +357,14 @@ export default function DepartmentManagement() {
                         setShowNewDepartmentForm(false)
                         setCreateError('')
                       }}
-                      className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition-colors"
+                      className="px-4 py-2 text-gray-300 hover border border-gray-600 rounded-lg hover transition-colors"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={createLoading}
-                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg transition-colors flex items-center space-x-2"
+                      className="px-4 py-2 bg-blue-600 hover disabled:opacity-50 text-white rounded-lg transition-colors flex items-center space-x-2"
                     >
                       {createLoading && (
                         <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
@@ -382,55 +382,55 @@ export default function DepartmentManagement() {
         )}
 
         {/* Departments Table */}
-        <div className="bg-white/80 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
+        <div className="bg-gray-900/5 rounded-lg border border-gray-700 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
-              <thead className="bg-white/80 dark:bg-white/5">
+            <table className="min-w-full divide-y divide-gray-300">
+              <thead className="bg-gray-900/5">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                     Department
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                     Manager
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                     Users
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                     Created
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white/80 dark:bg-white/5 divide-y divide-gray-300 dark:divide-gray-700">
+              <tbody className="bg-gray-900/5 divide-y divide-gray-300">
                 {departments.map((department) => (
-                  <tr key={department.id} className="hover:bg-white/10 dark:hover:bg-white/10 transition-colors">
+                  <tr key={department.id} className="hover transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm font-medium text-gray-900 dark:text-brand-primary-text">
+                        <div className="text-sm font-medium text-brand-primary-text">
                           {department.name}
                         </div>
                         {department.description && (
-                          <div className="text-sm text-gray-700 dark:text-brand-secondary-text">
+                          <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
                             {department.description}
                           </div>
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-brand-secondary-text">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-brand-secondary-text">
                       {department.manager || '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 dark:text-brand-primary-text">
+                      <div className="text-sm text-brand-primary-text">
                         {department._count.users} users
                       </div>
                       {showUsers && department.users && department.users.length > 0 && (
-                        <div className="text-xs text-gray-700 dark:text-brand-secondary-text mt-1">
+                        <div className="text-xs text-gray-600 dark:text-brand-secondary-text mt-1">
                           {department.users.slice(0, 3).map(user => user.name || user.email).join(', ')}
                           {department.users.length > 3 && ` +${department.users.length - 3} more`}
                         </div>
@@ -441,27 +441,27 @@ export default function DepartmentManagement() {
                         onClick={() => toggleDepartmentStatus(department.id, department.isActive)}
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors ${
                           department.isActive
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/30'
-                            : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/30'
+                            ? 'bg-green-100 text-green-800 hover'
+                            : 'bg-red-100 text-red-800 hover'
                         }`}
                       >
                         {department.isActive ? 'Active' : 'Inactive'}
                       </button>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-brand-secondary-text">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-brand-secondary-text">
                       {new Date(department.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                       <Link
                         href={`/admin/departments/${department.id}/edit`}
-                        className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                        className="text-blue-600 hover transition-colors"
                       >
                         Edit
                       </Link>
                       {userRole === 'ADMIN' && (
                         <button
                           onClick={() => deleteDepartment(department.id, department.name)}
-                          className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+                          className="text-red-600 hover transition-colors"
                           disabled={department._count.users > 0}
                           title={department._count.users > 0 ? 'Cannot delete department with users' : 'Delete department'}
                         >
@@ -477,17 +477,17 @@ export default function DepartmentManagement() {
           
           {departments.length === 0 && (
             <div className="text-center py-12">
-              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2M7 21h2m-2 0H3m2-8h12m-10 0v6m4-6v6m4-6v6" />
               </svg>
-              <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-brand-primary-text">No departments found</h3>
-              <p className="mt-1 text-sm text-gray-700 dark:text-brand-secondary-text">
+              <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No departments found</h3>
+              <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
                 Get started by creating a new department.
               </p>
               <div className="mt-6">
                 <button
                   onClick={() => setShowNewDepartmentForm(true)}
-                  className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

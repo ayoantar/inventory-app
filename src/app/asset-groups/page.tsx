@@ -140,7 +140,7 @@ export default function AssetGroupsPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
         <Navbar />
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
@@ -154,7 +154,7 @@ export default function AssetGroupsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       <Navbar />
       
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -163,7 +163,7 @@ export default function AssetGroupsPage() {
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center space-x-3 mb-2">
-                <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
                   <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                   </svg>
@@ -172,7 +172,7 @@ export default function AssetGroupsPage() {
                   Asset Groups
                 </h1>
               </div>
-              <p className="text-gray-800 dark:text-gray-400 ml-11 max-w-2xl">
+              <p className="text-gray-800 dark:text-white/50 hover:text-white/80 transition-colors ml-11 max-w-2xl">
                 Manage collections and bundles of related equipment
               </p>
             </div>
@@ -191,7 +191,7 @@ export default function AssetGroupsPage() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm rounded-2xl border border-gray-300/50 dark:border-gray-700/50 shadow-xl shadow-gray-200/20 dark:shadow-gray-900/50 p-6 mb-8">
+        <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -240,10 +240,10 @@ export default function AssetGroupsPage() {
 
         {/* Groups Table */}
         {groups.length > 0 ? (
-          <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm rounded-2xl border border-gray-300/50 dark:border-gray-700/50 shadow-xl shadow-gray-200/20 dark:shadow-gray-900/50 overflow-hidden">
+          <div className="bg-gray-900/5 rounded-lg border border-gray-700 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
-                <thead className="bg-white/80 dark:bg-white/5">
+                <thead className="bg-gray-900/5">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
                       Group Name
@@ -268,7 +268,7 @@ export default function AssetGroupsPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white/80 dark:bg-white/5 divide-y divide-gray-300 dark:divide-gray-700">
+                <tbody className="bg-gray-900/5 divide-y divide-gray-300 dark:divide-gray-700">
                   {groups.map((group) => (
                     <tr key={group.id} className="hover:bg-white/10 dark:hover:bg-white/10 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -322,7 +322,7 @@ export default function AssetGroupsPage() {
                           </Link>
                           <button
                             onClick={() => handleEdit(group)}
-                            className="px-3 py-1.5 text-gray-800 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 rounded-md transition-colors"
+                            className="px-3 py-1.5 text-gray-800 dark:text-white/50 hover:text-white/80 transition-colors hover:text-gray-700 dark:hover:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 rounded-md transition-colors"
                           >
                             Edit
                           </button>
@@ -352,17 +352,17 @@ export default function AssetGroupsPage() {
                     <button
                       onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
                       disabled={pagination.page === 1}
-                      className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-white/10 dark:hover:bg-white/10 bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-white/10 dark:hover:bg-white/10 bg-gray-900/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       Previous
                     </button>
-                    <span className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white/80 dark:bg-white/5 text-gray-700 dark:text-gray-300">
+                    <span className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-900/5 text-gray-700 dark:text-gray-300">
                       {pagination.page} of {pagination.pages}
                     </span>
                     <button
                       onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
                       disabled={pagination.page === pagination.pages}
-                      className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-white/10 dark:hover:bg-white/10 bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-white/10 dark:hover:bg-white/10 bg-gray-900/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       Next
                     </button>
@@ -374,7 +374,7 @@ export default function AssetGroupsPage() {
         ) : (
           /* Empty State */
           <div className="text-center py-16">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/20 rounded-2xl flex items-center justify-center mb-6">
+            <div className="w-24 h-24 mx-auto bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-2xl flex items-center justify-center mb-6 transition-colors">
               <svg className="w-12 h-12 text-blue-400 dark:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
@@ -382,7 +382,7 @@ export default function AssetGroupsPage() {
             <h3 className="text-xl font-semibold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent mb-3">
               No asset groups found
             </h3>
-            <p className="text-gray-800 dark:text-gray-400 max-w-sm mx-auto leading-relaxed mb-6">
+            <p className="text-gray-800 dark:text-white/50 hover:text-white/80 transition-colors max-w-sm mx-auto leading-relaxed mb-6">
               Create your first asset group to organize collections and bundles of related equipment.
             </p>
             <button

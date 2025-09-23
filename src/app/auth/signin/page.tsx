@@ -54,7 +54,7 @@ export default function SignIn() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-dark-blue via-gray-900 to-brand-black relative">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -114,32 +114,33 @@ export default function SignIn() {
         </div>
 
         {/* Right Side - Login Form */}
-        <div className="w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div className="w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0">
           <div className="max-w-md w-full">
             {/* Mobile branding */}
-            <div className="lg:hidden text-center mb-8">
-              <div className="flex items-center justify-center space-x-2 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-brand-orange to-primary-600 rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-brand-primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="lg:hidden text-center mb-6 sm:mb-8">
+              <div className="flex items-center justify-center space-x-3 mb-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-brand-orange to-primary-600 rounded-xl flex items-center justify-center">
+                  <svg className="w-7 h-7 text-brand-primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
                 </div>
-                <span className="text-2xl font-bold text-brand-primary-text">LSVR Inventory</span>
+                <span className="text-2xl sm font-bold text-brand-primary-text">LSVR Inventory</span>
               </div>
+              <p className="text-sm text-gray-300 px-4">Professional Asset Management</p>
             </div>
 
             {/* Login Card */}
-            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8 shadow-2xl">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-brand-primary-text mb-2">
+            <div className="bg-gray-900/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 sm:p-8 shadow-2xl mx-2 sm:mx-0">
+              <div className="text-center mb-6 sm:mb-8">
+                <h2 className="text-2xl sm font-bold text-brand-primary-text mb-2">
                   Welcome Back
                 </h2>
-                <p className="text-gray-200">
+                <p className="text-sm sm text-gray-200 px-2">
                   Sign in to access your inventory dashboard
                 </p>
               </div>
               
-              <form className="space-y-6" onSubmit={handleSubmit}>
+              <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-2">
                     Email Address
@@ -150,7 +151,7 @@ export default function SignIn() {
                     type="email"
                     autoComplete="email"
                     required
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-brand-primary-text placeholder-brand-secondary-text focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent backdrop-blur-sm"
+                    className="w-full px-4 py-4 sm:py-3 bg-gray-900/10 border border-white/20 rounded-lg text-brand-primary-text placeholder-brand-secondary-text focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent backdrop-blur-sm text-base sm transition-all duration-200"
                     placeholder="Enter your email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -167,7 +168,7 @@ export default function SignIn() {
                     type="password"
                     autoComplete="current-password"
                     required
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-brand-primary-text placeholder-brand-secondary-text focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent backdrop-blur-sm"
+                    className="w-full px-4 py-4 sm:py-3 bg-gray-900/10 border border-white/20 rounded-lg text-brand-primary-text placeholder-brand-secondary-text focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent backdrop-blur-sm text-base sm transition-all duration-200"
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -188,7 +189,7 @@ export default function SignIn() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-brand-orange to-primary-600 hover:from-primary-600 hover:to-primary-700 text-brand-primary-text font-semibold py-3 px-4 rounded-lg transition-all transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  className="w-full bg-gradient-to-r from-brand-orange to-primary-600 hover:from-primary-600 hover:to-primary-700 text-brand-primary-text font-semibold py-4 sm:py-3 px-4 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-base sm touch-manipulation"
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
@@ -205,7 +206,7 @@ export default function SignIn() {
               </form>
 
               <div className="mt-8 text-center">
-                <p className="text-sm text-brand-secondary-text">
+                <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
                   Welcome to LSVR Inventory Management
                 </p>
               </div>

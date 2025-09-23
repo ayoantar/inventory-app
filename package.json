@@ -8,7 +8,7 @@
     "dev:4000": "next dev --port 4000",
     "build": "next build",
     "start": "next start",
-    "start:prod": "next start -p 4000",
+    "start:prod": "node server.js",
     "lint": "next lint",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",

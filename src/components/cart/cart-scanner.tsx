@@ -123,18 +123,18 @@ export default function CartScanner({ onAssetScanned, className = "" }: CartScan
 
   return (
     <div className={`relative ${className}`}>
-      <div className="bg-gray-50 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 p-4">
+      <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">Quick Scan to Cart</h3>
+          <h3 className="text-lg font-medium text-brand-primary-text">Quick Scan to Cart</h3>
           
           {/* Mode Toggle */}
-          <div className="flex bg-gray-100 dark:bg-white/5 rounded-md p-1">
+          <div className="flex bg-gray-900/5 rounded-md p-1">
             <button
               onClick={() => setMode('CHECK_OUT')}
               className={`px-3 py-1 text-sm font-medium rounded transition-colors ${
                 mode === 'CHECK_OUT'
                   ? 'bg-orange-500 text-white shadow-sm'
-                  : 'text-gray-800 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  : 'text-brand-primary-text hover'
               }`}
             >
               📤 Check Out
@@ -144,7 +144,7 @@ export default function CartScanner({ onAssetScanned, className = "" }: CartScan
               className={`px-3 py-1 text-sm font-medium rounded transition-colors ${
                 mode === 'CHECK_IN'
                   ? 'bg-green-500 text-white shadow-sm'
-                  : 'text-gray-800 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  : 'text-brand-primary-text hover'
               }`}
             >
               📥 Check In
@@ -159,11 +159,11 @@ export default function CartScanner({ onAssetScanned, className = "" }: CartScan
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               placeholder="Scan or enter barcode, QR code, serial number..."
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-l-md bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-600 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-3 border border-gray-600 rounded-l-md bg-gray-900 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               autoFocus
             />
             <svg
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/50 hover:text-white/80 transition-colors"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -175,7 +175,7 @@ export default function CartScanner({ onAssetScanned, className = "" }: CartScan
           <button
             type="button"
             onClick={() => setShowScanner(true)}
-            className="px-4 py-3 bg-gray-100 hover:bg-white/10 dark:bg-white/5 dark:hover:bg-white/10 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+            className="px-4 py-3 bg-gray-100 dark:bg-gray-800 hover border border-l-0 border-gray-600 text-gray-300 transition-colors"
             title="Open Camera Scanner"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -189,8 +189,8 @@ export default function CartScanner({ onAssetScanned, className = "" }: CartScan
             disabled={searching || !searchValue.trim()}
             className={`px-6 py-3 rounded-r-md text-sm font-medium transition-colors ${
               mode === 'CHECK_OUT'
-                ? 'bg-orange-600 hover:bg-orange-700 disabled:bg-orange-400 text-white'
-                : 'bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white'
+                ? 'bg-orange-600 hover disabled:opacity-50 text-white'
+                : 'bg-green-600 hover disabled:opacity-50 text-white'
             }`}
           >
             {searching ? (
@@ -206,8 +206,8 @@ export default function CartScanner({ onAssetScanned, className = "" }: CartScan
 
         {/* Status Messages */}
         {error && (
-          <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-            <p className="text-sm text-red-800 dark:text-red-200 flex items-center">
+          <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-sm text-red-800 flex items-center">
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -217,8 +217,8 @@ export default function CartScanner({ onAssetScanned, className = "" }: CartScan
         )}
 
         {success && (
-          <div className="mt-3 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
-            <p className="text-sm text-green-800 dark:text-green-200 flex items-center">
+          <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-md">
+            <p className="text-sm text-green-800 flex items-center">
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -227,20 +227,20 @@ export default function CartScanner({ onAssetScanned, className = "" }: CartScan
           </div>
         )}
 
-        <div className="mt-3 text-xs text-gray-700 dark:text-brand-secondary-text">
+        <div className="mt-3 text-xs text-gray-600 dark:text-brand-secondary-text">
           <p>💡 Tip: The system will automatically suggest check-in for checked-out items and check-out for available items.</p>
         </div>
 
         {/* Process Cart Button */}
         {getItemCount() > 0 && (
-          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+          <div className="mt-4 pt-4 border-t border-gray-600">
             <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-800 dark:text-gray-400">
+              <div className="text-sm text-brand-primary-text">
                 <span className="font-medium">{getItemCount()}</span> item{getItemCount() !== 1 ? 's' : ''} in cart
               </div>
               <button
                 onClick={() => setShowConfirmation(true)}
-                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-medium transition-colors flex items-center"
+                className="px-4 py-2 bg-green-600 hover text-white rounded-md text-sm font-medium transition-colors flex items-center"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

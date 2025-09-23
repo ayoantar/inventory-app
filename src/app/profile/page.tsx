@@ -52,7 +52,7 @@ export default function ProfilePage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
       </div>
     )
@@ -68,23 +68,23 @@ export default function ProfilePage() {
   const isPrivilegedUser = isAdmin || isManager
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       {/* Header */}
-      <div className="bg-white/80 dark:bg-white/5 shadow-sm border-b border-gray-300 dark:border-gray-700">
+      <div className="bg-gray-900/5 shadow-sm border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
               <Link
                 href="/dashboard"
-                className="text-gray-700 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                className="text-white/60 dark:text-white/60 hover:text-slate-500 dark:hover:text-slate-200"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-brand-primary-text">My Profile</h1>
-                <p className="text-sm text-gray-700 dark:text-brand-secondary-text">Account settings and management options</p>
+                <h1 className="text-2xl font-bold text-brand-primary-text">My Profile</h1>
+                <p className="text-sm text-gray-600 dark:text-brand-secondary-text">Account settings and management options</p>
               </div>
             </div>
           </div>
@@ -93,7 +93,7 @@ export default function ProfilePage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Profile Information */}
-        <div className="bg-white/80 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 p-6">
+        <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6">
           <div className="flex items-center space-x-4 mb-6">
             <div className="flex-shrink-0">
               <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
@@ -103,22 +103,22 @@ export default function ProfilePage() {
               </div>
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-brand-primary-text">
+              <h2 className="text-xl font-semibold text-brand-primary-text">
                 {profile.name || 'No name set'}
               </h2>
-              <p className="text-gray-800 dark:text-gray-400">{profile.email}</p>
+              <p className="text-brand-primary-text">{profile.email}</p>
               <div className="flex items-center space-x-2 mt-2">
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                   isAdmin 
-                    ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+                    ? 'bg-red-100 text-red-800'
                     : isManager
-                    ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
-                    : 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                    ? 'bg-blue-100 text-blue-800'
+                    : 'bg-green-100 text-green-800'
                 }`}>
                   {profile.role}
                 </span>
                 {profile.department && (
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-white/5 dark:text-gray-300">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-brand-primary-text">
                     {profile.department}
                   </span>
                 )}
@@ -128,47 +128,47 @@ export default function ProfilePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Full Name
               </label>
-              <p className="text-sm text-gray-900 dark:text-brand-primary-text bg-white/80 dark:bg-white/5 rounded-lg px-3 py-2">
+              <p className="text-sm text-brand-primary-text bg-gray-900/5 rounded-lg px-3 py-2">
                 {profile.name || 'Not set'}
               </p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Email Address
               </label>
-              <p className="text-sm text-gray-900 dark:text-brand-primary-text bg-white/80 dark:bg-white/5 rounded-lg px-3 py-2">
+              <p className="text-sm text-brand-primary-text bg-gray-900/5 rounded-lg px-3 py-2">
                 {profile.email}
               </p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Role
               </label>
-              <p className="text-sm text-gray-900 dark:text-brand-primary-text bg-white/80 dark:bg-white/5 rounded-lg px-3 py-2">
+              <p className="text-sm text-brand-primary-text bg-gray-900/5 rounded-lg px-3 py-2">
                 {profile.role}
               </p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Department
               </label>
-              <p className="text-sm text-gray-900 dark:text-brand-primary-text bg-white/80 dark:bg-white/5 rounded-lg px-3 py-2">
+              <p className="text-sm text-brand-primary-text bg-gray-900/5 rounded-lg px-3 py-2">
                 {profile.department || 'No department assigned'}
               </p>
             </div>
           </div>
 
-          <div className="mt-6 pt-6 border-t border-gray-300 dark:border-gray-700 flex justify-between items-center">
-            <div className="text-sm text-gray-700 dark:text-brand-secondary-text">
-              <p>Account Status: <span className="text-green-600 dark:text-green-400 font-medium">Active</span></p>
-              <p>Access Level: <span className="text-gray-900 dark:text-brand-primary-text font-medium">{profile.role}</span></p>
+          <div className="mt-6 pt-6 border-t border-gray-700 flex justify-between items-center">
+            <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
+              <p>Account Status: <span className="text-green-600 font-medium">Active</span></p>
+              <p>Access Level: <span className="text-brand-primary-text font-medium">{profile.role}</span></p>
             </div>
             <button
               onClick={handleSignOut}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2"
+              className="bg-red-600 hover text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

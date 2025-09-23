@@ -175,22 +175,22 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
       
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-gray-50 dark:bg-white/5 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] flex flex-col">
+        <div className="bg-gray-900/5 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] flex flex-col">
           {/* Header */}
-          <div className="p-6 border-b border-gray-300 dark:border-gray-700">
+          <div className="p-6 border-b border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-brand-primary-text">
+                <h2 className="text-2xl font-bold text-brand-primary-text">
                   Confirm Transactions
                 </h2>
-                <p className="text-sm text-gray-700 dark:text-brand-secondary-text mt-1">
+                <p className="text-sm text-gray-600 dark:text-brand-secondary-text mt-1">
                   Review all assets before processing {state.items.length} transaction{state.items.length !== 1 ? 's' : ''}
                 </p>
               </div>
               <button
                 onClick={onClose}
                 disabled={isProcessing}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-50"
+                className="text-white/50 hover:text-white/80 transition-colors hover disabled:opacity-50"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -206,43 +206,43 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
               {checkOutItems.length > 0 && (
                 <div>
                   <div className="flex items-center mb-4">
-                    <div className="bg-orange-100 dark:bg-orange-900/20 p-2 rounded-lg mr-3">
-                      <svg className="w-5 h-5 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="bg-orange-100 p-2 rounded-lg mr-3">
+                      <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">
+                      <h3 className="text-lg font-semibold text-brand-primary-text">
                         Assets to Check Out ({checkOutItems.length})
                       </h3>
-                      <p className="text-sm text-gray-700 dark:text-brand-secondary-text">
+                      <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
                         These assets will be marked as checked out
                       </p>
                     </div>
                   </div>
 
-                  <div className="bg-orange-50 dark:bg-orange-900/10 rounded-lg border border-orange-200 dark:border-orange-800 overflow-hidden">
+                  <div className="bg-orange-50 rounded-lg border border-orange-200 overflow-hidden">
                     <div className="overflow-x-auto">
-                      <table className="min-w-full divide-y divide-orange-300 dark:divide-orange-800">
-                        <thead className="bg-orange-100 dark:bg-orange-900/20">
+                      <table className="min-w-full divide-y divide-orange-300">
+                        <thead className="bg-orange-100">
                           <tr>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-orange-800 dark:text-orange-200 uppercase tracking-wider">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-orange-800 uppercase tracking-wider">
                               Asset
                             </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-orange-800 dark:text-orange-200 uppercase tracking-wider">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-orange-800 uppercase tracking-wider">
                               Assigned To
                             </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-orange-800 dark:text-orange-200 uppercase tracking-wider">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-orange-800 uppercase tracking-wider">
                               Return Date
                             </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-orange-800 dark:text-orange-200 uppercase tracking-wider">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-orange-800 uppercase tracking-wider">
                               Value
                             </th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-orange-300 dark:divide-orange-800">
+                        <tbody className="divide-y divide-orange-300">
                           {checkOutItems.map((item) => (
-                            <tr key={item.assetId} className="hover:bg-orange-100 dark:hover:bg-orange-900/10">
+                            <tr key={item.assetId} className="hover">
                               <td className="px-4 py-3">
                                 <div className="flex items-center">
                                   <div className="w-10 h-10 mr-3 flex-shrink-0">
@@ -250,23 +250,23 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
                                       <img
                                         src={item.asset.imageUrl}
                                         alt={item.asset.name}
-                                        className="w-10 h-10 object-cover rounded-lg border border-gray-200 dark:border-gray-600"
+                                        className="w-10 h-10 object-cover rounded-lg border border-gray-600"
                                       />
                                     ) : (
-                                      <div className="w-10 h-10 bg-gray-100 dark:bg-white/5 rounded-lg flex items-center justify-center">
+                                      <div className="w-10 h-10 bg-gray-900/5 rounded-lg flex items-center justify-center">
                                         <span className="text-sm">📦</span>
                                       </div>
                                     )}
                                   </div>
                                   <div className="min-w-0 flex-1">
-                                    <p className="text-sm font-medium text-gray-900 dark:text-brand-primary-text truncate">
+                                    <p className="text-sm font-medium text-brand-primary-text truncate">
                                       {item.asset.name}
                                     </p>
-                                    <p className="text-xs text-gray-700 dark:text-brand-secondary-text truncate">
+                                    <p className="text-xs text-gray-600 dark:text-brand-secondary-text truncate">
                                       {item.asset.category.replace('_', ' ')} • {item.asset.serialNumber || 'No S/N'}
                                     </p>
                                     {item.notes && (
-                                      <p className="text-xs text-gray-600 dark:text-gray-300 mt-1 italic">
+                                      <p className="text-xs text-gray-300 mt-1 italic">
                                         "{item.notes}"
                                       </p>
                                     )}
@@ -274,12 +274,12 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
                                 </div>
                               </td>
                               <td className="px-4 py-3">
-                                <div className="text-sm text-gray-900 dark:text-brand-primary-text">
+                                <div className="text-sm text-brand-primary-text">
                                   {item.assignedUserName || session?.user?.name || session?.user?.email || 'Current User'}
                                 </div>
                               </td>
                               <td className="px-4 py-3">
-                                <div className="text-sm text-gray-900 dark:text-brand-primary-text">
+                                <div className="text-sm text-brand-primary-text">
                                   {item.expectedReturnDate 
                                     ? new Date(item.expectedReturnDate).toLocaleDateString()
                                     : 'No date set'
@@ -287,7 +287,7 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
                                 </div>
                               </td>
                               <td className="px-4 py-3">
-                                <div className="text-sm font-medium text-gray-900 dark:text-brand-primary-text">
+                                <div className="text-sm font-medium text-brand-primary-text">
                                   {(item.asset.currentValue || item.asset.purchasePrice) 
                                     ? `$${(item.asset.currentValue || item.asset.purchasePrice)?.toLocaleString()}`
                                     : '-'
@@ -307,43 +307,43 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
               {checkInItems.length > 0 && (
                 <div>
                   <div className="flex items-center mb-4">
-                    <div className="bg-green-100 dark:bg-green-900/20 p-2 rounded-lg mr-3">
-                      <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="bg-green-100 p-2 rounded-lg mr-3">
+                      <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">
+                      <h3 className="text-lg font-semibold text-brand-primary-text">
                         Assets to Check In ({checkInItems.length})
                       </h3>
-                      <p className="text-sm text-gray-700 dark:text-brand-secondary-text">
+                      <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
                         These assets will be returned and marked as available
                       </p>
                     </div>
                   </div>
 
-                  <div className="bg-green-50 dark:bg-green-900/10 rounded-lg border border-green-200 dark:border-green-800 overflow-hidden">
+                  <div className="bg-green-50 rounded-lg border border-green-200 overflow-hidden">
                     <div className="overflow-x-auto">
-                      <table className="min-w-full divide-y divide-green-300 dark:divide-green-800">
-                        <thead className="bg-green-100 dark:bg-green-900/20">
+                      <table className="min-w-full divide-y divide-green-300">
+                        <thead className="bg-green-100">
                           <tr>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-green-800 dark:text-green-200 uppercase tracking-wider">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-green-800 uppercase tracking-wider">
                               Asset
                             </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-green-800 dark:text-green-200 uppercase tracking-wider">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-green-800 uppercase tracking-wider">
                               Current Status
                             </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-green-800 dark:text-green-200 uppercase tracking-wider">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-green-800 uppercase tracking-wider">
                               Return Notes
                             </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-green-800 dark:text-green-200 uppercase tracking-wider">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-green-800 uppercase tracking-wider">
                               Value
                             </th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-green-300 dark:divide-green-800">
+                        <tbody className="divide-y divide-green-300">
                           {checkInItems.map((item) => (
-                            <tr key={item.assetId} className="hover:bg-green-100 dark:hover:bg-green-900/10">
+                            <tr key={item.assetId} className="hover">
                               <td className="px-4 py-3">
                                 <div className="flex items-center">
                                   <div className="w-10 h-10 mr-3 flex-shrink-0">
@@ -351,36 +351,36 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
                                       <img
                                         src={item.asset.imageUrl}
                                         alt={item.asset.name}
-                                        className="w-10 h-10 object-cover rounded-lg border border-gray-200 dark:border-gray-600"
+                                        className="w-10 h-10 object-cover rounded-lg border border-gray-600"
                                       />
                                     ) : (
-                                      <div className="w-10 h-10 bg-gray-100 dark:bg-white/5 rounded-lg flex items-center justify-center">
+                                      <div className="w-10 h-10 bg-gray-900/5 rounded-lg flex items-center justify-center">
                                         <span className="text-sm">📦</span>
                                       </div>
                                     )}
                                   </div>
                                   <div className="min-w-0 flex-1">
-                                    <p className="text-sm font-medium text-gray-900 dark:text-brand-primary-text truncate">
+                                    <p className="text-sm font-medium text-brand-primary-text truncate">
                                       {item.asset.name}
                                     </p>
-                                    <p className="text-xs text-gray-700 dark:text-brand-secondary-text truncate">
+                                    <p className="text-xs text-gray-600 dark:text-brand-secondary-text truncate">
                                       {item.asset.category.replace('_', ' ')} • {item.asset.serialNumber || 'No S/N'}
                                     </p>
                                   </div>
                                 </div>
                               </td>
                               <td className="px-4 py-3">
-                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400">
+                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                                   {item.asset.status.replace('_', ' ')}
                                 </span>
                               </td>
                               <td className="px-4 py-3">
-                                <div className="text-sm text-gray-900 dark:text-brand-primary-text">
+                                <div className="text-sm text-brand-primary-text">
                                   {item.notes || 'No notes'}
                                 </div>
                               </td>
                               <td className="px-4 py-3">
-                                <div className="text-sm font-medium text-gray-900 dark:text-brand-primary-text">
+                                <div className="text-sm font-medium text-brand-primary-text">
                                   {(item.asset.currentValue || item.asset.purchasePrice) 
                                     ? `$${(item.asset.currentValue || item.asset.purchasePrice)?.toLocaleString()}`
                                     : '-'
@@ -399,24 +399,24 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
           </div>
 
           {/* Footer */}
-          <div className="p-6 border-t border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-white/5/50">
+          <div className="p-6 border-t border-gray-700 bg-gray-900/5/50">
             <div className="flex items-center justify-between mb-4">
-              <div className="text-sm text-gray-800 dark:text-gray-400">
+              <div className="text-sm text-brand-primary-text">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <span className="font-medium text-gray-900 dark:text-brand-primary-text">Total Items:</span> {state.items.length}
+                    <span className="font-medium text-brand-primary-text">Total Items:</span> {state.items.length}
                   </div>
                   <div>
-                    <span className="font-medium text-gray-900 dark:text-brand-primary-text">Total Value:</span> ${getTotalValue().toLocaleString()}
+                    <span className="font-medium text-brand-primary-text">Total Value:</span> ${getTotalValue().toLocaleString()}
                   </div>
                   {checkOutItems.length > 0 && (
                     <div>
-                      <span className="font-medium text-gray-900 dark:text-brand-primary-text">Check-outs:</span> {checkOutItems.length}
+                      <span className="font-medium text-brand-primary-text">Check-outs:</span> {checkOutItems.length}
                     </div>
                   )}
                   {checkInItems.length > 0 && (
                     <div>
-                      <span className="font-medium text-gray-900 dark:text-brand-primary-text">Check-ins:</span> {checkInItems.length}
+                      <span className="font-medium text-brand-primary-text">Check-ins:</span> {checkInItems.length}
                     </div>
                   )}
                 </div>
@@ -428,7 +428,7 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
               <button
                 onClick={generateCheckoutList}
                 disabled={isProcessing}
-                className="flex items-center px-3 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white rounded-md text-sm font-medium disabled:cursor-not-allowed transition-colors"
+                className="flex items-center px-3 py-2 bg-purple-600 hover disabled:opacity-50 text-white rounded-md text-sm font-medium disabled:cursor-not-allowed transition-colors"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -439,7 +439,7 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
               <button
                 onClick={generateQuote}
                 disabled={isProcessing}
-                className="flex items-center px-3 py-2 bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white rounded-md text-sm font-medium disabled:cursor-not-allowed transition-colors"
+                className="flex items-center px-3 py-2 bg-green-600 hover disabled:opacity-50 text-white rounded-md text-sm font-medium disabled:cursor-not-allowed transition-colors"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
@@ -447,7 +447,7 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
                 Download Quote
               </button>
               
-              <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center ml-2">
+              <div className="text-xs text-white/50 hover:text-white/80 transition-colors flex items-center ml-2">
                 💡 Use the checkout list to easily return these items later
               </div>
             </div>
@@ -456,7 +456,7 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
               <button
                 onClick={onClose}
                 disabled={isProcessing}
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Cancel
               </button>
@@ -464,7 +464,7 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
               <button
                 onClick={handleConfirm}
                 disabled={isProcessing}
-                className="flex-1 px-4 py-2 bg-brand-orange hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-md text-sm font-medium disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+                className="flex-1 px-4 py-2 bg-brand-orange hover disabled:opacity-50 text-white rounded-md text-sm font-medium disabled:cursor-not-allowed transition-colors flex items-center justify-center"
               >
                 {isProcessing ? (
                   <>
@@ -485,7 +485,7 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
               </button>
             </div>
 
-            <div className="mt-3 text-xs text-gray-700 dark:text-brand-secondary-text text-center">
+            <div className="mt-3 text-xs text-gray-600 dark:text-brand-secondary-text text-center">
               ⚠️ This action cannot be undone. Please review all details carefully.
             </div>
           </div>

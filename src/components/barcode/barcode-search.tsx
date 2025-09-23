@@ -82,10 +82,10 @@ export default function BarcodeSearch({ onAssetFound, placeholder = "Search by b
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             placeholder={placeholder}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-600 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 border border-gray-600 rounded-l-md bg-gray-900 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           <svg
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/50 hover:text-white/80 transition-colors"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -97,7 +97,7 @@ export default function BarcodeSearch({ onAssetFound, placeholder = "Search by b
         <button
           type="button"
           onClick={() => setShowScanner(true)}
-          className="px-3 py-2 bg-gray-100 hover:bg-white/10 dark:bg-white/5 dark:hover:bg-white/10 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+          className="px-3 py-2 bg-gray-100 dark:bg-gray-800 hover border border-l-0 border-gray-600 text-gray-300 transition-colors"
           title="Scan QR Code or Barcode"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +108,7 @@ export default function BarcodeSearch({ onAssetFound, placeholder = "Search by b
         <button
           type="submit"
           disabled={searching || !searchValue.trim()}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-r-md text-sm font-medium transition-colors"
+          className="px-4 py-2 bg-blue-600 hover disabled:opacity-50 text-white rounded-r-md text-sm font-medium transition-colors"
         >
           {searching ? (
             <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -122,8 +122,8 @@ export default function BarcodeSearch({ onAssetFound, placeholder = "Search by b
       </form>
 
       {error && (
-        <div className="absolute top-full left-0 right-0 mt-1 p-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md z-10">
-          <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+        <div className="absolute top-full left-0 right-0 mt-1 p-2 bg-red-50 border border-red-200 rounded-md z-10">
+          <p className="text-sm text-red-800">{error}</p>
         </div>
       )}
 

@@ -79,10 +79,10 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-brand-primary-text">
+            <h1 className="text-2xl font-bold text-brand-primary-text">
               Welcome back, {session.user?.name}!
             </h1>
-            <p className="mt-2 text-gray-800 dark:text-brand-secondary-text">
+            <p className="mt-2 text-gray-600 dark:text-brand-secondary-text">
               Here's an overview of your inventory system
             </p>
           </div>
@@ -165,68 +165,68 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <button 
               onClick={() => router.push('/assets/new')}
-              className="bg-white/80 dark:bg-white/5 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 group"
+              className="bg-gray-900/5 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
             >
               <div className="flex items-center">
-                <div className="bg-slate-100 dark:bg-white/5 group-hover:bg-white/10 dark:group-hover:bg-white/10 p-3 rounded-lg transition-colors">
-                  <svg className="w-6 h-6 text-slate-600 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">
+                  <svg className="w-6 h-6 text-white/60 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                 </div>
                 <div className="ml-4">
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-brand-primary-text group-hover:text-black dark:group-hover:text-gray-200">Add Asset</h3>
-                  <p className="text-xs text-gray-700 dark:text-brand-secondary-text">Register new equipment</p>
+                  <h3 className="text-sm font-medium text-brand-primary-text group-hover">Add Asset</h3>
+                  <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Register new equipment</p>
                 </div>
               </div>
             </button>
 
             <button 
               onClick={() => router.push('/assets/cart')}
-              className="bg-white/80 dark:bg-white/5 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 group"
+              className="bg-gray-900/5 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
             >
               <div className="flex items-center">
-                <div className="bg-orange-100 dark:bg-orange-900 group-hover:bg-orange-200 dark:group-hover:bg-orange-800 p-3 rounded-lg transition-colors">
-                  <svg className="w-6 h-6 text-brand-orange dark:text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">
+                  <svg className="w-6 h-6 text-brand-orange hover:text-brand-orange-soft transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V6a1 1 0 00-1-1H5a1 1 0 00-1 1v1a1 1 0 001 1zm12 0h2a1 1 0 001-1V6a1 1 0 00-1-1h-2a1 1 0 00-1 1v1a1 1 0 001 1zM5 20h2a1 1 0 001-1v-1a1 1 0 00-1-1H5a1 1 0 00-1 1v1a1 1 0 001 1z" />
                   </svg>
                 </div>
                 <div className="ml-4">
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-brand-primary-text group-hover:text-black dark:group-hover:text-gray-200">Scan to Cart</h3>
-                  <p className="text-xs text-gray-700 dark:text-brand-secondary-text">Quick scan for transactions</p>
+                  <h3 className="text-sm font-medium text-brand-primary-text group-hover">Scan to Cart</h3>
+                  <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Quick scan for transactions</p>
                 </div>
               </div>
             </button>
 
             <button 
               onClick={() => router.push('/transactions')}
-              className="bg-white/80 dark:bg-white/5 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 group"
+              className="bg-gray-900/5 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
             >
               <div className="flex items-center">
-                <div className="bg-slate-100 dark:bg-white/5 group-hover:bg-white/10 dark:group-hover:bg-white/10 p-3 rounded-lg transition-colors">
-                  <svg className="w-6 h-6 text-slate-600 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">
+                  <svg className="w-6 h-6 text-white/60 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                   </svg>
                 </div>
                 <div className="ml-4">
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-brand-primary-text group-hover:text-black dark:group-hover:text-gray-200">View Transactions</h3>
-                  <p className="text-xs text-gray-700 dark:text-brand-secondary-text">Check-in/out history</p>
+                  <h3 className="text-sm font-medium text-brand-primary-text group-hover">View Transactions</h3>
+                  <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Check-in/out history</p>
                 </div>
               </div>
             </button>
 
             <button 
               onClick={() => router.push('/reports')}
-              className="bg-white/80 dark:bg-white/5 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 group"
+              className="bg-gray-900/5 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
             >
               <div className="flex items-center">
-                <div className="bg-slate-100 dark:bg-white/5 group-hover:bg-white/10 dark:group-hover:bg-white/10 p-3 rounded-lg transition-colors">
-                  <svg className="w-6 h-6 text-slate-600 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">
+                  <svg className="w-6 h-6 text-white/60 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 </div>
                 <div className="ml-4">
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-brand-primary-text group-hover:text-black dark:group-hover:text-gray-200">Generate Reports</h3>
-                  <p className="text-xs text-gray-700 dark:text-brand-secondary-text">Analytics & insights</p>
+                  <h3 className="text-sm font-medium text-brand-primary-text group-hover">Generate Reports</h3>
+                  <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Analytics & insights</p>
                 </div>
               </div>
             </button>

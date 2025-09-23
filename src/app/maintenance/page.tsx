@@ -144,7 +144,7 @@ export default function MaintenancePage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-brand-dark-blue-deep dark:to-brand-black">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
         <Navbar />
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
@@ -158,7 +158,7 @@ export default function MaintenancePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-brand-dark-blue-deep dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       <Navbar />
       
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -168,12 +168,12 @@ export default function MaintenancePage() {
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center space-x-3 mb-2">
-                  <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
-                    <svg className="w-6 h-6 text-brand-orange dark:text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
+                    <svg className="w-6 h-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
                     </svg>
                   </div>
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-brand-primary-text dark:to-brand-secondary-text bg-clip-text text-transparent">
+                  <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-brand-secondary-text bg-clip-text text-transparent">
                     Maintenance
                   </h1>
                 </div>
@@ -183,7 +183,7 @@ export default function MaintenancePage() {
               </div>
               <Link
                 href="/assets"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors"
+                className="bg-blue-600 hover text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
@@ -194,10 +194,10 @@ export default function MaintenancePage() {
           </div>
 
           {/* Filters */}
-          <div className="bg-white/80 dark:bg-white/5 rounded-lg shadow-sm border border-gray-300 dark:border-gray-700 p-6 mb-8">
+          <div className="bg-gray-900/5 rounded-lg shadow-sm border border-gray-700 p-6 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label htmlFor="search" className="block text-sm font-medium text-gray-700 dark:text-brand-secondary-text mb-1">
+                <label htmlFor="search" className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
                   Search
                 </label>
                 <input
@@ -206,19 +206,19 @@ export default function MaintenancePage() {
                   value={filters.search}
                   onChange={(e) => handleFilterChange('search', e.target.value)}
                   placeholder="Search descriptions..."
-                  className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-600 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full border border-gray-600 dark:border-gray-600 rounded-md px-3 py-2 bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-brand-secondary-text mb-1">
+                <label htmlFor="status" className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
                   Status
                 </label>
                 <select
                   id="status"
                   value={filters.status}
                   onChange={(e) => handleFilterChange('status', e.target.value)}
-                  className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full border border-gray-600 dark:border-gray-600 rounded-md px-3 py-2 bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="">All Status</option>
                   <option value="SCHEDULED">Scheduled</option>
@@ -230,14 +230,14 @@ export default function MaintenancePage() {
               </div>
 
               <div>
-                <label htmlFor="type" className="block text-sm font-medium text-gray-700 dark:text-brand-secondary-text mb-1">
+                <label htmlFor="type" className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
                   Type
                 </label>
                 <select
                   id="type"
                   value={filters.type}
                   onChange={(e) => handleFilterChange('type', e.target.value)}
-                  className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full border border-gray-600 dark:border-gray-600 rounded-md px-3 py-2 bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="">All Types</option>
                   <option value="INSPECTION">Inspection</option>
@@ -252,7 +252,7 @@ export default function MaintenancePage() {
                 {Object.values(filters).some(value => value !== '') && (
                   <button
                     onClick={clearFilters}
-                    className="w-full bg-gray-100 hover:bg-white/10 text-gray-700 dark:bg-brand-dark-blue dark:hover:bg-brand-dark-blue-deep dark:text-brand-secondary-text px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                    className="w-full bg-gray-100 dark:bg-gray-800 hover text-gray-300 px-4 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     Clear Filters
                   </button>
@@ -275,7 +275,7 @@ export default function MaintenancePage() {
           {/* Pagination */}
           {maintenanceRecords.length > 0 && pagination.pages > 1 && (
             <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-700 dark:text-brand-secondary-text">
+              <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
                 Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
                 {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
                 {pagination.total} results
@@ -285,19 +285,19 @@ export default function MaintenancePage() {
                 <button
                   onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
                   disabled={pagination.page === 1}
-                  className="px-3 py-2 text-sm border border-gray-300 dark:border-brand-dark-blue-deep rounded-md hover:bg-white/10 dark:hover:bg-brand-dark-blue-deep bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-2 text-sm border border-gray-600 rounded-md hover bg-gray-900/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Previous
                 </button>
                 
-                <span className="px-3 py-2 text-sm border border-gray-300 dark:border-brand-dark-blue-deep rounded-md bg-white/80 dark:bg-brand-dark-blue text-slate-700 dark:text-brand-secondary-text">
+                <span className="px-3 py-2 text-sm border border-gray-600 rounded-md bg-gray-900/80 text-slate-300">
                   {pagination.page} of {pagination.pages}
                 </span>
                 
                 <button
                   onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
                   disabled={pagination.page === pagination.pages}
-                  className="px-3 py-2 text-sm border border-gray-300 dark:border-brand-dark-blue-deep rounded-md hover:bg-white/10 dark:hover:bg-brand-dark-blue-deep bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-2 text-sm border border-gray-600 rounded-md hover bg-gray-900/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Next
                 </button>
@@ -308,11 +308,11 @@ export default function MaintenancePage() {
           {/* Empty State */}
           {maintenanceRecords.length === 0 && !loading && (
             <div className="text-center py-12">
-              <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-brand-secondary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
               </svg>
-              <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-brand-primary-text">No maintenance records found</h3>
-              <p className="mt-1 text-sm text-gray-700 dark:text-brand-secondary-text">
+              <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No maintenance records found</h3>
+              <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
                 {Object.values(filters).some(value => value !== '')
                   ? 'Try adjusting your filters'
                   : 'No maintenance has been scheduled yet'

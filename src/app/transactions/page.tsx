@@ -80,9 +80,9 @@ export default function TransactionsPage() {
     const colors = {
       ACTIVE: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-700',
       COMPLETED: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-700',
-      CANCELLED: 'bg-gray-50 text-gray-700 border-gray-300 dark:bg-white/5 dark:text-gray-400 dark:border-gray-600'
+      CANCELLED: 'bg-gray-50 text-gray-700 border-gray-300 dark:bg-white/5 dark:text-white/50 hover:text-white/80 transition-colors dark:border-gray-600'
     }
-    return colors[status as keyof typeof colors] || 'bg-gray-50 text-gray-700 border-gray-300 dark:bg-white/5 dark:text-gray-400 dark:border-gray-600'
+    return colors[status as keyof typeof colors] || 'bg-gray-50 text-gray-700 border-gray-300 dark:bg-white/5 dark:text-white/50 hover:text-white/80 transition-colors dark:border-gray-600'
   }
 
   const getTypeBadge = (type: string) => {
@@ -90,12 +90,12 @@ export default function TransactionsPage() {
       CHECK_OUT: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-700',
       CHECK_IN: 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-700'
     }
-    return colors[type as keyof typeof colors] || 'bg-gray-50 text-gray-700 border-gray-300 dark:bg-white/5 dark:text-gray-400 dark:border-gray-600'
+    return colors[type as keyof typeof colors] || 'bg-gray-50 text-gray-700 border-gray-300 dark:bg-white/5 dark:text-white/50 hover:text-white/80 transition-colors dark:border-gray-600'
   }
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
         <Navbar />
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
@@ -109,7 +109,7 @@ export default function TransactionsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       <Navbar />
       
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -117,7 +117,7 @@ export default function TransactionsPage() {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center space-x-3 mb-2">
-              <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+              <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
                 <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
@@ -132,7 +132,7 @@ export default function TransactionsPage() {
           </div>
 
           {/* Filters */}
-          <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm rounded-2xl border border-gray-300/50 dark:border-gray-700/50 shadow-xl shadow-gray-200/20 dark:shadow-gray-900/50 p-6 mb-8">
+          <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6 mb-8">
             <div className="flex flex-wrap gap-4">
               <div>
                 <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -184,10 +184,10 @@ export default function TransactionsPage() {
           </div>
 
           {/* Transactions Table */}
-          <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm rounded-2xl border border-gray-300/50 dark:border-gray-700/50 shadow-xl shadow-gray-200/20 dark:shadow-gray-900/50 overflow-hidden">
+          <div className="bg-gray-900/5 rounded-lg border border-gray-700 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full divide-y divide-gray-300 dark:divide-gray-700">
-                <thead className="bg-white/80 dark:bg-white/5">
+                <thead className="bg-gray-900/5">
                   <tr>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
                       Asset
@@ -212,7 +212,7 @@ export default function TransactionsPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white/80 dark:bg-white/5 divide-y divide-gray-300 dark:divide-gray-700">
+                <tbody className="bg-gray-900/5 divide-y divide-gray-300 dark:divide-gray-700">
                   {transactions.map((transaction) => (
                     <tr key={transaction.id} className="hover:bg-white/10 dark:hover:bg-white/10 transition-colors">
                       <td className="px-4 py-4 whitespace-nowrap">
@@ -281,7 +281,7 @@ export default function TransactionsPage() {
             
             {transactions.length === 0 && (
               <div className="text-center py-12">
-                <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
                 <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-brand-primary-text">No transactions found</h3>
@@ -313,7 +313,7 @@ export default function TransactionsPage() {
                   Previous
                 </button>
                 
-                <span className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white/80 dark:bg-white/5 text-gray-700 dark:text-gray-300">
+                <span className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-900/5 text-gray-700 dark:text-gray-300">
                   {pagination.page} of {pagination.pages}
                 </span>
                 

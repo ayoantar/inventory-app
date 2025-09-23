@@ -155,14 +155,14 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
     AVAILABLE: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     CHECKED_OUT: 'bg-amber-100 text-amber-800 border-amber-300',
     IN_MAINTENANCE: 'bg-red-50 text-red-700 border-red-200',
-    RETIRED: 'bg-gray-50 text-gray-700 border-gray-200',
+    RETIRED: 'bg-gray-100 dark:bg-gray-800 text-gray-300 border-gray-200',
     MISSING: 'bg-red-50 text-red-700 border-red-200',
     RESERVED: 'bg-blue-50 text-blue-700 border-blue-200'
   }
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-800">
         <Navbar />
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -176,7 +176,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-800">
       <Navbar />
       
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -186,15 +186,15 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
             <div className="flex items-center space-x-4">
               <Link
                 href="/assets"
-                className="text-gray-700 hover:text-gray-700 transition-colors"
+                className="text-gray-300 hover transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">{asset.name}</h1>
-                <p className="text-gray-600">{asset.manufacturer} {asset.model}</p>
+                <h1 className="text-2xl font-bold text-brand-primary-text">{asset.name}</h1>
+                <p className="text-white/50 hover:text-white/80 transition-colors">{asset.manufacturer} {asset.model}</p>
               </div>
             </div>
             
@@ -206,7 +206,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
               {!editing ? (
                 <button
                   onClick={() => setEditing(true)}
-                  className="bg-slate-600 hover:bg-white/10 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                  className="bg-slate-600 hover text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   Edit Asset
                 </button>
@@ -218,14 +218,14 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       setError('')
                       fetchAsset() // Reset form data
                     }}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-white/10 transition-colors"
+                    className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-300 hover transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="bg-slate-600 hover:bg-white/10 text-white px-4 py-2 rounded-md text-sm font-medium disabled:opacity-50 transition-colors"
+                    className="bg-slate-600 hover text-white px-4 py-2 rounded-md text-sm font-medium disabled:opacity-50 transition-colors"
                   >
                     {saving ? 'Saving...' : 'Save Changes'}
                   </button>
@@ -251,15 +251,15 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               {/* Basic Information */}
-              <div className="bg-white shadow-sm rounded-lg border border-gray-200">
+              <div className="bg-gray-900 shadow-sm rounded-lg border border-gray-200">
                 <div className="px-6 py-4 border-b border-gray-200">
-                  <h2 className="text-lg font-medium text-gray-900">Asset Information</h2>
+                  <h2 className="text-lg font-medium text-brand-primary-text">Asset Information</h2>
                 </div>
                 <div className="px-6 py-6">
                   {editing ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">
                           Asset Name *
                         </label>
                         <input
@@ -272,7 +272,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       </div>
                       
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">
                           Category
                         </label>
                         <select
@@ -295,7 +295,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">
                           Status
                         </label>
                         <select
@@ -314,7 +314,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">
                           Condition
                         </label>
                         <select
@@ -332,7 +332,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       </div>
 
                       <div className="md:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">
                           Description
                         </label>
                         <textarea
@@ -347,17 +347,17 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                   ) : (
                     <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                       <div>
-                        <dt className="text-sm font-medium text-gray-500">Category</dt>
-                        <dd className="text-sm text-gray-900 capitalize">{asset.category.toLowerCase().replace('_', ' ')}</dd>
+                        <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Category</dt>
+                        <dd className="text-sm text-brand-primary-text capitalize">{asset.category.toLowerCase().replace('_', ' ')}</dd>
                       </div>
                       <div>
-                        <dt className="text-sm font-medium text-gray-500">Condition</dt>
-                        <dd className="text-sm text-gray-900">{asset.condition}</dd>
+                        <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Condition</dt>
+                        <dd className="text-sm text-brand-primary-text">{asset.condition}</dd>
                       </div>
                       {asset.description && (
                         <div className="md:col-span-2">
-                          <dt className="text-sm font-medium text-gray-500">Description</dt>
-                          <dd className="text-sm text-gray-900">{asset.description}</dd>
+                          <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Description</dt>
+                          <dd className="text-sm text-brand-primary-text">{asset.description}</dd>
                         </div>
                       )}
                     </dl>
@@ -366,15 +366,15 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
               </div>
 
               {/* Technical Details */}
-              <div className="bg-white shadow-sm rounded-lg border border-gray-200">
+              <div className="bg-gray-900 shadow-sm rounded-lg border border-gray-200">
                 <div className="px-6 py-4 border-b border-gray-200">
-                  <h2 className="text-lg font-medium text-gray-900">Technical Details</h2>
+                  <h2 className="text-lg font-medium text-brand-primary-text">Technical Details</h2>
                 </div>
                 <div className="px-6 py-6">
                   {editing ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">
                           Manufacturer
                         </label>
                         <input
@@ -387,7 +387,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       </div>
                       
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">
                           Model
                         </label>
                         <input
@@ -400,7 +400,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">
                           Serial Number
                         </label>
                         <input
@@ -413,7 +413,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">
                           Barcode
                         </label>
                         <input
@@ -426,7 +426,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">
                           Location
                         </label>
                         <input
@@ -442,32 +442,32 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                     <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                       {asset.manufacturer && (
                         <div>
-                          <dt className="text-sm font-medium text-gray-500">Manufacturer</dt>
-                          <dd className="text-sm text-gray-900">{asset.manufacturer}</dd>
+                          <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Manufacturer</dt>
+                          <dd className="text-sm text-brand-primary-text">{asset.manufacturer}</dd>
                         </div>
                       )}
                       {asset.model && (
                         <div>
-                          <dt className="text-sm font-medium text-gray-500">Model</dt>
-                          <dd className="text-sm text-gray-900">{asset.model}</dd>
+                          <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Model</dt>
+                          <dd className="text-sm text-brand-primary-text">{asset.model}</dd>
                         </div>
                       )}
                       {asset.serialNumber && (
                         <div>
-                          <dt className="text-sm font-medium text-gray-500">Serial Number</dt>
-                          <dd className="text-sm text-gray-900 font-mono">{asset.serialNumber}</dd>
+                          <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Serial Number</dt>
+                          <dd className="text-sm text-brand-primary-text font-mono">{asset.serialNumber}</dd>
                         </div>
                       )}
                       {asset.barcode && (
                         <div>
-                          <dt className="text-sm font-medium text-gray-500">Barcode</dt>
-                          <dd className="text-sm text-gray-900 font-mono">{asset.barcode}</dd>
+                          <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Barcode</dt>
+                          <dd className="text-sm text-brand-primary-text font-mono">{asset.barcode}</dd>
                         </div>
                       )}
                       {asset.location && (
                         <div>
-                          <dt className="text-sm font-medium text-gray-500">Current Location</dt>
-                          <dd className="text-sm text-gray-900">{asset.location}</dd>
+                          <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Current Location</dt>
+                          <dd className="text-sm text-brand-primary-text">{asset.location}</dd>
                         </div>
                       )}
                     </dl>
@@ -476,15 +476,15 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
               </div>
 
               {/* Financial Information */}
-              <div className="bg-white shadow-sm rounded-lg border border-gray-200">
+              <div className="bg-gray-900 shadow-sm rounded-lg border border-gray-200">
                 <div className="px-6 py-4 border-b border-gray-200">
-                  <h2 className="text-lg font-medium text-gray-900">Financial Information</h2>
+                  <h2 className="text-lg font-medium text-brand-primary-text">Financial Information</h2>
                 </div>
                 <div className="px-6 py-6">
                   {editing ? (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">
                           Purchase Date
                         </label>
                         <input
@@ -497,7 +497,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       </div>
                       
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">
                           Purchase Price ($)
                         </label>
                         <input
@@ -511,7 +511,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-1">
                           Current Value ($)
                         </label>
                         <input
@@ -528,22 +528,22 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                     <dl className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
                       {asset.purchaseDate && (
                         <div>
-                          <dt className="text-sm font-medium text-gray-500">Purchase Date</dt>
-                          <dd className="text-sm text-gray-900">
+                          <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Purchase Date</dt>
+                          <dd className="text-sm text-brand-primary-text">
                             {new Date(asset.purchaseDate).toLocaleDateString()}
                           </dd>
                         </div>
                       )}
                       {asset.purchasePrice && (
                         <div>
-                          <dt className="text-sm font-medium text-gray-500">Purchase Price</dt>
-                          <dd className="text-sm text-gray-900">${asset.purchasePrice.toLocaleString()}</dd>
+                          <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Purchase Price</dt>
+                          <dd className="text-sm text-brand-primary-text">${asset.purchasePrice.toLocaleString()}</dd>
                         </div>
                       )}
                       {asset.currentValue && (
                         <div>
-                          <dt className="text-sm font-medium text-gray-500">Current Value</dt>
-                          <dd className="text-sm text-gray-900">${asset.currentValue.toLocaleString()}</dd>
+                          <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Current Value</dt>
+                          <dd className="text-sm text-brand-primary-text">${asset.currentValue.toLocaleString()}</dd>
                         </div>
                       )}
                     </dl>
@@ -553,9 +553,9 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
 
               {/* Notes */}
               {(editing || asset.notes) && (
-                <div className="bg-white shadow-sm rounded-lg border border-gray-200">
+                <div className="bg-gray-900 shadow-sm rounded-lg border border-gray-200">
                   <div className="px-6 py-4 border-b border-gray-200">
-                    <h2 className="text-lg font-medium text-gray-900">Notes</h2>
+                    <h2 className="text-lg font-medium text-brand-primary-text">Notes</h2>
                   </div>
                   <div className="px-6 py-6">
                     {editing ? (
@@ -568,7 +568,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                         placeholder="Additional notes or comments about this asset..."
                       />
                     ) : (
-                      <p className="text-sm text-gray-900 whitespace-pre-wrap">{asset.notes}</p>
+                      <p className="text-sm text-brand-primary-text whitespace-pre-wrap">{asset.notes}</p>
                     )}
                   </div>
                 </div>
@@ -578,22 +578,22 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Quick Actions */}
-              <div className="bg-white shadow-sm rounded-lg border border-gray-200">
+              <div className="bg-gray-900 shadow-sm rounded-lg border border-gray-200">
                 <div className="px-6 py-4 border-b border-gray-200">
-                  <h2 className="text-lg font-medium text-gray-900">Quick Actions</h2>
+                  <h2 className="text-lg font-medium text-brand-primary-text">Quick Actions</h2>
                 </div>
                 <div className="px-6 py-6 space-y-3">
                   {asset.status === 'AVAILABLE' ? (
                     <button 
                       onClick={() => setShowCheckoutDialog(true)}
-                      className="w-full bg-slate-600 hover:bg-white/10 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                      className="w-full bg-slate-600 hover text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                     >
                       Check Out Asset
                     </button>
                   ) : asset.status === 'CHECKED_OUT' ? (
                     <button 
                       onClick={() => setShowCheckinDialog(true)}
-                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                      className="w-full bg-emerald-600 hover text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                     >
                       Check In Asset
                     </button>
@@ -605,19 +605,19 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       Asset Not Available
                     </button>
                   )}
-                  <button className="w-full bg-gray-600 hover:bg-white/10 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                  <button className="w-full bg-gray-600 hover text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
                     Schedule Maintenance
                   </button>
-                  <button className="w-full border border-gray-300 hover:bg-white/10 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                  <button className="w-full border border-gray-300 hover text-gray-300 px-4 py-2 rounded-md text-sm font-medium transition-colors">
                     Generate QR Code
                   </button>
                 </div>
               </div>
 
               {/* Asset Image */}
-              <div className="bg-white/80 dark:bg-white/5 shadow-sm rounded-lg border border-gray-300 dark:border-gray-700">
-                <div className="px-6 py-4 border-b border-gray-300 dark:border-gray-700">
-                  <h2 className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">Asset Image</h2>
+              <div className="bg-gray-900/5 shadow-sm rounded-lg border border-gray-700">
+                <div className="px-6 py-4 border-b border-gray-700">
+                  <h2 className="text-lg font-medium text-brand-primary-text">Asset Image</h2>
                 </div>
                 <div className="px-6 py-4">
                   {asset.imageUrl ? (
@@ -625,11 +625,11 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       <img
                         src={asset.imageUrl}
                         alt={asset.name}
-                        className="w-24 h-24 mx-auto object-cover rounded-lg border border-gray-200 dark:border-gray-600"
+                        className="w-24 h-24 mx-auto object-cover rounded-lg border border-gray-600"
                       />
                       {editing && (
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          <label className="block text-sm font-medium text-gray-300 mb-1">
                             Image URL
                           </label>
                           <input
@@ -638,14 +638,14 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             value={formData.imageUrl}
                             onChange={handleChange}
                             placeholder="https://example.com/image.jpg"
-                            className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full border border-gray-600 rounded-md px-3 py-2 bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           />
                         </div>
                       )}
                     </div>
                   ) : editing ? (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-gray-300 mb-1">
                         Image URL
                       </label>
                       <input
@@ -654,27 +654,27 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                         value={formData.imageUrl}
                         onChange={handleChange}
                         placeholder="https://example.com/image.jpg"
-                        className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full border border-gray-600 rounded-md px-3 py-2 bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
-                      <p className="text-xs text-gray-700 dark:text-brand-secondary-text mt-1">
+                      <p className="text-xs text-gray-600 dark:text-brand-secondary-text mt-1">
                         Enter a URL to an image of this asset
                       </p>
                     </div>
                   ) : (
                     <div className="text-center py-4">
-                      <svg className="mx-auto h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="mx-auto h-8 w-8 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
-                      <p className="text-xs text-gray-700 dark:text-brand-secondary-text mt-1">No image available</p>
+                      <p className="text-xs text-gray-600 dark:text-brand-secondary-text mt-1">No image available</p>
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Recent Transactions */}
-              <div className="bg-white shadow-sm rounded-lg border border-gray-200">
+              <div className="bg-gray-900 shadow-sm rounded-lg border border-gray-200">
                 <div className="px-6 py-4 border-b border-gray-200">
-                  <h2 className="text-lg font-medium text-gray-900">Recent Transactions</h2>
+                  <h2 className="text-lg font-medium text-brand-primary-text">Recent Transactions</h2>
                 </div>
                 <div className="px-6 py-6">
                   {asset.transactions.length > 0 ? (
@@ -682,17 +682,17 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       {asset.transactions.slice(0, 5).map((transaction) => (
                         <div key={transaction.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0">
                           <div>
-                            <p className="text-sm font-medium text-gray-900">
+                            <p className="text-sm font-medium text-brand-primary-text">
                               {transaction.type.replace('_', ' ')}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-white/50 hover:text-white/80 transition-colors">
                               {transaction.user.name} • {new Date(transaction.createdAt).toLocaleDateString()}
                             </p>
                           </div>
                           <span className={`text-xs px-2 py-1 rounded ${
                             transaction.status === 'ACTIVE' ? 'bg-amber-100 text-amber-800' :
                             transaction.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
-                            'bg-gray-100 text-gray-800'
+                            'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
                           }`}>
                             {transaction.status}
                           </span>
@@ -700,33 +700,33 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       ))}
                     </div>
                   ) : (
-                    <p className="text-sm text-gray-500">No recent transactions</p>
+                    <p className="text-sm text-white/50 hover:text-white/80 transition-colors">No recent transactions</p>
                   )}
                 </div>
               </div>
 
               {/* Asset Metadata */}
-              <div className="bg-white shadow-sm rounded-lg border border-gray-200">
+              <div className="bg-gray-900 shadow-sm rounded-lg border border-gray-200">
                 <div className="px-6 py-4 border-b border-gray-200">
-                  <h2 className="text-lg font-medium text-gray-900">Asset Details</h2>
+                  <h2 className="text-lg font-medium text-brand-primary-text">Asset Details</h2>
                 </div>
                 <div className="px-6 py-6">
                   <dl className="space-y-4">
                     <div>
-                      <dt className="text-sm font-medium text-gray-500">Created</dt>
-                      <dd className="text-sm text-gray-900">
+                      <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Created</dt>
+                      <dd className="text-sm text-brand-primary-text">
                         {new Date(asset.createdAt).toLocaleDateString()} by {asset.createdBy.name}
                       </dd>
                     </div>
                     <div>
-                      <dt className="text-sm font-medium text-gray-500">Last Updated</dt>
-                      <dd className="text-sm text-gray-900">
+                      <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Last Updated</dt>
+                      <dd className="text-sm text-brand-primary-text">
                         {new Date(asset.updatedAt).toLocaleDateString()} by {asset.lastModifiedBy.name}
                       </dd>
                     </div>
                     <div>
-                      <dt className="text-sm font-medium text-gray-500">Asset ID</dt>
-                      <dd className="text-sm text-gray-900 font-mono">{asset.id}</dd>
+                      <dt className="text-sm font-medium text-white/50 hover:text-white/80 transition-colors">Asset ID</dt>
+                      <dd className="text-sm text-brand-primary-text font-mono">{asset.id}</dd>
                     </div>
                   </dl>
                 </div>

@@ -87,18 +87,18 @@ export default function MaintenanceDetailsModal({
     setIsEditing(false)
   }
   const statusColors = {
-    SCHEDULED: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400',
-    IN_PROGRESS: 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400',
-    COMPLETED: 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400',
-    CANCELLED: 'bg-gray-50 dark:bg-white/5 text-gray-800 dark:text-gray-400',
-    OVERDUE: 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400'
+    SCHEDULED: 'bg-blue-50 text-blue-700',
+    IN_PROGRESS: 'bg-yellow-50 text-yellow-700',
+    COMPLETED: 'bg-green-50 text-green-700',
+    CANCELLED: 'bg-gray-900/5 text-brand-primary-text',
+    OVERDUE: 'bg-red-50 text-red-700'
   }
 
   const priorityColors = {
-    LOW: 'bg-gray-100 text-gray-800 dark:bg-white/5 dark:text-gray-300',
-    MEDIUM: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-    HIGH: 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400',
-    CRITICAL: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+    LOW: 'bg-gray-100 dark:bg-gray-800 text-brand-primary-text',
+    MEDIUM: 'bg-yellow-100 text-yellow-800',
+    HIGH: 'bg-orange-100 text-orange-800',
+    CRITICAL: 'bg-red-100 text-red-800'
   }
 
   const typeIcons = {
@@ -140,7 +140,7 @@ export default function MaintenanceDetailsModal({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-25 dark:bg-opacity-50" />
+          <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -154,11 +154,11 @@ export default function MaintenanceDetailsModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-white/5 p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-gray-900 p-6 text-left align-middle shadow-xl transition-all">
                 <div className="flex items-center justify-between mb-6">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900 dark:text-white flex items-center"
+                    className="text-lg font-medium leading-6 text-white flex items-center"
                   >
                     <span className="text-2xl mr-3">
                       {typeIcons[record.type as MaintenanceType]}
@@ -169,14 +169,14 @@ export default function MaintenanceDetailsModal({
                     {onUpdate && !isEditing && (
                       <button
                         onClick={() => setIsEditing(true)}
-                        className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30 transition-colors"
+                        className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-md hover transition-colors"
                       >
                         Edit
                       </button>
                     )}
                     <button
                       onClick={onClose}
-                      className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                      className="text-white/50 hover:text-white/80 transition-colors hover"
                     >
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -189,24 +189,24 @@ export default function MaintenanceDetailsModal({
                   {/* Basic Info */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
                         Description
                       </label>
-                      <p className="text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 p-3 rounded-lg">
+                      <p className="text-sm text-white bg-gray-900/5 p-3 rounded-lg">
                         {record.description}
                       </p>
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
                         Asset
                       </label>
-                      <div className="bg-gray-50 dark:bg-white/5 p-3 rounded-lg">
-                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                      <div className="bg-gray-900/5 p-3 rounded-lg">
+                        <p className="text-sm font-medium text-white">
                           {record.asset.name}
                         </p>
                         {record.asset.serialNumber && (
-                          <p className="text-xs text-gray-600 dark:text-gray-400 font-mono">
+                          <p className="text-xs text-white/50 hover:text-white/80 transition-colors font-mono">
                             SN: {record.asset.serialNumber}
                           </p>
                         )}
@@ -217,14 +217,14 @@ export default function MaintenanceDetailsModal({
                   {/* Status and Priority */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
                         Status
                       </label>
                       {isEditing ? (
                         <select
                           value={formData.status}
                           onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value as MaintenanceStatus }))}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                           <option value="SCHEDULED">Scheduled</option>
                           <option value="IN_PROGRESS">In Progress</option>
@@ -240,14 +240,14 @@ export default function MaintenanceDetailsModal({
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
                         Priority
                       </label>
                       {isEditing ? (
                         <select
                           value={formData.priority}
                           onChange={(e) => setFormData(prev => ({ ...prev, priority: e.target.value }))}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                           <option value="LOW">Low</option>
                           <option value="MEDIUM">Medium</option>
@@ -262,10 +262,10 @@ export default function MaintenanceDetailsModal({
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
                         Type
                       </label>
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                         {record.type.replace('_', ' ').toLowerCase()}
                       </span>
                     </div>
@@ -274,16 +274,16 @@ export default function MaintenanceDetailsModal({
                   {/* Dates */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
                         Scheduled Date
                       </label>
-                      <p className="text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 p-3 rounded-lg">
+                      <p className="text-sm text-white bg-gray-900/5 p-3 rounded-lg">
                         {formatDate(record.scheduledDate)}
                       </p>
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
                         Performed Date
                       </label>
                       {isEditing ? (
@@ -291,10 +291,10 @@ export default function MaintenanceDetailsModal({
                           type="datetime-local"
                           value={formData.performedDate}
                           onChange={(e) => setFormData(prev => ({ ...prev, performedDate: e.target.value }))}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                       ) : (
-                        <p className="text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 p-3 rounded-lg">
+                        <p className="text-sm text-white bg-gray-900/5 p-3 rounded-lg">
                           {formatDate(record.performedDate)}
                         </p>
                       )}
@@ -304,21 +304,21 @@ export default function MaintenanceDetailsModal({
                   {/* Costs */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
                         Estimated Cost
                       </label>
-                      <p className="text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 p-3 rounded-lg">
+                      <p className="text-sm text-white bg-gray-900/5 p-3 rounded-lg">
                         {formatCurrency(record.cost)}
                       </p>
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
                         Actual Cost *
                       </label>
                       {isEditing ? (
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+                          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-white/80 transition-colors">$</span>
                           <input
                             type="number"
                             min="0"
@@ -326,11 +326,11 @@ export default function MaintenanceDetailsModal({
                             placeholder="0.00"
                             value={formData.actualCost}
                             onChange={(e) => setFormData(prev => ({ ...prev, actualCost: e.target.value }))}
-                            className="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full pl-8 pr-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           />
                         </div>
                       ) : (
-                        <p className="text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 p-3 rounded-lg">
+                        <p className="text-sm text-white bg-gray-900/5 p-3 rounded-lg">
                           {formatCurrency(record.actualCost)}
                         </p>
                       )}
@@ -340,19 +340,19 @@ export default function MaintenanceDetailsModal({
                   {/* People */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
                         Created By
                       </label>
-                      <p className="text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 p-3 rounded-lg">
+                      <p className="text-sm text-white bg-gray-900/5 p-3 rounded-lg">
                         {record.createdBy.name || record.createdBy.email || 'Unknown'}
                       </p>
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
                         Performed By
                       </label>
-                      <p className="text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 p-3 rounded-lg">
+                      <p className="text-sm text-white bg-gray-900/5 p-3 rounded-lg">
                         {record.performedBy?.name || record.performedBy?.email || 'Not assigned'}
                       </p>
                     </div>
@@ -360,7 +360,7 @@ export default function MaintenanceDetailsModal({
 
                   {/* Notes */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
                       Notes
                     </label>
                     {isEditing ? (
@@ -368,11 +368,11 @@ export default function MaintenanceDetailsModal({
                         rows={3}
                         value={formData.notes}
                         onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                        className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                         placeholder="Add maintenance notes..."
                       />
                     ) : (
-                      <p className="text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 p-3 rounded-lg whitespace-pre-wrap min-h-[3rem]">
+                      <p className="text-sm text-white bg-gray-900/5 p-3 rounded-lg whitespace-pre-wrap min-h-[3rem]">
                         {record.notes || 'No notes'}
                       </p>
                     )}
@@ -380,7 +380,7 @@ export default function MaintenanceDetailsModal({
 
                   {/* Completion Notes */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
                       Completion Notes *
                     </label>
                     {isEditing ? (
@@ -388,19 +388,19 @@ export default function MaintenanceDetailsModal({
                         rows={3}
                         value={formData.completionNotes}
                         onChange={(e) => setFormData(prev => ({ ...prev, completionNotes: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                        className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                         placeholder="Add completion notes (what was done, parts used, etc.)..."
                       />
                     ) : (
-                      <p className="text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 p-3 rounded-lg whitespace-pre-wrap min-h-[3rem]">
+                      <p className="text-sm text-white bg-gray-900/5 p-3 rounded-lg whitespace-pre-wrap min-h-[3rem]">
                         {record.completionNotes || 'No completion notes'}
                       </p>
                     )}
                   </div>
 
                   {/* Timestamps */}
-                  <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-gray-500 dark:text-gray-400">
+                  <div className="border-t border-gray-700 pt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-white/50 hover:text-white/80 transition-colors">
                       <div>
                         <strong>Created:</strong> {formatDate(record.createdAt)}
                       </div>
@@ -418,7 +418,7 @@ export default function MaintenanceDetailsModal({
                         type="button"
                         onClick={handleCancel}
                         disabled={loading}
-                        className="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-white/5 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 disabled:opacity-50"
+                        className="inline-flex justify-center rounded-md border border-gray-600 bg-gray-900 px-4 py-2 text-sm font-medium text-gray-300 hover focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 disabled:opacity-50"
                       >
                         Cancel
                       </button>
@@ -426,7 +426,7 @@ export default function MaintenanceDetailsModal({
                         type="button"
                         onClick={handleSave}
                         disabled={loading}
-                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:opacity-50"
+                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:opacity-50"
                       >
                         {loading ? 'Saving...' : 'Save Changes'}
                       </button>
@@ -434,7 +434,7 @@ export default function MaintenanceDetailsModal({
                   ) : (
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={onClose}
                     >
                       Close

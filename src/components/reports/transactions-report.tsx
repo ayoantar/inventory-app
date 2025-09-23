@@ -91,7 +91,7 @@ export default function TransactionsReport({ dateRange }: TransactionsReportProp
   if (!data) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 dark:text-brand-secondary-text">Failed to load transactions report</p>
+        <p className="text-white/50 hover:text-white/80 transition-colors">Failed to load transactions report</p>
       </div>
     )
   }
@@ -100,39 +100,39 @@ export default function TransactionsReport({ dateRange }: TransactionsReportProp
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-        <div className="bg-white dark:bg-white/5 p-4 rounded-lg border border-gray-300 dark:border-brand-dark-blue-deep">
-          <div className="text-2xl font-bold text-gray-900 dark:text-brand-primary-text">{data.summary.total}</div>
-          <div className="text-sm text-gray-600 dark:text-brand-secondary-text">Total Transactions</div>
+        <div className="bg-gray-900 p-4 rounded-lg border border-gray-300">
+          <div className="text-2xl font-bold text-brand-primary-text">{data.summary.total}</div>
+          <div className="text-sm text-white/50 hover:text-white/80 transition-colors">Total Transactions</div>
         </div>
-        <div className="bg-white dark:bg-white/5 p-4 rounded-lg border border-gray-300 dark:border-brand-dark-blue-deep">
+        <div className="bg-gray-900 p-4 rounded-lg border border-gray-300">
           <div className="text-2xl font-bold text-blue-600">{data.summary.checkOuts}</div>
-          <div className="text-sm text-gray-600 dark:text-brand-secondary-text">Check Outs</div>
+          <div className="text-sm text-white/50 hover:text-white/80 transition-colors">Check Outs</div>
         </div>
-        <div className="bg-white dark:bg-white/5 p-4 rounded-lg border border-gray-300 dark:border-brand-dark-blue-deep">
+        <div className="bg-gray-900 p-4 rounded-lg border border-gray-300">
           <div className="text-2xl font-bold text-green-600">{data.summary.checkIns}</div>
-          <div className="text-sm text-gray-600 dark:text-brand-secondary-text">Check Ins</div>
+          <div className="text-sm text-white/50 hover:text-white/80 transition-colors">Check Ins</div>
         </div>
-        <div className="bg-white dark:bg-white/5 p-4 rounded-lg border border-gray-300 dark:border-brand-dark-blue-deep">
+        <div className="bg-gray-900 p-4 rounded-lg border border-gray-300">
           <div className="text-2xl font-bold text-yellow-600">{data.summary.active}</div>
-          <div className="text-sm text-gray-600 dark:text-brand-secondary-text">Active</div>
+          <div className="text-sm text-white/50 hover:text-white/80 transition-colors">Active</div>
         </div>
-        <div className="bg-white dark:bg-white/5 p-4 rounded-lg border border-gray-300 dark:border-brand-dark-blue-deep">
-          <div className="text-2xl font-bold text-gray-600">{data.summary.completed}</div>
-          <div className="text-sm text-gray-600 dark:text-brand-secondary-text">Completed</div>
+        <div className="bg-gray-900 p-4 rounded-lg border border-gray-300">
+          <div className="text-2xl font-bold text-white/50 hover:text-white/80 transition-colors">{data.summary.completed}</div>
+          <div className="text-sm text-white/50 hover:text-white/80 transition-colors">Completed</div>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-gray-50 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-brand-dark-blue-deep p-4">
+      <div className="bg-gray-900/5 rounded-lg border border-gray-300 p-4">
         <div className="flex flex-wrap gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-brand-secondary-text mb-1">
+            <label className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
               Type
             </label>
             <select
               value={filter.type}
               onChange={(e) => setFilter(prev => ({ ...prev, type: e.target.value }))}
-              className="border border-gray-300 dark:border-brand-dark-blue-deep rounded-md px-3 py-2 bg-white dark:bg-brand-dark-blue text-gray-900 dark:text-brand-primary-text"
+              className="border border-gray-300 rounded-md px-3 py-2 bg-brand-dark-blue text-brand-primary-text"
             >
               <option value="">All Types</option>
               <option value="CHECK_OUT">Check Out</option>
@@ -141,13 +141,13 @@ export default function TransactionsReport({ dateRange }: TransactionsReportProp
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-brand-secondary-text mb-1">
+            <label className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
               Status
             </label>
             <select
               value={filter.status}
               onChange={(e) => setFilter(prev => ({ ...prev, status: e.target.value }))}
-              className="border border-gray-300 dark:border-brand-dark-blue-deep rounded-md px-3 py-2 bg-white dark:bg-brand-dark-blue text-gray-900 dark:text-brand-primary-text"
+              className="border border-gray-300 rounded-md px-3 py-2 bg-brand-dark-blue text-brand-primary-text"
             >
               <option value="">All Status</option>
               <option value="ACTIVE">Active</option>
@@ -160,7 +160,7 @@ export default function TransactionsReport({ dateRange }: TransactionsReportProp
             <div className="flex items-end">
               <button
                 onClick={() => setFilter({ type: '', status: '' })}
-                className="text-gray-600 dark:text-brand-secondary-text hover:text-gray-800 dark:hover:text-brand-primary-text text-sm px-3 py-2"
+                className="text-white/50 hover:text-white/80 transition-colors hover text-sm px-3 py-2"
               >
                 Clear Filters
               </button>
@@ -170,40 +170,40 @@ export default function TransactionsReport({ dateRange }: TransactionsReportProp
       </div>
 
       {/* Transactions Table */}
-      <div className="bg-white dark:bg-white/5 rounded-lg border border-gray-300 dark:border-brand-dark-blue-deep overflow-hidden">
+      <div className="bg-gray-900 rounded-lg border border-gray-300 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full divide-y divide-gray-300 dark:divide-brand-dark-blue-deep">
-            <thead className="bg-gray-50 dark:bg-brand-dark-blue">
+          <table className="w-full divide-y divide-gray-300">
+            <thead className="bg-gray-800">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                   Asset
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                   Type
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                   User
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                   Date
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                   Expected Return
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-gray-50 dark:bg-white/5 divide-y divide-gray-300 dark:divide-brand-dark-blue-deep">
+            <tbody className="bg-gray-900/5 divide-y divide-gray-300">
               {data.transactions.map((transaction) => (
-                <tr key={transaction.id} className="hover:bg-white/10 dark:hover:bg-brand-dark-blue-deep">
+                <tr key={transaction.id} className="hover">
                   <td className="px-4 py-4 whitespace-nowrap">
                     <div>
-                      <div className="text-sm font-medium text-gray-900 dark:text-brand-primary-text">
+                      <div className="text-sm font-medium text-brand-primary-text">
                         {transaction.asset.name}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-brand-secondary-text">
+                      <div className="text-xs text-white/50 hover:text-white/80 transition-colors">
                         {transaction.asset.serialNumber || 'No S/N'} • {transaction.asset.category}
                       </div>
                     </div>
@@ -212,8 +212,8 @@ export default function TransactionsReport({ dateRange }: TransactionsReportProp
                   <td className="px-4 py-4 whitespace-nowrap">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
                       transaction.type === 'CHECK_OUT' 
-                        ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-400'
-                        : 'bg-green-50 text-green-700 border border-green-200 dark:bg-green-900/20 dark:text-green-400'
+                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                        : 'bg-green-50 text-green-700 border border-green-200'
                     }`}>
                       {transaction.type.replace('_', ' ')}
                     </span>
@@ -222,37 +222,37 @@ export default function TransactionsReport({ dateRange }: TransactionsReportProp
                   <td className="px-4 py-4 whitespace-nowrap">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
                       transaction.status === 'ACTIVE'
-                        ? 'bg-yellow-50 text-yellow-700 border border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400'
+                        ? 'bg-yellow-50 text-yellow-700 border border-yellow-200'
                         : transaction.status === 'COMPLETED'
-                        ? 'bg-green-50 text-green-700 border border-green-200 dark:bg-green-900/20 dark:text-green-400'
-                        : 'bg-gray-50 text-gray-700 border border-gray-200 dark:bg-white/5 dark:text-brand-secondary-text'
+                        ? 'bg-green-50 text-green-700 border border-green-200'
+                        : 'bg-gray-800 text-gray-300 border border-gray-200'
                     }`}>
                       {transaction.status}
                     </span>
                   </td>
                   
                   <td className="px-4 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 dark:text-brand-primary-text">
+                    <div className="text-sm text-brand-primary-text">
                       {transaction.user?.name || 'Unknown User'}
                     </div>
                     {transaction.user?.department && (
-                      <div className="text-xs text-gray-500 dark:text-brand-secondary-text">
+                      <div className="text-xs text-white/50 hover:text-white/80 transition-colors">
                         {transaction.user.department}
                       </div>
                     )}
                   </td>
                   
                   <td className="px-4 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 dark:text-brand-primary-text">
+                    <div className="text-sm text-brand-primary-text">
                       {new Date(transaction.createdAt).toLocaleDateString()}
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-brand-secondary-text">
+                    <div className="text-xs text-white/50 hover:text-white/80 transition-colors">
                       {new Date(transaction.createdAt).toLocaleTimeString()}
                     </div>
                   </td>
                   
                   <td className="px-4 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 dark:text-brand-primary-text">
+                    <div className="text-sm text-brand-primary-text">
                       {transaction.expectedReturnDate 
                         ? new Date(transaction.expectedReturnDate).toLocaleDateString()
                         : '-'
@@ -267,7 +267,7 @@ export default function TransactionsReport({ dateRange }: TransactionsReportProp
 
         {data.transactions.length === 0 && (
           <div className="text-center py-12">
-            <div className="text-gray-500 dark:text-brand-secondary-text">
+            <div className="text-white/50 hover:text-white/80 transition-colors">
               No transactions found for the selected criteria
             </div>
           </div>

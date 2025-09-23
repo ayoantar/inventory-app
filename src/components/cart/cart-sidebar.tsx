@@ -90,20 +90,20 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
       />
       
       {/* Sidebar */}
-      <div className="fixed right-0 top-0 h-full w-96 bg-gray-50 dark:bg-white/5 shadow-xl z-50 flex flex-col">
+      <div className="fixed right-0 top-0 h-full w-96 bg-gray-900/5 shadow-xl z-50 flex flex-col">
         {/* Header */}
-        <div className="p-4 border-b border-gray-300 dark:border-gray-700 flex items-center justify-between">
+        <div className="p-4 border-b border-gray-700 flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">
+            <h2 className="text-lg font-semibold text-brand-primary-text">
               Transaction Cart
             </h2>
-            <p className="text-sm text-gray-700 dark:text-brand-secondary-text">
+            <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
               {state.items.length} item{state.items.length !== 1 ? 's' : ''}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+            className="text-white/50 hover:text-white/80 transition-colors hover"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -115,18 +115,18 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {state.items.length === 0 ? (
             <div className="text-center py-8">
-              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6H19M7 13v0a2 2 0 002 2h8.5m-10.5-2v-2a2 2 0 012-2h8.5" />
               </svg>
-              <p className="mt-2 text-sm text-gray-700 dark:text-brand-secondary-text">Your cart is empty</p>
-              <p className="text-xs text-gray-400 dark:text-gray-500">Scan assets or add them from the asset list</p>
+              <p className="mt-2 text-sm text-gray-600 dark:text-brand-secondary-text">Your cart is empty</p>
+              <p className="text-xs text-white/50 hover:text-white/80 transition-colors">Scan assets or add them from the asset list</p>
             </div>
           ) : (
             <>
               {/* Check-In Section */}
               {checkInItems.length > 0 && (
                 <div>
-                  <h3 className="text-sm font-medium text-green-700 dark:text-green-400 mb-2 flex items-center">
+                  <h3 className="text-sm font-medium text-green-700 mb-2 flex items-center">
                     <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -134,7 +134,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                   </h3>
                   <div className="space-y-2">
                     {checkInItems.map((item) => (
-                      <div key={item.assetId} className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border border-green-200 dark:border-green-800">
+                      <div key={item.assetId} className="bg-green-50 rounded-lg p-3 border border-green-200">
                         <div className="flex items-start justify-between">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center space-x-2">
@@ -145,15 +145,15 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                                   className="w-8 h-8 object-cover rounded"
                                 />
                               ) : (
-                                <div className="w-8 h-8 bg-gray-100 dark:bg-white/5 rounded flex items-center justify-center">
+                                <div className="w-8 h-8 bg-gray-900/5 rounded flex items-center justify-center">
                                   <span className="text-xs">📦</span>
                                 </div>
                               )}
                               <div className="min-w-0 flex-1">
-                                <p className="text-sm font-medium text-gray-900 dark:text-brand-primary-text truncate">
+                                <p className="text-sm font-medium text-brand-primary-text truncate">
                                   {item.asset.name}
                                 </p>
-                                <p className="text-xs text-gray-700 dark:text-brand-secondary-text">
+                                <p className="text-xs text-gray-600 dark:text-brand-secondary-text">
                                   {item.asset.category.replace('_', ' ')}
                                 </p>
                               </div>
@@ -165,7 +165,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                                 placeholder="Return notes (optional)"
                                 value={item.notes || ''}
                                 onChange={(e) => handleUpdateNotes(item.assetId, e.target.value)}
-                                className="w-full text-xs border border-gray-200 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text resize-none"
+                                className="w-full text-xs border border-gray-600 rounded px-2 py-1 bg-gray-900 text-brand-primary-text resize-none"
                                 rows={2}
                               />
                             </div>
@@ -173,7 +173,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                           
                           <button
                             onClick={() => removeItem(item.assetId)}
-                            className="ml-2 text-red-400 hover:text-red-600 p-1"
+                            className="ml-2 text-red-400 hover p-1"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -189,7 +189,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               {/* Check-Out Section */}
               {checkOutItems.length > 0 && (
                 <div>
-                  <h3 className="text-sm font-medium text-brand-orange dark:text-brand-orange mb-2 flex items-center">
+                  <h3 className="text-sm font-medium text-brand-orange mb-2 flex items-center">
                     <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
@@ -197,7 +197,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                   </h3>
                   <div className="space-y-2">
                     {checkOutItems.map((item) => (
-                      <div key={item.assetId} className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3 border border-orange-200 dark:border-orange-800">
+                      <div key={item.assetId} className="bg-orange-50 rounded-lg p-3 border border-orange-200">
                         <div className="flex items-start justify-between">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center space-x-2">
@@ -208,15 +208,15 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                                   className="w-8 h-8 object-cover rounded"
                                 />
                               ) : (
-                                <div className="w-8 h-8 bg-gray-100 dark:bg-white/5 rounded flex items-center justify-center">
+                                <div className="w-8 h-8 bg-gray-900/5 rounded flex items-center justify-center">
                                   <span className="text-xs">📦</span>
                                 </div>
                               )}
                               <div className="min-w-0 flex-1">
-                                <p className="text-sm font-medium text-gray-900 dark:text-brand-primary-text truncate">
+                                <p className="text-sm font-medium text-brand-primary-text truncate">
                                   {item.asset.name}
                                 </p>
-                                <p className="text-xs text-gray-700 dark:text-brand-secondary-text">
+                                <p className="text-xs text-gray-600 dark:text-brand-secondary-text">
                                   {item.asset.category.replace('_', ' ')}
                                 </p>
                               </div>
@@ -227,7 +227,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                               <select
                                 value={item.assignedUserId || session?.user?.id || ''}
                                 onChange={(e) => handleUpdateAssignment(item.assetId, e.target.value)}
-                                className="w-full text-xs border border-gray-200 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text"
+                                className="w-full text-xs border border-gray-600 rounded px-2 py-1 bg-gray-900 text-brand-primary-text"
                                 disabled={loadingUsers}
                               >
                                 <option value={session?.user?.id || ''}>
@@ -245,7 +245,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                                 type="date"
                                 value={item.expectedReturnDate || ''}
                                 onChange={(e) => handleUpdateReturnDate(item.assetId, e.target.value)}
-                                className="w-full text-xs border border-gray-200 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text"
+                                className="w-full text-xs border border-gray-600 rounded px-2 py-1 bg-gray-900 text-brand-primary-text"
                                 min={new Date().toISOString().split('T')[0]}
                               />
                               
@@ -254,7 +254,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                                 placeholder="Checkout notes (optional)"
                                 value={item.notes || ''}
                                 onChange={(e) => handleUpdateNotes(item.assetId, e.target.value)}
-                                className="w-full text-xs border border-gray-200 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text resize-none"
+                                className="w-full text-xs border border-gray-600 rounded px-2 py-1 bg-gray-900 text-brand-primary-text resize-none"
                                 rows={2}
                               />
                             </div>
@@ -262,7 +262,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                           
                           <button
                             onClick={() => removeItem(item.assetId)}
-                            className="ml-2 text-red-400 hover:text-red-600 p-1"
+                            className="ml-2 text-red-400 hover p-1"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -280,16 +280,16 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
 
         {/* Footer Actions */}
         {state.items.length > 0 && (
-          <div className="p-4 border-t border-gray-300 dark:border-gray-700 space-y-3">
+          <div className="p-4 border-t border-gray-700 space-y-3">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-700 dark:text-brand-secondary-text">Total items:</span>
-              <span className="font-medium text-gray-900 dark:text-brand-primary-text">{state.items.length}</span>
+              <span className="text-gray-600 dark:text-brand-secondary-text">Total items:</span>
+              <span className="font-medium text-brand-primary-text">{state.items.length}</span>
             </div>
             
             <div className="flex space-x-2">
               <button
                 onClick={clearCart}
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 transition-colors"
+                className="flex-1 px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover transition-colors"
               >
                 Clear All
               </button>
@@ -297,7 +297,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               <button
                 onClick={() => setShowConfirmation(true)}
                 disabled={state.items.length === 0}
-                className="flex-1 px-4 py-2 bg-brand-orange hover:bg-primary-600 disabled:bg-primary-400 text-brand-primary-text rounded-md text-sm font-medium disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+                className="flex-1 px-4 py-2 bg-brand-orange hover disabled:opacity-50 text-brand-primary-text rounded-md text-sm font-medium disabled:cursor-not-allowed transition-colors flex items-center justify-center"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

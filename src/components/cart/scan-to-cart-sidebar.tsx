@@ -161,21 +161,21 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
       />
       
       {/* Sidebar */}
-      <div className="fixed right-0 top-0 h-full w-96 bg-gray-50 dark:bg-white/5 shadow-xl z-50 flex flex-col">
+      <div className="fixed right-0 top-0 h-full w-96 bg-gray-900/5 shadow-xl z-50 flex flex-col">
         {/* Header */}
-        <div className="p-4 border-b border-gray-300 dark:border-gray-700">
+        <div className="p-4 border-b border-gray-700">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">
+              <h2 className="text-lg font-semibold text-brand-primary-text">
                 Scan to Cart
               </h2>
-              <p className="text-sm text-gray-700 dark:text-brand-secondary-text">
+              <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
                 Scan items to build your transaction cart
               </p>
             </div>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              className="text-white/50 hover:text-white/80 transition-colors hover"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -184,13 +184,13 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
           </div>
 
           {/* Mode Toggle */}
-          <div className="flex bg-gray-100 dark:bg-white/5 rounded-lg p-1">
+          <div className="flex bg-gray-900/5 rounded-lg p-1">
             <button
               onClick={() => setScanMode('CHECK_OUT')}
               className={`flex-1 px-3 py-2 text-sm font-medium rounded-md transition-colors flex items-center justify-center ${
                 scanMode === 'CHECK_OUT'
                   ? 'bg-orange-500 text-white shadow-sm'
-                  : 'text-gray-800 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  : 'text-brand-primary-text hover'
               }`}
             >
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,7 +203,7 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
               className={`flex-1 px-3 py-2 text-sm font-medium rounded-md transition-colors flex items-center justify-center ${
                 scanMode === 'CHECK_IN'
                   ? 'bg-green-500 text-white shadow-sm'
-                  : 'text-gray-800 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  : 'text-brand-primary-text hover'
               }`}
             >
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -215,7 +215,7 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
         </div>
 
         {/* Scanning Interface */}
-        <div className="p-4 border-b border-gray-300 dark:border-gray-700">
+        <div className="p-4 border-b border-gray-700">
           <div className="space-y-4">
             {/* Manual Search/Input */}
             <form onSubmit={handleManualSearch} className="flex">
@@ -225,11 +225,11 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   placeholder="Scan or enter barcode, serial number..."
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-l-md bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-600 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-600 rounded-l-md bg-gray-900 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   autoFocus
                 />
                 <svg
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/50 hover:text-white/80 transition-colors"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -241,7 +241,7 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
               <button
                 type="button"
                 onClick={() => setShowScanner(true)}
-                className="px-4 py-3 bg-gray-100 hover:bg-white/10 dark:bg-white/5 dark:hover:bg-white/10 border border-l-0 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 transition-colors"
+                className="px-4 py-3 bg-gray-100 dark:bg-gray-800 hover border border-l-0 border-gray-600 text-gray-300 transition-colors"
                 title="Open Camera Scanner"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -255,8 +255,8 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
                 disabled={searching || !searchValue.trim()}
                 className={`px-6 py-3 text-white rounded-r-md text-sm font-medium transition-colors ${
                   scanMode === 'CHECK_OUT'
-                    ? 'bg-orange-600 hover:bg-orange-700 disabled:bg-orange-400'
-                    : 'bg-green-600 hover:bg-green-700 disabled:bg-green-400'
+                    ? 'bg-orange-600 hover disabled'
+                    : 'bg-green-600 hover disabled'
                 }`}
               >
                 {searching ? (
@@ -272,8 +272,8 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
 
             {/* Status Messages */}
             {error && (
-              <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-                <p className="text-sm text-red-800 dark:text-red-200 flex items-center">
+              <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-sm text-red-800 flex items-center">
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -283,8 +283,8 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
             )}
 
             {success && (
-              <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
-                <p className="text-sm text-green-800 dark:text-green-200 flex items-center">
+              <div className="p-3 bg-green-50 border border-green-200 rounded-md">
+                <p className="text-sm text-green-800 flex items-center">
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -299,18 +299,18 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
         <div className="flex-1 overflow-y-auto p-4">
           {state.items.length === 0 ? (
             <div className="text-center py-8">
-              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
               </svg>
-              <p className="mt-2 text-sm font-medium text-gray-900 dark:text-brand-primary-text">Ready to scan</p>
-              <p className="text-xs text-gray-700 dark:text-brand-secondary-text">Scan barcodes or enter asset details to start building your cart</p>
+              <p className="mt-2 text-sm font-medium text-brand-primary-text">Ready to scan</p>
+              <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Scan barcodes or enter asset details to start building your cart</p>
             </div>
           ) : (
             <div className="space-y-2">
               <h3 className={`text-sm font-medium mb-3 flex items-center ${
                 scanMode === 'CHECK_OUT' 
-                  ? 'text-orange-700 dark:text-orange-400' 
-                  : 'text-green-700 dark:text-green-400'
+                  ? 'text-orange-700' 
+                  : 'text-green-700'
               }`}>
                 {scanMode === 'CHECK_OUT' ? (
                   <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -327,8 +327,8 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
               {state.items.map((item) => (
                 <div key={item.assetId} className={`rounded-md p-2 border ${
                   scanMode === 'CHECK_OUT'
-                    ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800'
-                    : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+                    ? 'bg-orange-50 border-orange-200'
+                    : 'bg-green-50 border-green-200'
                 }`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2 flex-1 min-w-0">
@@ -339,15 +339,15 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
                           className="w-6 h-6 object-cover rounded"
                         />
                       ) : (
-                        <div className="w-6 h-6 bg-gray-100 dark:bg-white/5 rounded flex items-center justify-center">
+                        <div className="w-6 h-6 bg-gray-900/5 rounded flex items-center justify-center">
                           <span className="text-xs">📦</span>
                         </div>
                       )}
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-900 dark:text-brand-primary-text truncate">
+                        <p className="text-sm font-medium text-brand-primary-text truncate">
                           {getAssetDisplayName(item.asset)}
                         </p>
-                        <p className="text-xs text-gray-700 dark:text-brand-secondary-text">
+                        <p className="text-xs text-gray-600 dark:text-brand-secondary-text">
                           {item.asset.category.replace('_', ' ')} • {item.asset.serialNumber || item.asset.name || 'No S/N'}
                         </p>
                       </div>
@@ -355,7 +355,7 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
                     
                     <button
                       onClick={() => removeItem(item.assetId)}
-                      className="ml-2 text-red-400 hover:text-red-600 p-0.5"
+                      className="ml-2 text-red-400 hover p-0.5"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -370,16 +370,16 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
 
         {/* Footer Actions */}
         {state.items.length > 0 && (
-          <div className="p-4 border-t border-gray-300 dark:border-gray-700 space-y-3">
+          <div className="p-4 border-t border-gray-700 space-y-3">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-700 dark:text-brand-secondary-text">Total items:</span>
-              <span className="font-medium text-gray-900 dark:text-brand-primary-text">{state.items.length}</span>
+              <span className="text-gray-600 dark:text-brand-secondary-text">Total items:</span>
+              <span className="font-medium text-brand-primary-text">{state.items.length}</span>
             </div>
             
             <div className="flex space-x-2">
               <button
                 onClick={clearCart}
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 transition-colors"
+                className="flex-1 px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover transition-colors"
               >
                 Clear All
               </button>
@@ -389,8 +389,8 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
                 disabled={state.items.length === 0}
                 className={`flex-1 px-4 py-2 text-white rounded-md text-sm font-medium disabled:cursor-not-allowed transition-colors flex items-center justify-center ${
                   scanMode === 'CHECK_OUT'
-                    ? 'bg-orange-600 hover:bg-orange-700 disabled:bg-orange-400'
-                    : 'bg-green-600 hover:bg-green-700 disabled:bg-green-400'
+                    ? 'bg-orange-600 hover disabled'
+                    : 'bg-green-600 hover disabled'
                 }`}
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

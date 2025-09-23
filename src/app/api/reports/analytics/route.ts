@@ -34,8 +34,7 @@ export async function GET(request: NextRequest) {
       assetsByStatus,
       totalValue,
       recentTransactions,
-      overdueAssets,
-      recentTransactionDetails
+      overdueAssets
     ] = await Promise.all([
       // Total assets count
       prisma.asset.count(),
@@ -90,6 +89,7 @@ export async function GET(request: NextRequest) {
       return date.toISOString().split('T')[0]
     }).reverse()
 
+    // Get activity trends separately
     const activityTrends = await Promise.all(
       last7Days.map(async (date) => {
         const dayStart = new Date(date)
@@ -123,10 +123,10 @@ export async function GET(request: NextRequest) {
           checkins
         }
       })
-    ),
+    )
 
-    // Recent transactions with user and asset details
-    prisma.assetTransaction.findMany({
+    // Get recent transactions separately
+    const recentTransactionDetails = await prisma.assetTransaction.findMany({
       take: 10,
       orderBy: { createdAt: 'desc' },
       include: {

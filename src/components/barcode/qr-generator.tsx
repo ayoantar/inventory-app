@@ -128,15 +128,15 @@ export default function QRGenerator({ data, assetName, isOpen, onClose }: QRGene
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-50 dark:bg-white/5 rounded-lg shadow-xl max-w-md w-full">
+      <div className="bg-gray-900/5 rounded-lg shadow-xl max-w-md w-full">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">
+            <h3 className="text-lg font-semibold text-brand-primary-text">
               QR Code {assetName && `- ${assetName}`}
             </h3>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              className="text-white/50 hover:text-white/80 transition-colors hover transition-colors"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -145,12 +145,12 @@ export default function QRGenerator({ data, assetName, isOpen, onClose }: QRGene
           </div>
 
           {error ? (
-            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-              <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+              <p className="text-sm text-red-800">{error}</p>
             </div>
           ) : (
             <div className="text-center mb-6">
-              <div className="inline-block p-4 bg-white rounded-lg border border-gray-200 dark:border-gray-600 mb-4">
+              <div className="inline-block p-4 bg-gray-900 rounded-lg border border-gray-600 mb-4">
                 <canvas 
                   ref={canvasRef}
                   className="block"
@@ -158,9 +158,9 @@ export default function QRGenerator({ data, assetName, isOpen, onClose }: QRGene
                 />
               </div>
               
-              <div className="text-sm text-gray-800 dark:text-gray-400 mb-4">
+              <div className="text-sm text-brand-primary-text mb-4">
                 <p className="font-medium mb-1">Asset ID:</p>
-                <p className="font-mono text-xs break-all bg-gray-100 dark:bg-white/5 p-2 rounded">
+                <p className="font-mono text-xs break-all bg-gray-900/5 p-2 rounded">
                   {data}
                 </p>
               </div>
@@ -168,7 +168,7 @@ export default function QRGenerator({ data, assetName, isOpen, onClose }: QRGene
               <div className="flex justify-center space-x-3">
                 <button
                   onClick={downloadQRCode}
-                  className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 bg-gray-50 dark:bg-white/5 transition-colors"
+                  className="inline-flex items-center px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900/5 transition-colors"
                 >
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -177,7 +177,7 @@ export default function QRGenerator({ data, assetName, isOpen, onClose }: QRGene
                 </button>
                 <button
                   onClick={printQRCode}
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
+                  className="inline-flex items-center px-4 py-2 bg-blue-600 hover text-white rounded-md text-sm font-medium transition-colors"
                 >
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -191,7 +191,7 @@ export default function QRGenerator({ data, assetName, isOpen, onClose }: QRGene
           <div className="flex justify-end">
             <button
               onClick={onClose}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 bg-gray-50 dark:bg-white/5 transition-colors"
+              className="px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900/5 transition-colors"
             >
               Close
             </button>

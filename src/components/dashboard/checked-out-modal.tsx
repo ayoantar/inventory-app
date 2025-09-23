@@ -82,21 +82,21 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
       
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-gray-50 dark:bg-white/5 rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] flex flex-col">
+        <div className="bg-gray-900/5 rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] flex flex-col">
           {/* Header */}
-          <div className="p-6 border-b border-gray-300 dark:border-gray-700">
+          <div className="p-6 border-b border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-brand-primary-text">
+                <h2 className="text-2xl font-bold text-brand-primary-text">
                   Checked Out Assets
                 </h2>
-                <p className="text-sm text-gray-700 dark:text-brand-secondary-text mt-1">
+                <p className="text-sm text-gray-600 dark:text-brand-secondary-text mt-1">
                   {assets.length} asset{assets.length !== 1 ? 's' : ''} currently checked out
                 </p>
               </div>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                className="text-white/50 hover:text-white/80 transition-colors hover transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -114,18 +114,18 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
             )}
 
             {error && (
-              <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-                <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+              <div className="p-4 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-sm text-red-800">{error}</p>
               </div>
             )}
 
             {!loading && !error && assets.length === 0 && (
               <div className="text-center py-12">
-                <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-brand-primary-text">No checked out assets</h3>
-                <p className="mt-1 text-sm text-gray-700 dark:text-brand-secondary-text">
+                <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No checked out assets</h3>
+                <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
                   All assets are currently available or in other states
                 </p>
               </div>
@@ -139,8 +139,8 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
                   const overdueDays = activeTransaction?.expectedReturnDate ? getOverdueDays(activeTransaction.expectedReturnDate) : 0
                   
                   return (
-                    <div key={asset.id} className={`bg-white dark:bg-white/5 rounded-lg border p-4 transition-all duration-200 hover:shadow-md ${
-                      overdue ? 'border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/10' : 'border-gray-200 dark:border-gray-700'
+                    <div key={asset.id} className={`bg-gray-900 rounded-lg border p-4 transition-all duration-200 hover:shadow-md ${
+                      overdue ? 'border-red-300 bg-red-50' : 'border-gray-700'
                     }`}>
                       <div className="flex items-center space-x-3">
                         {/* Asset Image/Icon */}
@@ -149,10 +149,10 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
                             <img
                               src={asset.imageUrl}
                               alt={asset.name}
-                              className="w-12 h-12 object-cover rounded-lg border border-gray-200 dark:border-gray-600"
+                              className="w-12 h-12 object-cover rounded-lg border border-gray-600"
                             />
                           ) : (
-                            <div className="w-12 h-12 bg-gray-100 dark:bg-white/5 rounded-lg flex items-center justify-center">
+                            <div className="w-12 h-12 bg-gray-900/5 rounded-lg flex items-center justify-center">
                               <span className="text-lg">📦</span>
                             </div>
                           )}
@@ -162,10 +162,10 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
-                              <h3 className="text-base font-semibold text-gray-900 dark:text-brand-primary-text truncate">
+                              <h3 className="text-base font-semibold text-brand-primary-text truncate">
                                 {asset.name}
                               </h3>
-                              <div className="flex items-center space-x-3 text-sm text-gray-700 dark:text-gray-300 mt-1">
+                              <div className="flex items-center space-x-3 text-sm text-gray-300 mt-1">
                                 <span>{asset.category.replace('_', ' ')}</span>
                                 {asset.serialNumber && (
                                   <>
@@ -183,7 +183,7 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
                             </div>
                             
                             {overdue && (
-                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 ml-2">
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 ml-2">
                                 {overdueDays}d overdue
                               </span>
                             )}
@@ -191,16 +191,16 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
                           
                           {/* Transaction Info - Compact */}
                           {activeTransaction && (
-                            <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-300 mt-2 pt-2 border-t border-gray-200 dark:border-gray-600">
+                            <div className="flex items-center justify-between text-xs text-gray-300 mt-2 pt-2 border-t border-gray-600">
                               <span>
-                                Checked out by <span className="font-medium text-gray-700 dark:text-gray-300">{activeTransaction.user.name || activeTransaction.user.email}</span>
+                                Checked out by <span className="font-medium text-gray-300">{activeTransaction.user.name || activeTransaction.user.email}</span>
                               </span>
                               <div className="flex items-center space-x-4">
                                 <span>
                                   {new Date(activeTransaction.createdAt).toLocaleDateString()}
                                 </span>
                                 {activeTransaction.expectedReturnDate && (
-                                  <span className={overdue ? 'text-red-600 dark:text-red-400 font-medium' : ''}>
+                                  <span className={overdue ? 'text-red-600 font-medium' : ''}>
                                     Due: {new Date(activeTransaction.expectedReturnDate).toLocaleDateString()}
                                   </span>
                                 )}
@@ -213,7 +213,7 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
                         <div className="flex-shrink-0">
                           <Link
                             href={`/assets/${asset.id}`}
-                            className="p-2 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition-colors"
+                            className="p-2 text-white/50 hover:text-white/80 transition-colors hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800 rounded transition-colors"
                             title="View Details"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -231,9 +231,9 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
           </div>
 
           {/* Footer */}
-          <div className="p-6 border-t border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-white/5/50">
+          <div className="p-6 border-t border-gray-700 bg-gray-900/5/50">
             <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-white/50 hover:text-white/80 transition-colors">
                 {assets.filter(asset => {
                   const activeTransaction = asset.transactions.find(t => t.type === 'CHECK_OUT')
                   return activeTransaction?.expectedReturnDate ? isOverdue(activeTransaction.expectedReturnDate) : false
@@ -242,13 +242,13 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
               <div className="flex space-x-3">
                 <button
                   onClick={onClose}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 transition-colors"
+                  className="px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover transition-colors"
                 >
                   Close
                 </button>
                 <Link
                   href="/assets?status=CHECKED_OUT"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
+                  className="px-4 py-2 bg-blue-600 hover text-white rounded-md text-sm font-medium transition-colors"
                   onClick={onClose}
                 >
                   View in Assets Page

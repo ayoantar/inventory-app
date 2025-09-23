@@ -82,7 +82,7 @@ export default function BulkAssignNumbersPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
         <Navbar />
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
@@ -96,7 +96,7 @@ export default function BulkAssignNumbersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       <Navbar />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -104,16 +104,16 @@ export default function BulkAssignNumbersPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-brand-primary-text">
+              <h1 className="text-2xl font-bold text-brand-primary-text">
                 Bulk Assign Asset Numbers
               </h1>
-              <p className="text-gray-800 dark:text-gray-400 mt-2">
+              <p className="text-brand-primary-text mt-2">
                 Assign asset numbers to all assets that don't have them
               </p>
             </div>
             <button
               onClick={() => router.back()}
-              className="text-gray-700 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              className="text-white/60 dark:text-white/60 hover:text-slate-500 dark:hover:text-slate-200"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -123,28 +123,28 @@ export default function BulkAssignNumbersPage() {
         </div>
 
         {/* Count Summary */}
-        <div className="bg-white/80 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text mb-4">
+        <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6 mb-6">
+          <h2 className="text-lg font-semibold text-brand-primary-text mb-4">
             Assets Without Asset Numbers
           </h2>
           
           {countData && (
             <>
-              <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">
+              <div className="text-3xl font-bold text-indigo-600 mb-4">
                 {countData.totalWithoutNumbers}
               </div>
               
               <div className="space-y-2">
-                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <h3 className="text-sm font-medium text-gray-300">
                   Breakdown by Category:
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {countData.breakdown.map(item => (
-                    <div key={item.category} className="bg-white/80 dark:bg-white/5 rounded p-2">
-                      <div className="text-sm font-medium text-gray-900 dark:text-brand-primary-text">
+                    <div key={item.category} className="bg-gray-900/5 rounded p-2">
+                      <div className="text-sm font-medium text-brand-primary-text">
                         {item.category}
                       </div>
-                      <div className="text-xs text-gray-700 dark:text-brand-secondary-text">
+                      <div className="text-xs text-gray-600 dark:text-brand-secondary-text">
                         {item.count} assets
                       </div>
                     </div>
@@ -156,20 +156,20 @@ export default function BulkAssignNumbersPage() {
         </div>
 
         {/* Action Button */}
-        <div className="bg-white/80 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text mb-4">
+        <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6 mb-6">
+          <h2 className="text-lg font-semibold text-brand-primary-text mb-4">
             Bulk Assignment
           </h2>
           
-          <p className="text-sm text-gray-800 dark:text-gray-400 mb-6">
+          <p className="text-sm text-brand-primary-text mb-6">
             This will automatically generate and assign unique asset numbers to all assets that currently don't have them. 
-            Asset numbers will follow the format: <code className="bg-gray-100 dark:bg-white/5 px-2 py-1 rounded">LSVR-{'{CATEGORY}'}-{'{NUMBER}'}</code>
+            Asset numbers will follow the format: <code className="bg-gray-900/5 px-2 py-1 rounded">LSVR-{'{CATEGORY}'}-{'{NUMBER}'}</code>
           </p>
           
           <button
             onClick={handleBulkAssign}
             disabled={assigning || !countData || countData.totalWithoutNumbers === 0}
-            className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center"
+            className="bg-indigo-600 hover disabled:opacity-50 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center"
           >
             {assigning && (
               <svg className="w-4 h-4 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -185,20 +185,20 @@ export default function BulkAssignNumbersPage() {
         {result && (
           <div className={`rounded-lg border p-4 ${
             result.startsWith('Success') 
-              ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-300'
-              : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-700 dark:text-red-300'
+              ? 'bg-green-50 border-green-200 text-green-700'
+              : 'bg-red-50 border-red-200 text-red-700'
           }`}>
             <p className="font-medium">{result}</p>
           </div>
         )}
 
         {/* Warning */}
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
           <div className="flex">
             <svg className="w-5 h-5 text-yellow-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.316 15.5c-.77.833.192 2.5 1.732 2.5z" />
             </svg>
-            <div className="text-sm text-yellow-700 dark:text-yellow-300">
+            <div className="text-sm text-yellow-700">
               <p className="font-medium">Warning</p>
               <p>This operation cannot be undone. Asset numbers will be permanently assigned to assets. Make sure you want to proceed.</p>
             </div>

@@ -25,7 +25,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   }, [status, router, pathname])
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-white/5">
+    <div className="min-h-screen bg-gray-900/5">
       <Navbar />
       {children}
     </div>

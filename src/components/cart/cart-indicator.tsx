@@ -19,7 +19,7 @@ export default function CartIndicator() {
       <div className="fixed bottom-6 right-6 z-40">
         <button
           onClick={() => setShowSidebar(true)}
-          className="bg-brand-orange hover:bg-primary-600 text-brand-primary-text rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-200 relative group"
+          className="bg-brand-orange hover text-brand-primary-text rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-200 relative group"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path 
@@ -36,9 +36,9 @@ export default function CartIndicator() {
           </div>
           
           {/* Tooltip */}
-          <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-900 dark:bg-white/5 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+          <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
             {itemCount} item{itemCount !== 1 ? 's' : ''} in cart
-            <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+            <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
           </div>
         </button>
       </div>

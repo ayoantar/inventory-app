@@ -121,7 +121,7 @@ export default function AssetGroupDetailPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
         <Navbar />
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
@@ -136,19 +136,19 @@ export default function AssetGroupDetailPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
         <Navbar />
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <div className="px-4 py-6 sm:px-0">
             <div className="text-center py-12">
-              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
-              <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-brand-primary-text">{error}</h3>
+              <h3 className="mt-2 text-sm font-medium text-brand-primary-text">{error}</h3>
               <div className="mt-6">
                 <Link
                   href="/asset-groups"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors"
+                  className="bg-blue-600 hover text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors"
                 >
                   ← Back to Asset Groups
                 </Link>
@@ -163,7 +163,7 @@ export default function AssetGroupDetailPage() {
   if (!group) return null
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       <Navbar />
       
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -175,32 +175,32 @@ export default function AssetGroupDetailPage() {
                 <div className="flex items-center space-x-3 mb-2">
                   <Link
                     href="/asset-groups"
-                    className="text-gray-700 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                    className="text-white/60 dark:text-white/60 hover:text-slate-500 dark:hover:text-slate-200"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
                   </Link>
-                  <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                    <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
+                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
                   </div>
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                  <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-brand-secondary-text bg-clip-text text-transparent">
                     {group.name}
                   </h1>
                 </div>
                 {group.description && (
-                  <p className="text-gray-800 dark:text-gray-400 ml-11 max-w-2xl mb-4">{group.description}</p>
+                  <p className="text-brand-primary-text ml-11 max-w-2xl mb-4">{group.description}</p>
                 )}
-                <div className="flex items-center space-x-4 text-sm text-gray-700 dark:text-brand-secondary-text ml-11">
+                <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-brand-secondary-text ml-11">
                   <span>{group._count.members} assets</span>
                   {group.category && <span>• {group.category}</span>}
                   {group.location && <span>• {group.location}</span>}
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                     group.isActive
-                      ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-                      : 'bg-gray-100 text-gray-800 dark:bg-white/5 dark:text-gray-300'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
                   }`}>
                     {group.isActive ? 'Active' : 'Inactive'}
                   </span>
@@ -233,26 +233,26 @@ export default function AssetGroupDetailPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             <div className="lg:col-span-2">
               {/* Assets List */}
-              <div className="bg-white/80 dark:bg-white/5/80 backdrop-blur-sm rounded-2xl border border-gray-300/50 dark:border-gray-700/50 shadow-xl shadow-gray-200/20 dark:shadow-gray-900/50">
-                <div className="p-6 border-b border-gray-300 dark:border-gray-700">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">
+              <div className="bg-gray-900/5/80 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20">
+                <div className="p-6 border-b border-gray-700">
+                  <h2 className="text-lg font-semibold text-brand-primary-text">
                     Assets ({group.members.length})
                   </h2>
                 </div>
                 {group.members.length > 0 ? (
-                  <div className="divide-y divide-gray-300 dark:divide-gray-700">
+                  <div className="divide-y divide-gray-300">
                     {group.members.map((member) => (
-                      <div key={member.id} className="p-3 hover:bg-white/10 dark:hover:bg-white/10/50 transition-colors">
+                      <div key={member.id} className="p-3 hover transition-colors">
                         <div className="flex items-center">
                           <div className="w-10 h-10 mr-3 flex-shrink-0">
                             {member.asset.imageUrl ? (
                               <img
                                 src={member.asset.imageUrl}
                                 alt={member.asset.description || member.asset.name}
-                                className="w-10 h-10 object-cover rounded-lg border border-gray-200 dark:border-gray-600"
+                                className="w-10 h-10 object-cover rounded-lg border border-gray-600"
                               />
                             ) : (
-                              <div className="w-10 h-10 bg-slate-100 dark:bg-white/5 rounded-lg flex items-center justify-center">
+                              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
                                 <span className="text-sm">📦</span>
                               </div>
                             )}
@@ -260,21 +260,21 @@ export default function AssetGroupDetailPage() {
                           <div className="flex-1 min-w-0">
                             <Link
                               href={`/assets/${member.asset.id}`}
-                              className="text-base font-medium text-gray-900 dark:text-brand-primary-text hover:text-blue-600 dark:hover:text-blue-400 transition-colors block"
+                              className="text-base font-medium text-brand-primary-text hover transition-colors block"
                             >
                               {member.asset.description || member.asset.name || `Asset ${member.asset.id.slice(-4)}`}
                             </Link>
-                            <div className="flex items-center space-x-3 mt-1 text-xs text-gray-700 dark:text-brand-secondary-text">
+                            <div className="flex items-center space-x-3 mt-1 text-xs text-gray-600 dark:text-brand-secondary-text">
                               {member.asset.name && member.asset.name !== member.asset.description && (
                                 <span>ID: {member.asset.name}</span>
                               )}
                               <span>{member.asset.category.replace('_', ' ')}</span>
                               <span className={`px-1.5 py-0.5 rounded-full text-xs font-medium ${
                                 member.asset.status === 'AVAILABLE'
-                                  ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                                  ? 'bg-green-100 text-green-800'
                                   : member.asset.status === 'CHECKED_OUT'
-                                  ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
-                                  : 'bg-gray-100 text-gray-800 dark:bg-white/5 dark:text-gray-300'
+                                  ? 'bg-yellow-100 text-yellow-800'
+                                  : 'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
                               }`}>
                                 {member.asset.status.replace('_', ' ')}
                               </span>
@@ -286,11 +286,11 @@ export default function AssetGroupDetailPage() {
                           </div>
                           <div className="text-right ml-4">
                             {(member.asset.currentValue || member.asset.purchasePrice) && (
-                              <div className="text-sm font-medium text-gray-900 dark:text-brand-primary-text">
+                              <div className="text-sm font-medium text-brand-primary-text">
                                 ${(member.asset.currentValue || member.asset.purchasePrice)?.toLocaleString()}
                               </div>
                             )}
-                            <div className="text-xs text-gray-700 dark:text-brand-secondary-text">
+                            <div className="text-xs text-gray-600 dark:text-brand-secondary-text">
                               Qty: {member.quantity}
                             </div>
                           </div>
@@ -300,7 +300,7 @@ export default function AssetGroupDetailPage() {
                   </div>
                 ) : (
                   <div className="p-12 text-center">
-                    <div className="text-gray-700 dark:text-brand-secondary-text">
+                    <div className="text-gray-600 dark:text-brand-secondary-text">
                       No assets in this group
                     </div>
                   </div>
@@ -310,25 +310,25 @@ export default function AssetGroupDetailPage() {
 
             <div className="space-y-6">
               {/* Summary */}
-              <div className="bg-white/80 dark:bg-white/5/80 backdrop-blur-sm rounded-2xl border border-gray-300/50 dark:border-gray-700/50 shadow-xl shadow-gray-200/20 dark:shadow-gray-900/50 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text mb-4">Summary</h3>
+              <div className="bg-gray-900/5/80 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 p-6">
+                <h3 className="text-lg font-semibold text-brand-primary-text mb-4">Summary</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-800 dark:text-gray-400">Total Assets:</span>
-                    <span className="font-medium text-gray-900 dark:text-brand-primary-text">{group.members.length}</span>
+                    <span className="text-brand-primary-text">Total Assets:</span>
+                    <span className="font-medium text-brand-primary-text">{group.members.length}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-800 dark:text-gray-400">Total Value:</span>
-                    <span className="font-medium text-gray-900 dark:text-brand-primary-text">
+                    <span className="text-brand-primary-text">Total Value:</span>
+                    <span className="font-medium text-brand-primary-text">
                       ${calculateTotalValue().toLocaleString()}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-800 dark:text-gray-400">Status:</span>
+                    <span className="text-brand-primary-text">Status:</span>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                       group.isActive
-                        ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-                        : 'bg-gray-100 text-gray-800 dark:bg-white/5 dark:text-gray-300'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
                     }`}>
                       {group.isActive ? 'Active' : 'Inactive'}
                     </span>
@@ -337,30 +337,30 @@ export default function AssetGroupDetailPage() {
               </div>
 
               {/* Details */}
-              <div className="bg-white/80 dark:bg-white/5/80 backdrop-blur-sm rounded-2xl border border-gray-300/50 dark:border-gray-700/50 shadow-xl shadow-gray-200/20 dark:shadow-gray-900/50 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text mb-4">Details</h3>
+              <div className="bg-gray-900/5/80 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 p-6">
+                <h3 className="text-lg font-semibold text-brand-primary-text mb-4">Details</h3>
                 <div className="space-y-3 text-sm">
                   {group.category && (
                     <div>
-                      <span className="text-gray-800 dark:text-gray-400">Category:</span>
-                      <div className="font-medium text-gray-900 dark:text-brand-primary-text">{group.category}</div>
+                      <span className="text-brand-primary-text">Category:</span>
+                      <div className="font-medium text-brand-primary-text">{group.category}</div>
                     </div>
                   )}
                   {group.location && (
                     <div>
-                      <span className="text-gray-800 dark:text-gray-400">Location:</span>
-                      <div className="font-medium text-gray-900 dark:text-brand-primary-text">{group.location}</div>
+                      <span className="text-brand-primary-text">Location:</span>
+                      <div className="font-medium text-brand-primary-text">{group.location}</div>
                     </div>
                   )}
                   <div>
-                    <span className="text-gray-800 dark:text-gray-400">Created:</span>
-                    <div className="font-medium text-gray-900 dark:text-brand-primary-text">
+                    <span className="text-brand-primary-text">Created:</span>
+                    <div className="font-medium text-brand-primary-text">
                       {new Date(group.createdAt).toLocaleDateString()}
                     </div>
                   </div>
                   <div>
-                    <span className="text-gray-800 dark:text-gray-400">Created By:</span>
-                    <div className="font-medium text-gray-900 dark:text-brand-primary-text">
+                    <span className="text-brand-primary-text">Created By:</span>
+                    <div className="font-medium text-brand-primary-text">
                       {group.createdBy?.name || 'Unknown'}
                     </div>
                   </div>
@@ -369,9 +369,9 @@ export default function AssetGroupDetailPage() {
 
               {/* Notes */}
               {group.notes && (
-                <div className="bg-white/80 dark:bg-white/5/80 backdrop-blur-sm rounded-2xl border border-gray-300/50 dark:border-gray-700/50 shadow-xl shadow-gray-200/20 dark:shadow-gray-900/50 p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text mb-4">Notes</h3>
-                  <div className="text-sm text-gray-800 dark:text-gray-400 whitespace-pre-wrap">
+                <div className="bg-gray-900/5/80 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 p-6">
+                  <h3 className="text-lg font-semibold text-brand-primary-text mb-4">Notes</h3>
+                  <div className="text-sm text-brand-primary-text whitespace-pre-wrap">
                     {group.notes}
                   </div>
                 </div>

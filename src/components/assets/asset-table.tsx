@@ -18,12 +18,12 @@ interface AssetTableProps {
 }
 
 const statusColors = {
-  AVAILABLE: 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border-green-200 dark:border-green-700',
-  CHECKED_OUT: 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-400 border-yellow-300 dark:border-yellow-700',
-  IN_MAINTENANCE: 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border-red-200 dark:border-red-700',
-  RETIRED: 'bg-gray-100 dark:bg-white/5 text-gray-800 dark:text-brand-secondary-text border-gray-300 dark:border-brand-dark-blue-deep',
-  MISSING: 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border-red-200 dark:border-red-700',
-  RESERVED: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-700'
+  AVAILABLE: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-300 dark:border-green-700',
+  CHECKED_OUT: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700',
+  IN_MAINTENANCE: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-300 dark:border-red-700',
+  RETIRED: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300 border-gray-300 dark:border-gray-700',
+  MISSING: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-300 dark:border-red-700',
+  RESERVED: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-300 dark:border-blue-700'
 }
 
 
@@ -172,13 +172,13 @@ export default function AssetTable({
   }
 
   return (
-    <div className="bg-gray-50 dark:bg-white/5 shadow-sm rounded-lg border border-gray-300 dark:border-brand-dark-blue-deep overflow-hidden">
+    <div className="bg-gray-900/5 shadow-sm rounded-lg border border-gray-600 overflow-hidden">
       <div className="overflow-x-auto">
-        <table ref={tableRef} className="w-full divide-y divide-gray-300 dark:divide-brand-dark-blue-deep border-collapse">
-          <thead className="bg-gray-100 dark:bg-brand-dark-blue">
-            <tr className="divide-x divide-gray-300 dark:divide-brand-dark-blue-deep">
+        <table ref={tableRef} className="w-full divide-y divide-gray-300 border-collapse">
+          <thead className="bg-gray-100 dark:bg-gray-800">
+            <tr className="divide-x divide-gray-300">
               {bulkMode && (
-                <th className="px-3 py-3 text-center border-r border-gray-300 dark:border-brand-dark-blue-deep relative" style={getColumnStyle('checkbox')}>
+                <th className="px-3 py-3 text-center border-r border-gray-600 relative" style={getColumnStyle('checkbox')}>
                   <input
                     type="checkbox"
                     checked={isAllSelected}
@@ -186,94 +186,94 @@ export default function AssetTable({
                       if (input) input.indeterminate = isPartialSelected
                     }}
                     onChange={handleSelectAll}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 rounded"
                   />
                   <div 
-                    className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500 hover:bg-opacity-50"
+                    className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800"
                     onMouseDown={(e) => handleMouseDown(e, 'checkbox')}
                   />
                 </th>
               )}
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-300 dark:border-brand-dark-blue-deep relative" style={getColumnStyle('asset')}>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600 relative" style={getColumnStyle('asset')}>
                 Asset
                 <div 
-                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500 hover:bg-opacity-50"
+                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800"
                   onMouseDown={(e) => handleMouseDown(e, 'asset')}
                 />
               </th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-300 dark:border-brand-dark-blue-deep relative" style={getColumnStyle('category')}>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600 relative" style={getColumnStyle('category')}>
                 Category
                 <div 
-                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500 hover:bg-opacity-50"
+                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800"
                   onMouseDown={(e) => handleMouseDown(e, 'category')}
                 />
               </th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-300 dark:border-brand-dark-blue-deep relative" style={getColumnStyle('status')}>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600 relative" style={getColumnStyle('status')}>
                 Status
                 <div 
-                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500 hover:bg-opacity-50"
+                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800"
                   onMouseDown={(e) => handleMouseDown(e, 'status')}
                 />
               </th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-300 dark:border-brand-dark-blue-deep relative" style={getColumnStyle('condition')}>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600 relative" style={getColumnStyle('condition')}>
                 Condition
                 <div 
-                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500 hover:bg-opacity-50"
+                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800"
                   onMouseDown={(e) => handleMouseDown(e, 'condition')}
                 />
               </th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-300 dark:border-brand-dark-blue-deep relative" style={getColumnStyle('location')}>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600 relative" style={getColumnStyle('location')}>
                 Location
                 <div 
-                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500 hover:bg-opacity-50"
+                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800"
                   onMouseDown={(e) => handleMouseDown(e, 'location')}
                 />
               </th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-300 dark:border-brand-dark-blue-deep relative" style={getColumnStyle('client')}>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600 relative" style={getColumnStyle('client')}>
                 Client
                 <div 
-                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500 hover:bg-opacity-50"
+                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800"
                   onMouseDown={(e) => handleMouseDown(e, 'client')}
                 />
               </th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-300 dark:border-brand-dark-blue-deep relative" style={getColumnStyle('value')}>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600 relative" style={getColumnStyle('value')}>
                 Value
                 <div 
-                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500 hover:bg-opacity-50"
+                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800"
                   onMouseDown={(e) => handleMouseDown(e, 'value')}
                 />
               </th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider relative" style={getColumnStyle('actions')}>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider relative" style={getColumnStyle('actions')}>
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="bg-gray-50 dark:bg-white/5 divide-y divide-gray-300 dark:divide-brand-dark-blue-deep">
+          <tbody className="bg-gray-900/5 divide-y divide-gray-300">
             {assets.map((asset) => (
-              <tr key={asset.id} className={`hover:bg-white/10/50 dark:hover:bg-brand-dark-blue-deep/50 transition-colors ${selectedAssets.includes(asset.id) ? 'bg-blue-50 dark:bg-blue-900/20' : ''} ${asset.status === 'CHECKED_OUT' ? 'border-l-4 border-orange-500 bg-orange-100/40 dark:bg-orange-900/10' : ''}`}>
+              <tr key={asset.id} className={`hover transition-colors ${selectedAssets.includes(asset.id) ? 'bg-blue-50' : ''} ${asset.status === 'CHECKED_OUT' ? 'border-l-4 border-orange-500 bg-orange-100/40' : ''}`}>
                 {bulkMode && (
-                  <td className="px-3 py-3 whitespace-nowrap border-r border-gray-300 dark:border-brand-dark-blue-deep text-center" style={getColumnStyle('checkbox')}>
+                  <td className="px-3 py-3 whitespace-nowrap border-r border-gray-600 text-center" style={getColumnStyle('checkbox')}>
                     <input
                       type="checkbox"
                       checked={selectedAssets.includes(asset.id)}
                       onChange={() => handleSelectAsset(asset.id)}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 rounded"
                     />
                   </td>
                 )}
-                <td className="px-3 py-3 border-r border-gray-300 dark:border-brand-dark-blue-deep" style={getColumnStyle('asset')}>
+                <td className="px-3 py-3 border-r border-gray-600" style={getColumnStyle('asset')}>
                   <div className="flex items-center">
                     <div className="w-10 h-10 mr-2 flex-shrink-0">
                       {asset.imageUrl ? (
                         <img
                           src={asset.imageUrl}
                           alt={asset.name}
-                          className="w-10 h-10 object-cover rounded-lg border border-gray-200 dark:border-brand-dark-blue-deep cursor-pointer hover:opacity-80 transition-opacity"
+                          className="w-10 h-10 object-cover rounded-lg border border-gray-700 cursor-pointer hover:opacity-80 transition-opacity"
                           onClick={() => handleAssetClick(asset.id)}
                         />
                       ) : (
-                        <div 
-                          className="w-10 h-10 bg-slate-100 dark:bg-white/5 rounded-lg flex items-center justify-center cursor-pointer hover:bg-white/10 dark:hover:bg-white/10 transition-colors"
+                        <div
+                          className="w-10 h-10 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg flex items-center justify-center cursor-pointer transition-colors"
                           onClick={() => handleAssetClick(asset.id)}
                         >
                           <span className="text-sm">
@@ -287,14 +287,14 @@ export default function AssetTable({
                         onClick={() => handleAssetClick(asset.id)}
                         className="text-left w-full"
                       >
-                        <div className="text-sm font-medium text-gray-900 dark:text-brand-primary-text hover:text-blue-600 dark:hover:text-blue-400 transition-colors break-words">
+                        <div className="text-sm font-medium text-brand-primary-text hover transition-colors break-words">
                           {asset.name}
                         </div>
-                        <div className="text-xs text-gray-700 dark:text-brand-secondary-text truncate">
+                        <div className="text-xs text-gray-600 dark:text-brand-secondary-text truncate">
                           {asset.serialNumber || 'No serial number'}
                         </div>
                         {asset.description && (
-                          <div className="text-xs text-gray-800 dark:text-brand-secondary-text mt-0.5 leading-relaxed">
+                          <div className="text-xs text-gray-600 dark:text-brand-secondary-text mt-0.5 leading-relaxed">
                             {asset.description}
                           </div>
                         )}
@@ -303,42 +303,42 @@ export default function AssetTable({
                   </div>
                 </td>
                 
-                <td className="px-3 py-3 whitespace-nowrap border-r border-gray-300 dark:border-brand-dark-blue-deep text-center" style={getColumnStyle('category')}>
-                  <span className="text-sm text-gray-900 dark:text-brand-primary-text capitalize">
+                <td className="px-3 py-3 whitespace-nowrap border-r border-gray-600 text-center" style={getColumnStyle('category')}>
+                  <span className="text-sm text-brand-primary-text capitalize">
                     {asset.category.toLowerCase().replace('_', ' ')}
                   </span>
                 </td>
                 
-                <td className="px-3 py-3 whitespace-nowrap border-r border-gray-300 dark:border-brand-dark-blue-deep text-center" style={getColumnStyle('status')}>
+                <td className="px-3 py-3 whitespace-nowrap border-r border-gray-600 text-center" style={getColumnStyle('status')}>
                   <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wide border ${statusColors[asset.status as AssetStatus]}`}>
                     {asset.status.replace('_', ' ')}
                   </span>
                 </td>
                 
-                <td className="px-3 py-3 whitespace-nowrap border-r border-gray-300 dark:border-brand-dark-blue-deep text-center" style={getColumnStyle('condition')}>
-                  <span className="text-sm font-medium text-gray-900 dark:text-brand-primary-text">
+                <td className="px-3 py-3 whitespace-nowrap border-r border-gray-600 text-center" style={getColumnStyle('condition')}>
+                  <span className="text-sm font-medium text-brand-primary-text">
                     {asset.condition.replace('_', ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase())}
                   </span>
                 </td>
                 
-                <td className="px-3 py-3 whitespace-nowrap border-r border-gray-300 dark:border-brand-dark-blue-deep text-center" style={getColumnStyle('location')}>
-                  <div className="text-sm text-gray-900 dark:text-brand-primary-text">
+                <td className="px-3 py-3 whitespace-nowrap border-r border-gray-600 text-center" style={getColumnStyle('location')}>
+                  <div className="text-sm text-brand-primary-text">
                     {asset.location || '-'}
                   </div>
                 </td>
                 
-                <td className="px-3 py-3 whitespace-nowrap border-r border-gray-300 dark:border-brand-dark-blue-deep text-center" style={getColumnStyle('client')}>
-                  <div className="text-sm text-gray-900 dark:text-brand-primary-text">
+                <td className="px-3 py-3 whitespace-nowrap border-r border-gray-600 text-center" style={getColumnStyle('client')}>
+                  <div className="text-sm text-brand-primary-text">
                     {asset.client?.name ? (
                       <div className="font-medium">{asset.client.name}</div>
                     ) : (
-                      <span className="text-gray-400 dark:text-brand-secondary-text">No Client</span>
+                      <span className="text-brand-secondary-text">-</span>
                     )}
                   </div>
                 </td>
                 
-                <td className="px-3 py-3 whitespace-nowrap border-r border-gray-300 dark:border-brand-dark-blue-deep text-center" style={getColumnStyle('value')}>
-                  <div className="text-sm text-gray-900 dark:text-brand-primary-text">
+                <td className="px-3 py-3 whitespace-nowrap border-r border-gray-600 text-center" style={getColumnStyle('value')}>
+                  <div className="text-sm text-brand-primary-text">
                     {asset.currentValue 
                       ? `$${asset.currentValue.toLocaleString()}` 
                       : asset.purchasePrice 
@@ -351,7 +351,7 @@ export default function AssetTable({
                 <td className="px-1 py-3 whitespace-nowrap text-center text-sm font-medium" style={getColumnStyle('actions')}>
                   <Link
                     href={`/assets/${asset.id}`}
-                    className="px-1 py-1 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition-colors font-medium text-xs"
+                    className="px-2 py-1 text-brand-orange hover:text-brand-orange-soft dark:text-brand-orange dark:hover:text-brand-orange-soft bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded transition-colors font-medium text-xs"
                   >
                     View
                   </Link>
@@ -364,11 +364,11 @@ export default function AssetTable({
       
       {assets.length === 0 && (
         <div className="text-center py-12">
-          <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
           </svg>
-          <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-brand-primary-text">No assets found</h3>
-          <p className="mt-1 text-sm text-gray-700 dark:text-brand-secondary-text">
+          <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No assets found</h3>
+          <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
             Try adjusting your search criteria or filters
           </p>
         </div>

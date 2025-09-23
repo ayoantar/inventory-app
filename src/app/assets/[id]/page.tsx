@@ -206,12 +206,12 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
   }
 
   const statusColors = {
-    AVAILABLE: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400',
-    CHECKED_OUT: 'bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400',
-    IN_MAINTENANCE: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
-    RETIRED: 'bg-gray-100 text-gray-800 dark:bg-white/5 dark:text-gray-300',
-    MISSING: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
-    RESERVED: 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
+    AVAILABLE: 'bg-emerald-100 text-emerald-800',
+    CHECKED_OUT: 'bg-amber-100 text-amber-800',
+    IN_MAINTENANCE: 'bg-red-100 text-red-800',
+    RETIRED: 'bg-gray-100 dark:bg-gray-800 text-brand-primary-text',
+    MISSING: 'bg-red-100 text-red-800',
+    RESERVED: 'bg-blue-100 text-blue-800'
   }
 
   const tabs = [
@@ -258,7 +258,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
         <Navbar />
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
@@ -272,7 +272,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       <Navbar />
       
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -282,7 +282,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
             <div className="flex items-center space-x-4">
               <Link
                 href="/assets"
-                className="text-gray-700 dark:text-brand-secondary-text hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                className="text-gray-600 dark:text-brand-secondary-text hover transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -295,24 +295,24 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="text-3xl font-bold bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1 text-gray-900 dark:text-brand-primary-text w-full"
+                    className="text-3xl font-bold bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1 text-brand-primary-text w-full"
                     placeholder="Asset name"
                   />
                 ) : (
-                  <h1 className="text-3xl font-bold text-gray-900 dark:text-brand-primary-text">{asset.name}</h1>
+                  <h1 className="text-3xl font-bold text-brand-primary-text">{asset.name}</h1>
                 )}
-                <p className="text-gray-800 dark:text-gray-400">{asset.manufacturer} {asset.model}</p>
+                <p className="text-brand-primary-text">{asset.manufacturer} {asset.model}</p>
               </div>
             </div>
             
             <div className="flex items-center space-x-3">
-              <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 bg-white/80 dark:bg-white/5 transition-colors">
+              <button className="px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900/5 transition-colors">
                 Print
               </button>
               {!editing ? (
                 <button
                   onClick={() => setEditing(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                  className="bg-blue-600 hover text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   Edit Asset
                 </button>
@@ -324,14 +324,14 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       setError('')
                       fetchAsset()
                     }}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 bg-white/80 dark:bg-white/5 transition-colors"
+                    className="px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900/5 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium disabled:opacity-50 transition-colors"
+                    className="bg-blue-600 hover text-white px-4 py-2 rounded-md text-sm font-medium disabled:opacity-50 transition-colors"
                   >
                     {saving ? 'Saving...' : 'Save Changes'}
                   </button>
@@ -341,13 +341,13 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
           </div>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
               <div className="flex">
                 <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
                 <div className="ml-3">
-                  <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+                  <p className="text-sm text-red-800">{error}</p>
                 </div>
               </div>
             </div>
@@ -357,7 +357,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
             {/* Asset Image & Quick Actions */}
             <div className="lg:col-span-1">
-              <div className="bg-white/80 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
+              <div className="bg-gray-900/5 rounded-lg border border-gray-700 overflow-hidden">
                 {asset.imageUrl ? (
                   <img
                     src={asset.imageUrl}
@@ -365,8 +365,8 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                     className="w-full h-64 object-cover"
                   />
                 ) : (
-                  <div className="w-full h-64 bg-gray-100 dark:bg-white/5 flex items-center justify-center">
-                    <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-full h-64 bg-gray-900/5 flex items-center justify-center">
+                    <svg className="w-12 h-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
@@ -376,14 +376,14 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                   {asset.status === 'AVAILABLE' ? (
                     <button 
                       onClick={() => setShowCheckoutDialog(true)}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                      className="w-full bg-blue-600 hover text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                     >
                       Check Out Asset
                     </button>
                   ) : asset.status === 'CHECKED_OUT' ? (
                     <button 
                       onClick={() => setShowCheckinDialog(true)}
-                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                      className="w-full bg-emerald-600 hover text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                     >
                       Check In Asset
                     </button>
@@ -397,7 +397,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                   )}
                   <button 
                     onClick={() => setShowQRGenerator(true)}
-                    className="w-full border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 bg-white/80 dark:bg-white/5 px-4 py-2 transition-colors"
+                    className="w-full border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900/5 px-4 py-2 transition-colors"
                   >
                     Generate QR Code
                   </button>
@@ -407,20 +407,20 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
 
             {/* Asset Information */}
             <div className="lg:col-span-3">
-              <div className="bg-white/80 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 p-6">
+              <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Key Details */}
                   <div className="space-y-4">
-                    <h3 className="text-sm font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">Asset Details</h3>
+                    <h3 className="text-sm font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">Asset Details</h3>
                     <div className="space-y-3">
                       <div>
-                        <dt className="text-sm text-gray-700 dark:text-brand-secondary-text">Category</dt>
+                        <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Category</dt>
                         {editing ? (
                           <select
                             name="category"
                             value={formData.category}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
                             {categories.map(category => (
                               <option key={category.id} value={category.id}>
@@ -429,7 +429,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             ))}
                           </select>
                         ) : (
-                          <dd className="text-lg font-medium text-gray-900 dark:text-brand-primary-text capitalize">
+                          <dd className="text-lg font-medium text-brand-primary-text capitalize">
                             {(() => {
                               const category = categories.find(cat => cat.id === asset.category)
                               return category ? `${category.icon} ${category.name}` : asset.category.toLowerCase().replace('_', ' ')
@@ -438,21 +438,21 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                         )}
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-700 dark:text-brand-secondary-text">Client</dt>
-                        <dd className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">
+                        <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Client</dt>
+                        <dd className="text-lg font-medium text-brand-primary-text">
                           {asset.client?.name || (
-                            <span className="text-gray-400 dark:text-gray-600">No Client</span>
+                            <span className="text-white/50 hover:text-white/80 transition-colors">No Client</span>
                           )}
                         </dd>
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-700 dark:text-brand-secondary-text">Status</dt>
+                        <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Status</dt>
                         {editing ? (
                           <select
                             name="status"
                             value={formData.status}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
                             <option value="AVAILABLE">Available</option>
                             <option value="CHECKED_OUT">Checked Out</option>
@@ -470,13 +470,13 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                         )}
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-700 dark:text-brand-secondary-text">Condition</dt>
+                        <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Condition</dt>
                         {editing ? (
                           <select
                             name="condition"
                             value={formData.condition}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
                             <option value="EXCELLENT">Excellent</option>
                             <option value="GOOD">Good</option>
@@ -485,22 +485,22 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             <option value="NEEDS_REPAIR">Needs Repair</option>
                           </select>
                         ) : (
-                          <dd className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">{asset.condition}</dd>
+                          <dd className="text-lg font-medium text-brand-primary-text">{asset.condition}</dd>
                         )}
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-700 dark:text-brand-secondary-text">Location</dt>
+                        <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Location</dt>
                         {editing ? (
                           <input
                             type="text"
                             name="location"
                             value={formData.location}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Building, Room, Shelf..."
                           />
                         ) : (
-                          <dd className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">{asset.location || '-'}</dd>
+                          <dd className="text-lg font-medium text-brand-primary-text">{asset.location || '-'}</dd>
                         )}
                       </div>
                     </div>
@@ -508,62 +508,62 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
 
                   {/* Technical Info */}
                   <div className="space-y-4">
-                    <h3 className="text-sm font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">Technical Info</h3>
+                    <h3 className="text-sm font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">Technical Info</h3>
                     <div className="space-y-3">
                       <div>
-                        <dt className="text-sm text-gray-700 dark:text-brand-secondary-text">Manufacturer</dt>
+                        <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Manufacturer</dt>
                         {editing ? (
                           <input
                             type="text"
                             name="manufacturer"
                             value={formData.manufacturer}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                           />
                         ) : (
-                          <dd className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">{asset.manufacturer || '-'}</dd>
+                          <dd className="text-lg font-medium text-brand-primary-text">{asset.manufacturer || '-'}</dd>
                         )}
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-700 dark:text-brand-secondary-text">Model</dt>
+                        <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Model</dt>
                         {editing ? (
                           <input
                             type="text"
                             name="model"
                             value={formData.model}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                           />
                         ) : (
-                          <dd className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">{asset.model || '-'}</dd>
+                          <dd className="text-lg font-medium text-brand-primary-text">{asset.model || '-'}</dd>
                         )}
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-700 dark:text-brand-secondary-text">Serial Number</dt>
+                        <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Serial Number</dt>
                         {editing ? (
                           <input
                             type="text"
                             name="serialNumber"
                             value={formData.serialNumber}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text font-mono"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                           />
                         ) : (
-                          <dd className="text-lg font-medium text-gray-900 dark:text-brand-primary-text font-mono">{asset.serialNumber || '-'}</dd>
+                          <dd className="text-lg font-medium text-brand-primary-text font-mono">{asset.serialNumber || '-'}</dd>
                         )}
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-700 dark:text-brand-secondary-text">Barcode</dt>
+                        <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Barcode</dt>
                         {editing ? (
                           <input
                             type="text"
                             name="barcode"
                             value={formData.barcode}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text font-mono"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                           />
                         ) : (
-                          <dd className="text-lg font-medium text-gray-900 dark:text-brand-primary-text font-mono">{asset.barcode || '-'}</dd>
+                          <dd className="text-lg font-medium text-brand-primary-text font-mono">{asset.barcode || '-'}</dd>
                         )}
                       </div>
                     </div>
@@ -571,26 +571,26 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
 
                   {/* Financial Info */}
                   <div className="space-y-4">
-                    <h3 className="text-sm font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">Financial</h3>
+                    <h3 className="text-sm font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">Financial</h3>
                     <div className="space-y-3">
                       <div>
-                        <dt className="text-sm text-gray-700 dark:text-brand-secondary-text">Purchase Date</dt>
+                        <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Purchase Date</dt>
                         {editing ? (
                           <input
                             type="date"
                             name="purchaseDate"
                             value={formData.purchaseDate}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                           />
                         ) : (
-                          <dd className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">
+                          <dd className="text-lg font-medium text-brand-primary-text">
                             {asset.purchaseDate ? new Date(asset.purchaseDate).toLocaleDateString() : '-'}
                           </dd>
                         )}
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-700 dark:text-brand-secondary-text">Purchase Price</dt>
+                        <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Purchase Price</dt>
                         {editing ? (
                           <input
                             type="number"
@@ -599,17 +599,17 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             onChange={handleChange}
                             min="0"
                             step="0.01"
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="0.00"
                           />
                         ) : (
-                          <dd className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">
+                          <dd className="text-lg font-medium text-brand-primary-text">
                             {asset.purchasePrice ? `$${asset.purchasePrice.toLocaleString()}` : '-'}
                           </dd>
                         )}
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-700 dark:text-brand-secondary-text">Current Value</dt>
+                        <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Current Value</dt>
                         {editing ? (
                           <input
                             type="number"
@@ -618,28 +618,28 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             onChange={handleChange}
                             min="0"
                             step="0.01"
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="0.00"
                           />
                         ) : (
-                          <dd className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">
+                          <dd className="text-lg font-medium text-brand-primary-text">
                             {asset.currentValue ? `$${asset.currentValue.toLocaleString()}` : '-'}
                           </dd>
                         )}
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-700 dark:text-brand-secondary-text">Asset ID</dt>
+                        <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Asset ID</dt>
                         {editing ? (
                           <input
                             type="text"
                             name="assetNumber"
                             value={formData.assetNumber || ''}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text font-mono text-sm"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
                             placeholder="Asset number/ID"
                           />
                         ) : (
-                          <dd className="text-sm font-mono text-gray-800 dark:text-gray-400">{asset.assetNumber || asset.id}</dd>
+                          <dd className="text-sm font-mono text-brand-primary-text">{asset.assetNumber || asset.id}</dd>
                         )}
                       </div>
                     </div>
@@ -647,36 +647,36 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                 </div>
 
                 {/* Description & Notes */}
-                <div className="mt-6 pt-6 border-t border-gray-300 dark:border-gray-700 space-y-4">
+                <div className="mt-6 pt-6 border-t border-gray-700 space-y-4">
                   <div>
-                    <dt className="text-sm font-medium text-gray-700 dark:text-brand-secondary-text mb-2">Description</dt>
+                    <dt className="text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-2">Description</dt>
                     {editing ? (
                       <textarea
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
                         rows={3}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                        className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Asset description..."
                       />
                     ) : (
-                      <dd className="text-gray-900 dark:text-brand-primary-text">{asset.description || 'No description provided'}</dd>
+                      <dd className="text-brand-primary-text">{asset.description || 'No description provided'}</dd>
                     )}
                   </div>
                   
                   <div>
-                    <dt className="text-sm font-medium text-gray-700 dark:text-brand-secondary-text mb-2">Notes</dt>
+                    <dt className="text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-2">Notes</dt>
                     {editing ? (
                       <textarea
                         name="notes"
                         value={formData.notes}
                         onChange={handleChange}
                         rows={4}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                        className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Additional notes, maintenance history, special instructions..."
                       />
                     ) : (
-                      <dd className="text-gray-900 dark:text-brand-primary-text whitespace-pre-wrap">{asset.notes || 'No notes available'}</dd>
+                      <dd className="text-brand-primary-text whitespace-pre-wrap">{asset.notes || 'No notes available'}</dd>
                     )}
                   </div>
                 </div>
@@ -699,32 +699,32 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
             <TabPanel>
             {activeTab === 'details' && (
               <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">Additional Asset Information</h3>
+                <h3 className="text-lg font-semibold text-brand-primary-text">Additional Asset Information</h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <dt className="text-sm font-medium text-gray-700 dark:text-brand-secondary-text">Created</dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-brand-primary-text">
+                    <dt className="text-sm font-medium text-gray-600 dark:text-brand-secondary-text">Created</dt>
+                    <dd className="mt-1 text-sm text-brand-primary-text">
                       {new Date(asset.createdAt).toLocaleDateString()} by {asset.createdBy?.name || 'System'}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-700 dark:text-brand-secondary-text">Last Modified</dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-brand-primary-text">
+                    <dt className="text-sm font-medium text-gray-600 dark:text-brand-secondary-text">Last Modified</dt>
+                    <dd className="mt-1 text-sm text-brand-primary-text">
                       {new Date(asset.updatedAt).toLocaleDateString()} by {asset.lastModifiedBy?.name || 'System'}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-700 dark:text-brand-secondary-text">QR Code</dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-brand-primary-text font-mono">
+                    <dt className="text-sm font-medium text-gray-600 dark:text-brand-secondary-text">QR Code</dt>
+                    <dd className="mt-1 text-sm text-brand-primary-text font-mono">
                       {asset.qrCode || 'Not generated'}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-700 dark:text-brand-secondary-text">Image URL</dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-brand-primary-text break-all">
+                    <dt className="text-sm font-medium text-gray-600 dark:text-brand-secondary-text">Image URL</dt>
+                    <dd className="mt-1 text-sm text-brand-primary-text break-all">
                       {asset.imageUrl ? (
-                        <a href={asset.imageUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">
+                        <a href={asset.imageUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                           {asset.imageUrl}
                         </a>
                       ) : 'No image'}
@@ -736,27 +736,27 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
 
             {activeTab === 'transactions' && (
               <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">Transaction History</h3>
+                <h3 className="text-lg font-semibold text-brand-primary-text">Transaction History</h3>
                 {asset.transactions.length > 0 ? (
                   <div className="space-y-4">
                     {asset.transactions.map((transaction) => (
-                      <div key={transaction.id} className="border border-gray-300 dark:border-gray-700 rounded-lg p-4">
+                      <div key={transaction.id} className="border border-gray-700 rounded-lg p-4">
                         <div className="flex justify-between items-start">
                           <div>
-                            <p className="font-medium text-gray-900 dark:text-brand-primary-text">
+                            <p className="font-medium text-brand-primary-text">
                               {transaction.type.replace('_', ' ')}
                             </p>
-                            <p className="text-sm text-gray-700 dark:text-brand-secondary-text">
+                            <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
                               By {transaction.user.name} on {new Date(transaction.createdAt).toLocaleDateString()}
                             </p>
                             {transaction.notes && (
-                              <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">{transaction.notes}</p>
+                              <p className="text-sm text-gray-300 mt-2">{transaction.notes}</p>
                             )}
                           </div>
                           <span className={`px-2 py-1 text-xs rounded-full ${
-                            transaction.status === 'ACTIVE' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400' :
-                            transaction.status === 'COMPLETED' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' :
-                            'bg-gray-100 text-gray-800 dark:bg-white/5 dark:text-gray-300'
+                            transaction.status === 'ACTIVE' ? 'bg-amber-100 text-amber-800' :
+                            transaction.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
+                            'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
                           }`}>
                             {transaction.status}
                           </span>
@@ -765,7 +765,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-700 dark:text-brand-secondary-text">No transactions recorded</p>
+                  <p className="text-gray-600 dark:text-brand-secondary-text">No transactions recorded</p>
                 )}
               </div>
             )}
@@ -773,10 +773,10 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
             {activeTab === 'maintenance' && (
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">Maintenance Records</h3>
+                  <h3 className="text-lg font-semibold text-brand-primary-text">Maintenance Records</h3>
                   <button
                     onClick={() => setShowMaintenanceForm(true)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors"
+                    className="bg-blue-600 hover text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors"
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -794,8 +794,8 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
 
             {activeTab === 'history' && (
               <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">Change History</h3>
-                <p className="text-gray-700 dark:text-brand-secondary-text">Audit trail will be available soon</p>
+                <h3 className="text-lg font-semibold text-brand-primary-text">Change History</h3>
+                <p className="text-gray-600 dark:text-brand-secondary-text">Audit trail will be available soon</p>
               </div>
             )}
             </TabPanel>

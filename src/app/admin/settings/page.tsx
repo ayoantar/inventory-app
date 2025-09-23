@@ -177,7 +177,7 @@ export default function SystemSettings() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
       </div>
     )
@@ -188,23 +188,23 @@ export default function SystemSettings() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       {/* Header */}
-      <div className="bg-white/80 dark:bg-white/5 shadow-sm border-b border-gray-300 dark:border-gray-700">
+      <div className="bg-gray-900/5 shadow-sm border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => router.back()}
-                className="text-gray-700 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                className="text-white/60 dark:text-white/60 hover:text-slate-500 dark:hover:text-slate-200"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-brand-primary-text">System Settings</h1>
-                <p className="text-sm text-gray-700 dark:text-brand-secondary-text">Configure system-wide settings and preferences</p>
+                <h1 className="text-2xl font-bold text-brand-primary-text">System Settings</h1>
+                <p className="text-sm text-gray-600 dark:text-brand-secondary-text">Configure system-wide settings and preferences</p>
               </div>
             </div>
           </div>
@@ -214,49 +214,49 @@ export default function SystemSettings() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Messages */}
         {message && (
-          <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-            <p className="text-green-800 dark:text-green-200 text-sm">{message}</p>
+          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+            <p className="text-green-800 text-sm">{message}</p>
           </div>
         )}
         
         {error && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-            <p className="text-red-800 dark:text-red-200 text-sm">{error}</p>
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-800 text-sm">{error}</p>
           </div>
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* General Settings */}
-          <div className="bg-white/80 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 p-6">
+          <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6">
             <div className="flex items-center mb-4">
-              <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg mr-3">
-                <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 bg-blue-50 rounded-lg mr-3">
+                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">General Settings</h3>
+              <h3 className="text-lg font-semibold text-brand-primary-text">General Settings</h3>
             </div>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   System Name
                 </label>
                 <input
                   type="text"
                   value={settings?.systemName || ''}
                   onChange={(e) => setSettings(prev => prev ? { ...prev, systemName: e.target.value } : null)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Default Timezone
                 </label>
                 <select 
                   value={settings?.timezone || 'UTC'}
                   onChange={(e) => setSettings(prev => prev ? { ...prev, timezone: e.target.value } : null)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="UTC">UTC</option>
                   <option value="America/New_York">Eastern Time</option>
@@ -271,9 +271,9 @@ export default function SystemSettings() {
                   id="maintenance-mode"
                   checked={settings?.maintenanceMode || false}
                   onChange={(e) => setSettings(prev => prev ? { ...prev, maintenanceMode: e.target.checked } : null)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 rounded"
                 />
-                <label htmlFor="maintenance-mode" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                <label htmlFor="maintenance-mode" className="ml-2 block text-sm text-gray-300">
                   Enable maintenance mode
                 </label>
               </div>
@@ -281,18 +281,18 @@ export default function SystemSettings() {
           </div>
 
           {/* Security Settings */}
-          <div className="bg-white/80 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 p-6">
+          <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6">
             <div className="flex items-center mb-4">
-              <div className="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg mr-3">
-                <svg className="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 bg-red-50 rounded-lg mr-3">
+                <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">Security Settings</h3>
+              <h3 className="text-lg font-semibold text-brand-primary-text">Security Settings</h3>
             </div>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Session Timeout (minutes)
                 </label>
                 <input
@@ -301,11 +301,11 @@ export default function SystemSettings() {
                   onChange={(e) => setSettings(prev => prev ? { ...prev, sessionTimeout: parseInt(e.target.value) } : null)}
                   min="15"
                   max="480"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Maximum Login Attempts
                 </label>
                 <input
@@ -314,7 +314,7 @@ export default function SystemSettings() {
                   onChange={(e) => setSettings(prev => prev ? { ...prev, maxLoginAttempts: parseInt(e.target.value) } : null)}
                   min="3"
                   max="10"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
               <div className="flex items-center">
@@ -323,9 +323,9 @@ export default function SystemSettings() {
                   id="force-password-change"
                   checked={settings?.forcePasswordChange || false}
                   onChange={(e) => setSettings(prev => prev ? { ...prev, forcePasswordChange: e.target.checked } : null)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 rounded"
                 />
-                <label htmlFor="force-password-change" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                <label htmlFor="force-password-change" className="ml-2 block text-sm text-gray-300">
                   Force password change on first login
                 </label>
               </div>
@@ -335,9 +335,9 @@ export default function SystemSettings() {
                   id="two-factor-auth"
                   checked={settings?.twoFactorAuth || false}
                   onChange={(e) => setSettings(prev => prev ? { ...prev, twoFactorAuth: e.target.checked } : null)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 rounded"
                 />
-                <label htmlFor="two-factor-auth" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                <label htmlFor="two-factor-auth" className="ml-2 block text-sm text-gray-300">
                   Enable two-factor authentication
                 </label>
               </div>
@@ -345,49 +345,49 @@ export default function SystemSettings() {
           </div>
 
           {/* System Information */}
-          <div className="bg-white/80 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 p-6">
+          <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6">
             <div className="flex items-center mb-4">
-              <div className="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg mr-3">
-                <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 bg-green-50 rounded-lg mr-3">
+                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">System Information</h3>
+              <h3 className="text-lg font-semibold text-brand-primary-text">System Information</h3>
             </div>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-800 dark:text-gray-400">Version</span>
-                <span className="text-gray-900 dark:text-brand-primary-text font-mono">{systemInfo?.version}</span>
+                <span className="text-brand-primary-text">Version</span>
+                <span className="text-brand-primary-text font-mono">{systemInfo?.version}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-800 dark:text-gray-400">Database Status</span>
-                <span className="text-green-600 dark:text-green-400">{systemInfo?.databaseStatus}</span>
+                <span className="text-brand-primary-text">Database Status</span>
+                <span className="text-green-600">{systemInfo?.databaseStatus}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-800 dark:text-gray-400">Last Backup</span>
-                <span className="text-gray-900 dark:text-brand-primary-text">
+                <span className="text-brand-primary-text">Last Backup</span>
+                <span className="text-brand-primary-text">
                   {systemInfo?.lastBackup ? new Date(systemInfo.lastBackup).toLocaleString() : 'Never'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-800 dark:text-gray-400">Uptime</span>
-                <span className="text-gray-900 dark:text-brand-primary-text">
+                <span className="text-brand-primary-text">Uptime</span>
+                <span className="text-brand-primary-text">
                   {systemInfo?.uptime ? formatUptime(systemInfo.uptime) : 'Unknown'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-800 dark:text-gray-400">Server Load</span>
+                <span className="text-brand-primary-text">Server Load</span>
                 <div className="text-right">
                   <span className={`${
-                    systemInfo?.serverLoad === 'Low' ? 'text-green-600 dark:text-green-400' :
-                    systemInfo?.serverLoad === 'Medium' ? 'text-yellow-600 dark:text-yellow-400' :
-                    systemInfo?.serverLoad === 'High' ? 'text-orange-600 dark:text-orange-400' :
-                    'text-red-600 dark:text-red-400'
+                    systemInfo?.serverLoad === 'Low' ? 'text-green-600' :
+                    systemInfo?.serverLoad === 'Medium' ? 'text-yellow-600' :
+                    systemInfo?.serverLoad === 'High' ? 'text-orange-600' :
+                    'text-red-600'
                   }`}>
                     {systemInfo?.serverLoad}
                   </span>
                   {systemInfo?.serverLoadDetails && (
-                    <div className="text-xs text-gray-700 dark:text-brand-secondary-text mt-1">
+                    <div className="text-xs text-gray-600 dark:text-brand-secondary-text mt-1">
                       Load: {systemInfo.serverLoadDetails.loadAverage['1min']} | 
                       Mem: {systemInfo.serverLoadDetails.memory.usagePercent}%
                     </div>
@@ -395,23 +395,23 @@ export default function SystemSettings() {
                 </div>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-800 dark:text-gray-400">Memory Usage</span>
-                <span className="text-gray-900 dark:text-brand-primary-text">
+                <span className="text-brand-primary-text">Memory Usage</span>
+                <span className="text-brand-primary-text">
                   {systemInfo?.memoryUsage ? formatBytes(systemInfo.memoryUsage.heapUsed) : 'Unknown'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-800 dark:text-gray-400">Platform</span>
-                <span className="text-gray-900 dark:text-brand-primary-text font-mono">
+                <span className="text-brand-primary-text">Platform</span>
+                <span className="text-brand-primary-text font-mono">
                   {systemInfo?.platform} ({systemInfo?.arch})
                 </span>
               </div>
             </div>
-            <div className="mt-4 pt-4 border-t border-gray-300 dark:border-gray-700">
+            <div className="mt-4 pt-4 border-t border-gray-700">
               <a
                 href="/api/health"
                 target="_blank"
-                className="inline-flex items-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+                className="inline-flex items-center text-sm text-blue-600 hover"
               >
                 View detailed health report
                 <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -427,7 +427,7 @@ export default function SystemSettings() {
           <button
             type="button"
             onClick={() => router.back()}
-            className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition-colors"
+            className="px-4 py-2 text-gray-300 hover border border-gray-600 rounded-lg hover transition-colors"
           >
             Cancel
           </button>
@@ -435,7 +435,7 @@ export default function SystemSettings() {
             type="button"
             disabled={saving}
             onClick={handleSave}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg transition-colors flex items-center space-x-2"
+            className="px-4 py-2 bg-blue-600 hover disabled:opacity-50 text-white rounded-lg transition-colors flex items-center space-x-2"
           >
             {saving && (
               <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -451,45 +451,45 @@ export default function SystemSettings() {
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
           <button 
             onClick={() => handleQuickAction('create-backup')}
-            className="p-4 bg-white/80 dark:bg-white/5 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition-colors text-left"
+            className="p-4 bg-gray-900/5 border border-gray-700 rounded-lg hover transition-colors text-left"
           >
             <div className="flex items-center">
-              <svg className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
               <div>
-                <h4 className="font-medium text-gray-900 dark:text-brand-primary-text">Create Backup</h4>
-                <p className="text-sm text-gray-700 dark:text-brand-secondary-text">Generate system backup</p>
+                <h4 className="font-medium text-brand-primary-text">Create Backup</h4>
+                <p className="text-sm text-gray-600 dark:text-brand-secondary-text">Generate system backup</p>
               </div>
             </div>
           </button>
 
           <button 
             onClick={() => handleQuickAction('test-system')}
-            className="p-4 bg-white/80 dark:bg-white/5 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition-colors text-left"
+            className="p-4 bg-gray-900/5 border border-gray-700 rounded-lg hover transition-colors text-left"
           >
             <div className="flex items-center">
-              <svg className="w-5 h-5 text-green-600 dark:text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div>
-                <h4 className="font-medium text-gray-900 dark:text-brand-primary-text">Test System</h4>
-                <p className="text-sm text-gray-700 dark:text-brand-secondary-text">Run system diagnostics</p>
+                <h4 className="font-medium text-brand-primary-text">Test System</h4>
+                <p className="text-sm text-gray-600 dark:text-brand-secondary-text">Run system diagnostics</p>
               </div>
             </div>
           </button>
 
           <button 
             onClick={() => handleQuickAction('clear-cache')}
-            className="p-4 bg-white/80 dark:bg-white/5 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 transition-colors text-left"
+            className="p-4 bg-gray-900/5 border border-gray-700 rounded-lg hover transition-colors text-left"
           >
             <div className="flex items-center">
-              <svg className="w-5 h-5 text-orange-600 dark:text-orange-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-orange-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
               <div>
-                <h4 className="font-medium text-gray-900 dark:text-brand-primary-text">Clear Cache</h4>
-                <p className="text-sm text-gray-700 dark:text-brand-secondary-text">Clear system cache</p>
+                <h4 className="font-medium text-brand-primary-text">Clear Cache</h4>
+                <p className="text-sm text-gray-600 dark:text-brand-secondary-text">Clear system cache</p>
               </div>
             </div>
           </button>

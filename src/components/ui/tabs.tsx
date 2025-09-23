@@ -30,10 +30,10 @@ export default function Tabs({
   const baseClasses = "flex transition-all duration-200 overflow-x-auto"
   
   const variantClasses = {
-    default: "border-b border-gray-300 dark:border-gray-700",
-    pills: "bg-gray-100 dark:bg-white/5 p-1 rounded-xl",
+    default: "border-b border-gray-700",
+    pills: "bg-gray-900/5 p-1 rounded-xl",
     underline: "space-x-1",
-    cards: "bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-gray-700 rounded-lg p-1"
+    cards: "bg-gray-900/5 border border-gray-700 rounded-lg p-1"
   }
 
   const sizeClasses = {
@@ -49,8 +49,8 @@ export default function Tabs({
       return `
         flex items-center px-4 py-2.5 font-medium rounded-lg transition-all duration-200 
         ${isActive 
-          ? 'bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text shadow-sm' 
-          : 'text-gray-800 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/10/50'
+          ? 'bg-gray-900 text-brand-primary-text shadow-sm' 
+          : 'text-brand-primary-text hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800'
         }
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
         ${size === 'sm' ? 'px-3 py-2 text-xs' : size === 'lg' ? 'px-5 py-3 text-base' : ''}
@@ -61,8 +61,8 @@ export default function Tabs({
       return `
         flex items-center px-4 py-2.5 font-medium rounded-md transition-all duration-200
         ${isActive 
-          ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800' 
-          : 'text-gray-800 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white/10 dark:hover:bg-white/10/50'
+          ? 'bg-blue-50 text-blue-700 border border-blue-200' 
+          : 'text-brand-primary-text hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800'
         }
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
         ${size === 'sm' ? 'px-3 py-2 text-xs' : size === 'lg' ? 'px-5 py-3 text-base' : ''}
@@ -73,8 +73,8 @@ export default function Tabs({
       return `
         flex items-center px-1 py-3 font-medium border-b-2 transition-all duration-200
         ${isActive 
-          ? 'border-blue-500 text-blue-600 dark:text-blue-400' 
-          : 'border-transparent text-gray-700 dark:text-brand-secondary-text hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+          ? 'border-blue-500 text-blue-600' 
+          : 'border-transparent text-gray-600 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800:border-gray-600:border-gray-600'
         }
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
         ${size === 'sm' ? 'py-2 text-xs' : size === 'lg' ? 'py-4 text-base' : ''}
@@ -85,8 +85,8 @@ export default function Tabs({
     return `
       flex items-center px-6 py-3 font-semibold border-b-3 transition-all duration-200 relative
       ${isActive 
-        ? 'border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/10' 
-        : 'border-transparent text-gray-800 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-gray-600 hover:bg-white/10/50 dark:hover:bg-white/10/50'
+        ? 'border-blue-500 text-blue-600 bg-blue-50/50' 
+        : 'border-transparent text-brand-primary-text hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800:border-gray-600:border-gray-600 hover'
       }
       ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
       ${size === 'sm' ? 'px-4 py-2 text-xs' : size === 'lg' ? 'px-8 py-4 text-base' : ''}
@@ -120,8 +120,8 @@ export default function Tabs({
               <span className={`
                 ml-2 px-2 py-0.5 text-xs font-medium rounded-full
                 ${isActive 
-                  ? 'bg-blue-100 dark:bg-blue-800/30 text-blue-700 dark:text-blue-300' 
-                  : 'bg-gray-200 dark:bg-white/5 text-gray-800 dark:text-gray-400'
+                  ? 'bg-blue-100 text-blue-700' 
+                  : 'bg-gray-200 text-brand-primary-text'
                 }
               `}>
                 {tab.count}
@@ -163,7 +163,7 @@ interface TabPanelProps {
 export function TabPanel({ children, className = '', variant = 'card' }: TabPanelProps) {
   const variantClasses = {
     default: '',
-    card: 'bg-gray-50 dark:bg-white/5 rounded-xl border border-gray-300 dark:border-gray-700 p-6 shadow-sm'
+    card: 'bg-gray-900/5 rounded-xl border border-gray-700 p-6 shadow-sm'
   }
 
   return (

@@ -57,16 +57,16 @@ interface PresetTableProps {
 }
 
 const categoryColors = {
-  'Camera Kit': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
-  'Audio Setup': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-  'Lighting Kit': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300',
-  'Conference Setup': 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
-  'Video Production': 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
+  'Camera Kit': 'bg-blue-100 text-blue-800',
+  'Audio Setup': 'bg-green-100 text-green-800',
+  'Lighting Kit': 'bg-yellow-100 text-yellow-800',
+  'Conference Setup': 'bg-purple-100 text-purple-800',
+  'Video Production': 'bg-red-100 text-red-800',
 }
 
 const getCategoryColor = (category?: string) => {
-  if (!category) return 'bg-gray-100 text-gray-800 dark:bg-white/5 dark:text-gray-300'
-  return categoryColors[category as keyof typeof categoryColors] || 'bg-gray-100 text-gray-800 dark:bg-white/5 dark:text-gray-300'
+  if (!category) return 'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
+  return categoryColors[category as keyof typeof categoryColors] || 'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
 }
 
 export default function PresetTable({ presets, onDelete, onToggleActive, onUpdate }: PresetTableProps) {
@@ -105,48 +105,48 @@ export default function PresetTable({ presets, onDelete, onToggleActive, onUpdat
   }
   return (
     <div className="mb-8">
-      <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm rounded-2xl border border-gray-300/50 dark:border-gray-700/50 shadow-xl shadow-gray-200/20 dark:shadow-gray-900/50 overflow-hidden">
+      <div className="bg-gray-900/5 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full divide-y divide-gray-300/50 dark:divide-gray-700/50">
-            <thead className="bg-white/80 dark:bg-white/5">
+          <table className="w-full divide-y divide-gray-300/50">
+            <thead className="bg-gray-900/5">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                   Preset Name
                 </th>
-                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
+                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                   Category
                 </th>
-                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
+                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                   Department
                 </th>
-                <th className="px-4 py-4 text-center text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
+                <th className="px-4 py-4 text-center text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-700 dark:text-brand-secondary-text uppercase tracking-wider">
+                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white/80 dark:bg-white/5 divide-y divide-gray-300/30 dark:divide-gray-700/30">
+            <tbody className="bg-gray-900/5 divide-y divide-gray-300/30">
               {presets.map((preset) => (
-                <tr key={preset.id} className="hover:bg-white/10 dark:hover:bg-white/10 transition-all duration-200">
+                <tr key={preset.id} className="hover transition-all duration-200">
                 {/* Preset Name */}
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900 dark:text-brand-primary-text">
+                  <div className="text-sm font-medium text-brand-primary-text">
                     {preset.name}
                   </div>
                 </td>
                 
                 {/* Category */}
                 <td className="px-4 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900 dark:text-brand-primary-text">
+                  <div className="text-sm text-brand-primary-text">
                     {preset.category || '-'}
                   </div>
                 </td>
                 
                 {/* Department */}
                 <td className="px-4 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900 dark:text-brand-primary-text">
+                  <div className="text-sm text-brand-primary-text">
                     {preset.department || '-'}
                   </div>
                 </td>
@@ -155,8 +155,8 @@ export default function PresetTable({ presets, onDelete, onToggleActive, onUpdat
                 <td className="px-4 py-4 whitespace-nowrap text-center">
                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                     preset.isActive 
-                      ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
-                      : 'bg-gray-100 text-gray-800 dark:bg-white/5 dark:text-gray-300'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
                   }`}>
                     {preset.isActive ? 'Active' : 'Inactive'}
                   </span>
@@ -167,19 +167,19 @@ export default function PresetTable({ presets, onDelete, onToggleActive, onUpdat
                   <div className="flex justify-end space-x-1">
                     <Link
                       href={`/presets/${preset.id}`}
-                      className="px-3 py-1.5 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
+                      className="px-3 py-1.5 text-blue-600 dark:text-blue-400 hover:bg-white/10 dark:hover:bg-white/10 dark:bg-white/5 rounded-md transition-colors"
                     >
                       View
                     </Link>
                     <button
                       onClick={() => handleEditClick(preset)}
-                      className="px-3 py-1.5 text-gray-800 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 rounded-md transition-colors"
+                      className="px-3 py-1.5 text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 dark:bg-white/5 rounded-md transition-colors"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => onDelete(preset.id)}
-                      className="px-3 py-1.5 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
+                      className="px-3 py-1.5 text-red-600 dark:text-red-400 hover:bg-white/10 dark:hover:bg-white/10 dark:bg-white/5 rounded-md transition-colors"
                     >
                       Delete
                     </button>
@@ -193,11 +193,11 @@ export default function PresetTable({ presets, onDelete, onToggleActive, onUpdat
       
       {presets.length === 0 && (
         <div className="text-center py-12">
-          <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
           </svg>
-          <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-brand-primary-text">No presets found</h3>
-          <p className="mt-1 text-sm text-gray-700 dark:text-brand-secondary-text">
+          <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No presets found</h3>
+          <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
             Try adjusting your search criteria or filters
           </p>
         </div>

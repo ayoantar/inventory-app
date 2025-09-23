@@ -9,14 +9,14 @@ module.exports = {
     // Environment variables
     env: {
       NODE_ENV: 'production',
-      PORT: 4000,
+      PORT: 8083,
       HOSTNAME: '0.0.0.0'
     },
-    
-    // Production environment variables (loaded from .env.warehouse)
+
+    // Production environment variables (loaded from .env.production)
     env_production: {
       NODE_ENV: 'production',
-      PORT: 4000,
+      PORT: 8083,
       HOSTNAME: '0.0.0.0'
     },
     
@@ -41,7 +41,7 @@ module.exports = {
     restart_delay: 4000,
     
     // Environment file
-    env_file: './.env.warehouse'
+    env_file: './.env.production'
   }],
   
   // Deployment configuration (optional)

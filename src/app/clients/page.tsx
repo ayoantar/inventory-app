@@ -207,7 +207,7 @@ export default function ClientsPage() {
 
   if (status === 'loading' || (session?.user?.role !== 'ADMIN' && session?.user?.role !== 'MANAGER')) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
         <Navbar />
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
@@ -217,7 +217,7 @@ export default function ClientsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-900 dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       <Navbar />
       
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -229,7 +229,7 @@ export default function ClientsPage() {
                 <li className="inline-flex items-center">
                   <button 
                     onClick={() => router.push('/dashboard')}
-                    className="text-gray-700 dark:text-brand-secondary-text hover:text-gray-700 dark:hover:text-gray-200"
+                    className="text-gray-600 dark:text-brand-secondary-text hover"
                   >
                     <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
@@ -239,10 +239,10 @@ export default function ClientsPage() {
                 </li>
                 <li>
                   <div className="flex items-center">
-                    <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-4 h-4 text-white/50 hover:text-white/80 transition-colors" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="ml-2 text-gray-900 dark:text-brand-primary-text font-medium">Clients</span>
+                    <span className="ml-2 text-brand-primary-text font-medium">Clients</span>
                   </div>
                 </li>
               </ol>
@@ -251,16 +251,16 @@ export default function ClientsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center space-x-3 mb-2">
-                  <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                    <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
+                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                   </div>
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                  <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-brand-secondary-text bg-clip-text text-transparent">
                     Client Management
                   </h1>
                 </div>
-                <p className="text-gray-800 dark:text-gray-400 ml-11 max-w-2xl">
+                <p className="text-brand-primary-text ml-11 max-w-2xl">
                   Manage clients and companies that own assets in your inventory
                 </p>
               </div>
@@ -279,10 +279,10 @@ export default function ClientsPage() {
           </div>
 
           {/* Search and Filters */}
-          <div className="bg-white/80 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 p-4 mb-8">
+          <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-4 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Search
                 </label>
                 <div className="relative">
@@ -291,10 +291,10 @@ export default function ClientsPage() {
                     placeholder="Search clients by name, code, or contact..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-600 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-600 rounded-md bg-gray-900 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                   <svg
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/50 hover:text-white/80 transition-colors"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -304,13 +304,13 @@ export default function ClientsPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Status
                 </label>
                 <select
                   value={showActiveOnly ? 'true' : ''}
                   onChange={(e) => setShowActiveOnly(e.target.value === 'true')}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-white/5 dark:text-brand-primary-text"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">All Status</option>
                   <option value="true">Active Only</option>
@@ -321,18 +321,18 @@ export default function ClientsPage() {
 
           {/* Error Message */}
           {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
               <div className="flex items-start">
                 <svg className="w-5 h-5 text-red-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
                 <div className="ml-3">
-                  <h3 className="text-sm font-medium text-red-800 dark:text-red-200">Error</h3>
-                  <p className="text-sm text-red-700 dark:text-red-300 mt-1">{error}</p>
+                  <h3 className="text-sm font-medium text-red-800">Error</h3>
+                  <p className="text-sm text-red-700 mt-1">{error}</p>
                 </div>
                 <button
                   onClick={() => setError('')}
-                  className="ml-auto text-red-400 hover:text-red-600"
+                  className="ml-auto text-red-400 hover"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -343,83 +343,83 @@ export default function ClientsPage() {
           )}
 
           {/* Clients Table */}
-          <div className="bg-white/80 dark:bg-white/5/80 backdrop-blur-sm rounded-2xl border border-gray-300/50 dark:border-gray-700/50 shadow-xl shadow-gray-200/20 dark:shadow-gray-900/50 overflow-hidden">
+          <div className="bg-gray-900/5/80 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-300/50 dark:divide-gray-700/50">
-                <thead className="bg-gradient-to-r from-gray-50/50 to-gray-100/30 dark:from-gray-700/30 dark:to-gray-800/50">
+              <table className="min-w-full divide-y divide-gray-300/50">
+                <thead className="bg-gradient-to-r from-gray-50/50 to-gray-100/30">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                       Client
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                       Code
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                       Contact
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                       Assets
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-right text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white/50 dark:bg-white/5/50 divide-y divide-gray-300/30 dark:divide-gray-700/30">
+                <tbody className="bg-gray-900/50 divide-y divide-gray-300/30">
                   {loading ? (
                     <tr>
                       <td colSpan={6} className="px-6 py-12 text-center">
                         <div className="flex items-center justify-center">
                           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-orange"></div>
-                          <span className="ml-2 text-gray-700 dark:text-brand-secondary-text">Loading clients...</span>
+                          <span className="ml-2 text-gray-600 dark:text-brand-secondary-text">Loading clients...</span>
                         </div>
                       </td>
                     </tr>
                   ) : clients.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="px-6 py-12 text-center text-gray-700 dark:text-brand-secondary-text">
+                      <td colSpan={6} className="px-6 py-12 text-center text-gray-600 dark:text-brand-secondary-text">
                         No clients found
                       </td>
                     </tr>
                   ) : (
                     clients.map((client) => (
-                      <tr key={client.id} className="hover:bg-white/10/50 dark:hover:bg-white/10/30 transition-all duration-200">
+                      <tr key={client.id} className="hover transition-all duration-200">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div>
-                            <div className="text-sm font-medium text-gray-900 dark:text-brand-primary-text">
+                            <div className="text-sm font-medium text-brand-primary-text">
                               {client.name}
                             </div>
                             {client.description && (
-                              <div className="text-sm text-gray-700 dark:text-brand-secondary-text">
+                              <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
                                 {client.description}
                               </div>
                             )}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                             {client.code}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-brand-primary-text">
                           <div>
                             {client.contact && <div>{client.contact}</div>}
-                            {client.email && <div className="text-gray-700 dark:text-brand-secondary-text">{client.email}</div>}
+                            {client.email && <div className="text-gray-600 dark:text-brand-secondary-text">{client.email}</div>}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-white/5 text-gray-800 dark:text-gray-200">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-brand-primary-text">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-900/5 text-brand-primary-text">
                             {client._count.assets} assets
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                             client.isActive 
-                              ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
-                              : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-red-100 text-red-800'
                           }`}>
                             {client.isActive ? 'Active' : 'Inactive'}
                           </span>
@@ -428,7 +428,7 @@ export default function ClientsPage() {
                           <div className="flex items-center justify-end space-x-2">
                             <button
                               onClick={() => openModal(client)}
-                              className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-200"
+                              className="text-blue-600 hover"
                               title="Edit client"
                             >
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -437,7 +437,7 @@ export default function ClientsPage() {
                             </button>
                             <button
                               onClick={() => handleToggleActive(client)}
-                              className={`${client.isActive ? 'text-yellow-600 dark:text-yellow-400 hover:text-yellow-900 dark:hover:text-yellow-200' : 'text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-200'}`}
+                              className={`${client.isActive ? 'text-yellow-600 hover' : 'text-green-600 hover'}`}
                               title={client.isActive ? 'Deactivate client' : 'Activate client'}
                             >
                               {client.isActive ? (
@@ -453,7 +453,7 @@ export default function ClientsPage() {
                             {session?.user?.role === 'ADMIN' && (
                               <button
                                 onClick={() => handleDelete(client)}
-                                className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-200"
+                                className="text-red-600 hover"
                                 title={client._count.assets > 0 ? 'Deactivate client (has assets)' : 'Delete client'}
                               >
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -476,15 +476,15 @@ export default function ClientsPage() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white/80 dark:bg-white/5">
+          <div className="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-gray-900/5">
             <div className="mt-3">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">
+                <h3 className="text-lg font-medium text-brand-primary-text">
                   {editingClient ? 'Edit Client' : 'Add New Client'}
                 </h3>
                 <button
                   onClick={closeModal}
-                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                  className="text-white/50 hover:text-white/80 transition-colors hover"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -495,7 +495,7 @@ export default function ClientsPage() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-300">
                       Client Name *
                     </label>
                     <input
@@ -505,13 +505,13 @@ export default function ClientsPage() {
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      className="mt-1 block w-full border border-gray-600 rounded-md px-3 py-2 bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g., ACME Studios"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="code" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="code" className="block text-sm font-medium text-gray-300">
                       Client Code *
                     </label>
                     <input
@@ -521,20 +521,20 @@ export default function ClientsPage() {
                       required
                       value={formData.code}
                       onChange={handleChange}
-                      className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500 uppercase"
+                      className="mt-1 block w-full border border-gray-600 rounded-md px-3 py-2 bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500 uppercase"
                       placeholder="e.g., ACME"
                       maxLength={10}
                       pattern="[A-Za-z0-9]{2,10}"
                       title="2-10 alphanumeric characters (will be converted to uppercase)"
                     />
-                    <p className="mt-1 text-xs text-gray-700 dark:text-brand-secondary-text">
+                    <p className="mt-1 text-xs text-gray-600 dark:text-brand-secondary-text">
                       2-10 letters/numbers (automatically converted to uppercase)
                     </p>
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-300">
                     Description
                   </label>
                   <textarea
@@ -543,14 +543,14 @@ export default function ClientsPage() {
                     rows={3}
                     value={formData.description}
                     onChange={handleChange}
-                    className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full border border-gray-600 rounded-md px-3 py-2 bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Brief description of the client"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="contact" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="contact" className="block text-sm font-medium text-gray-300">
                       Contact Person
                     </label>
                     <input
@@ -559,13 +559,13 @@ export default function ClientsPage() {
                       name="contact"
                       value={formData.contact}
                       onChange={handleChange}
-                      className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      className="mt-1 block w-full border border-gray-600 rounded-md px-3 py-2 bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g., John Smith"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-300">
                       Email
                     </label>
                     <input
@@ -574,7 +574,7 @@ export default function ClientsPage() {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      className="mt-1 block w-full border border-gray-600 rounded-md px-3 py-2 bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g., contact@acme.com"
                     />
                   </div>
@@ -582,7 +582,7 @@ export default function ClientsPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-300">
                       Phone
                     </label>
                     <input
@@ -591,13 +591,13 @@ export default function ClientsPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      className="mt-1 block w-full border border-gray-600 rounded-md px-3 py-2 bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g., (555) 123-4567"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="address" className="block text-sm font-medium text-gray-300">
                       Address
                     </label>
                     <input
@@ -606,24 +606,24 @@ export default function ClientsPage() {
                       name="address"
                       value={formData.address}
                       onChange={handleChange}
-                      className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      className="mt-1 block w-full border border-gray-600 rounded-md px-3 py-2 bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g., 123 Main St, City, State"
                     />
                   </div>
                 </div>
 
-                <div className="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-gray-600">
+                <div className="flex items-center justify-end space-x-3 pt-6 border-t border-gray-600">
                   <button
                     type="button"
                     onClick={closeModal}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 bg-gray-900 hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={modalLoading}
-                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {modalLoading ? (
                       <>
