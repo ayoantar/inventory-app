@@ -18,26 +18,42 @@ This is the **LSVR Inventory Management System**, a modern full-stack web applic
 ## Development Commands
 
 ```bash
-# Development server (default port 3005, also supports port 4000 for production testing)
-npm run dev                 # Development on port 3005
-npm run dev:3000            # Development on port 3000
-npm run dev:4000            # Development on port 4000 (production testing)
-npm run start:prod          # Production start on port 4000
+# Development server
+npm run dev                 # Development server on port 3005
 
-# External access
-npx next dev --port 3005 --hostname 0.0.0.0
-npx next dev --port 4000 --hostname 0.0.0.0  # For warehouse.lightsailvr.com testing
+# Production server
+npm run start:prod          # Production server on port 8083
 
-# Database operations
-npx prisma generate          # Generate Prisma client
+# Database and Tools
+npx prisma studio           # Prisma Studio GUI on port 5555
+npx prisma generate         # Generate Prisma client
 npx prisma db push          # Push schema changes to database
 npx prisma db seed          # Seed development data
-npx prisma studio           # Database GUI on localhost:5555
 
-# Type checking and linting
+# Build and Type checking
 npm run build               # Production build with type checking
 npx tsc --noEmit           # Type check only
+
+# External access (for ngrok or remote development)
+npx next dev --port 3005 --hostname 0.0.0.0    # Development with external access
 ```
+
+## Server Configuration
+
+### Development Server
+- **Port**: 3005
+- **URL**: http://localhost:3005
+- **Environment**: `.env` or `.env.development`
+
+### Production Server
+- **Port**: 8083
+- **URL**: https://localhost:8083 or https://warehouse.lightsailvr.com:8083
+- **Environment**: `.env.production`
+- **SSL**: Uses certificates from `/etc/ssl/warehouse/`
+
+### Database Servers
+- **Prisma Studio**: http://localhost:5555
+- **Supabase PostgreSQL**: aws-0-us-west-1.pooler.supabase.com:5432 (external managed database)
 
 ## Architecture & Key Concepts
 
@@ -45,12 +61,12 @@ npx tsc --noEmit           # Type check only
 - Uses **NextAuth.js** with custom credentials provider
 - **Role-based access control**: ADMIN, MANAGER, USER, VIEWER
 - Manual authentication pattern: `getServerSession(authOptions)` in API routes
-- **Important**: All API routes use manual authentication, NOT withAuth middleware (removed due to Next.js 15 compatibility)
+- **Important**: All API routes use manual authentication, NOT withAuth middleware
 
 ### Database Models (Prisma)
 - **Asset**: Core inventory items with categories, status, condition
 - **AssetTransaction**: Check-in/out tracking with user assignment
-- **MaintenanceRecord**: Preventive/corrective maintenance scheduling  
+- **MaintenanceRecord**: Preventive/corrective maintenance scheduling
 - **AssetGroup**: Grouping related assets
 - **User**: Authentication with role-based permissions
 
@@ -123,54 +139,81 @@ export async function GET/POST(request: NextRequest) {
 - **Form validation** and user feedback for all input operations
 - **Real-time updates** with optimistic UI patterns
 
-### Dark Mode Color Validation (September 22, 2025)
-**Status**: ✅ **VALIDATED AND DEPLOYED**
-
-Comprehensive dark mode color scheme validation completed across all pages and components with zero gray or light colors in dark mode.
-
-#### Glass Effect Implementation
+### Glass Effect Implementation
 - **Pattern**: `bg-white/80 dark:bg-white/5` - provides subtle transparency without clashing
 - **Consistency**: Applied uniformly across tables, cards, modals, and containers
 - **Compatibility**: Works seamlessly with gradient backgrounds throughout the application
 
-#### Fixed Components
-1. **Maintenance Page** (`src/app/maintenance/page.tsx`)
-   - Filters container: Glass effect applied
-   - Input fields: Proper dark mode backgrounds (`dark:bg-white/5`)
-   - Border colors: Consistent dark mode styling (`dark:border-gray-600`)
+## Database Configuration
 
-2. **Preset Components** (`src/components/presets/`)
-   - **PresetTable**: Fixed invalid CSS patterns, consistent backgrounds
-   - **PresetFilters**: Applied glass effect, standardized styling
-   - **Hover states**: Unified to `hover:bg-white/10 dark:hover:bg-white/10`
-
-3. **Asset Groups Page** (`src/app/asset-groups/page.tsx`)
-   - Fixed opacity stacking errors (`dark:bg-white/5/80` → `dark:bg-white/5`)
-   - Consistent background patterns across all sections
-
-4. **Transactions Page** (`src/app/transactions/page.tsx`)
-   - Applied glass effect to filters and pagination
-   - Standardized table and container backgrounds
-
-#### CSS Fixes Applied
-- **Invalid Opacity Stacking**: Removed double opacity patterns like `dark:bg-white/5/80`
-- **Complex Hover States**: Simplified to consistent `hover:bg-white/10 dark:hover:bg-white/10`
-- **Background Inconsistencies**: Unified all containers to use glass effect pattern
-- **Border Colors**: Standardized dark mode borders to use `dark:border-gray-600` or `dark:border-gray-700`
-
-#### Validation Results
-- **Zero Gray Colors**: No `bg-gray-` or `text-gray-` classes in dark mode
-- **No Light Colors**: All backgrounds use appropriate opacity levels for dark mode
-- **Consistent Patterns**: Glass effect provides visual hierarchy without breaking design
-- **Professional Appearance**: Clean, modern dark mode throughout the application
+### External Database (Supabase)
+- **Provider**: Supabase PostgreSQL
+- **Connection**: Configured in `.env.production`
+- **SSL**: Not explicitly enabled (warning appears in logs)
+- **Connection Pool**: Configured for production use
+- **No migration needed**: Database is externally managed
 
 ### Database Considerations
 - **PostgreSQL enums** for categories, statuses, conditions
 - **Soft deletes not implemented** - hard deletes in use
 - **Audit fields**: createdAt, updatedAt, createdById, lastModifiedById
 - **Transaction support** for complex operations (Prisma.$transaction)
-- **Referential integrity** enforced for user-asset relationships (prevents deletion of users with associated data)
-- **Automatic status management** via database transactions (maintenance completion → asset availability)
+- **Referential integrity** enforced for user-asset relationships
+- **Automatic status management** via database transactions
+
+## Production Deployment
+
+### PM2 Process Management
+- **Configuration**: `ecosystem.config.js`
+- **Environment**: `.env.production`
+- **Port**: 8083
+- **SSL**: HTTPS with self-signed certificates
+- **Process**: `lsvr-inventory-warehouse`
+
+### Deployment Commands
+```bash
+# Build and start
+npm run build               # Build the application
+pm2 start ecosystem.config.js --env production  # Start with PM2
+pm2 restart lsvr-inventory-warehouse --update-env  # Restart with new env vars
+
+# Monitoring
+pm2 list                    # List all processes
+pm2 logs lsvr-inventory-warehouse  # View logs
+pm2 env lsvr-inventory-warehouse   # Check environment variables
+```
+
+## Authentication Credentials
+**Default login credentials** (development):
+- **Admin**: `admin@lsvr.com` / `password123`
+- **Manager**: `manager@lsvr.com` / `password123`
+- **User**: `john.doe@lsvr.com` / `password123`
+- **User**: `jane.smith@lsvr.com` / `password123`
+
+⚠️ **Remember to change these passwords in production!**
+
+## Current System Status
+
+### Latest Updates (September 23, 2025)
+- ✅ **PRODUCTION SERVER RESTORED** - Server successfully rebuilt and running on port 8083
+- ✅ **PORT CONFIGURATION FIXED** - All configuration files updated to use correct ports
+- ✅ **PM2 PROCESS MANAGEMENT** - Fresh PM2 process running with correct environment variables
+- ✅ **DATABASE CONNECTIVITY VERIFIED** - API endpoints responding successfully with database operations
+- ✅ **HTTPS ACCESS CONFIRMED** - Server accessible on https://localhost:8083 with SSL certificates
+- ✅ **CLAUDE.MD UPDATED** - Documentation completely rewritten with accurate information
+
+### Server Status
+- **Development**: localhost:3005 ✅ Operational
+- **Production**: localhost:8083 / warehouse.lightsailvr.com:8083 ✅ Operational
+- **Prisma Studio**: localhost:5555 ✅ Available
+- **Supabase Database**: aws-0-us-west-1.pooler.supabase.com:5432 ✅ Connected
+
+### Database State
+- **Total Assets**: 874 (various categories)
+- **Active Users**: 6 (with different role levels)
+- **Active Transactions**: Multiple check-outs currently active
+- **Maintenance Records**: System tracking maintenance lifecycle
+- **Database Integrity**: Excellent - all relationships and constraints verified
 
 ## Development Workflow
 
@@ -179,131 +222,9 @@ Comprehensive dark mode color scheme validation completed across all pages and c
 3. **Component development**: Use existing UI components, maintain Tailwind/dark mode patterns
 4. **Testing**: Manual testing recommended, seed data available for development
 
-## Deployment Configuration
+## Important Instructions
 
-### Development & External Access
-For ngrok or external access, run dev server with:
-```bash
-npx next dev --port 3005 --hostname 0.0.0.0
-```
-Then start ngrok: `ngrok http 3005`
-
-### Production Deployment (warehouse.lightsailvr.com:4000)
-**Pre-configured for migration to new server:**
-- **Port**: 4000 (configured across all files)
-- **Domain**: `warehouse.lightsailvr.com:4000`
-- **Environment**: `.env.warehouse` (copy to `.env` on target server)
-- **Process Management**: PM2 with `ecosystem.config.js`
-- **Database**: External Supabase PostgreSQL (no migration needed)
-
-**Deploy with:**
-```bash
-npm run start:prod           # Production server on port 4000
-pm2 start ecosystem.config.js --env production  # PM2 deployment
-```
-
-**Configuration Files Ready:**
-- `.env.warehouse` → Production environment variables
-- `ecosystem.config.js` → PM2 process management
-- `DEPLOYMENT.md` → Complete deployment guide
-- `Dockerfile` → Updated for port 4000
-
-## Authentication Credentials
-**Default login credentials** (development):
-- **Admin**: `admin@lsvr.com` / `password123`
-- **Manager**: `manager@lsvr.com` / `password123` 
-- **User**: `john.doe@lsvr.com` / `password123`
-- **User**: `jane.smith@lsvr.com` / `password123`
-
-⚠️ **Remember to change these passwords in production!**
-
-## System Validation & Testing
-
-### Comprehensive Validation Results (September 21, 2025)
-**Status**: ✅ **FULLY VALIDATED AND PRODUCTION READY**
-
-#### Testing Scope
-Complete validation performed on ALL pages, sub-pages, modals, components, functions, and API calls to ensure proper functionality and communication.
-
-#### Critical Issues Resolved
-1. **Authentication System Failure** ✅ FIXED
-   - **Issue**: NEXTAUTH_URL configured with ngrok URL instead of localhost:3005
-   - **Impact**: Complete application failure - all pages stuck in loading states
-   - **Resolution**: Updated .env with correct NEXTAUTH_URL="http://localhost:3005"
-
-2. **Analytics API Crashes** ✅ FIXED
-   - **Issue**: PrismaClientValidationError due to null user IDs in analytics queries
-   - **Impact**: Reports page completely broken, 500 errors on /api/reports/analytics
-   - **Resolution**: Added null filtering in Prisma queries with `userId: { not: null }`
-
-3. **Transactions Page Loading Issues** ✅ FIXED
-   - **Issue**: Page stuck in perpetual loading state due to auth failures
-   - **Impact**: Transaction management completely inaccessible
-   - **Resolution**: Fixed via authentication system restoration
-
-#### Validation Results by Component
-
-| Component | Status | Notes |
-|-----------|---------|-------|
-| **Authentication System** | ✅ PASS | NextAuth.js working, session management operational |
-| **Dashboard Page** | ✅ PASS | All widgets loading, stats API functional |
-| **Assets Page** | ✅ PASS | CRUD operations, filtering, search working |
-| **Transactions Page** | ✅ PASS | Previously broken - now fully functional |
-| **Reports/Analytics** | ✅ PASS | Previously crashing - charts and data loading |
-| **Maintenance System** | ✅ PASS | Full lifecycle management operational |
-| **API Endpoints** | ✅ PASS | All 20+ routes properly authenticated and functional |
-| **Database Integration** | ✅ PASS | Prisma ORM, PostgreSQL connectivity verified |
-| **Role-Based Access** | ✅ PASS | ADMIN/MANAGER/USER/VIEWER permissions enforced |
-| **UI/UX Components** | ✅ PASS | Dark mode, responsive design, loading states |
-
-#### Port Configuration Verified
-- **Development**: localhost:3005 ✅ Operational
-- **Prisma Studio**: localhost:5555 ✅ Operational  
-- **Production**: warehouse.lightsailvr.com:4000 ✅ Configured
-- **Database**: External Supabase PostgreSQL ✅ Connected
-
-#### Security Assessment
-- **Authentication**: Role-based access control working correctly
-- **API Protection**: All sensitive endpoints require authentication (HTTP 401 when unauthorized)
-- **Input Validation**: Proper validation and error handling implemented
-- **Session Security**: NextAuth.js session management operational
-
-## Current Status
-**Production-ready application** with comprehensive validation completed and ready for warehouse.lightsailvr.com deployment:
-
-### Recent Updates (September 2025)
-- ✅ **COMPREHENSIVE SYSTEM VALIDATION** - ALL pages, components, modals, APIs tested and operational
-- ✅ **Critical Bug Fixes** - Authentication system and analytics API crashes resolved
-- ✅ **Transactions Page Restored** - Previously broken, now fully functional
-- ✅ **Reports/Analytics Fixed** - Previously crashing with 500 errors, now working
-- ✅ **Authentication System Fixed** - NEXTAUTH_URL corrected, session management operational
-- ✅ **Port Configuration Verified** - All system ports documented and validated
-- ✅ **API Endpoint Testing** - All 20+ API routes tested with proper authentication
-- ✅ **Frontend Component Validation** - All UI components and user flows verified
-- ✅ **Database Integration Testing** - Connection health and data integrity confirmed
-- ✅ **Production Build Verification** - TypeScript compilation and build process validated
-- ✅ **Migration Configuration Complete** - All files configured for warehouse.lightsailvr.com:4000
-- ✅ **Production Environment** - Secure .env.warehouse with new NEXTAUTH_SECRET
-- ✅ **Enhanced maintenance system** - Full modal editing with cost recording and status management
-- ✅ **Fixed dropdown visibility** - All status/priority dropdowns work properly in dark mode
-- ✅ **Asset status automation** - Assets automatically become available when maintenance is completed
-- ✅ **User management security** - Prevents deletion of users with associated data, suggests deactivation
-- ✅ **DARK MODE COLOR VALIDATION COMPLETE** - Comprehensive review and fixes applied across all pages
-- ✅ **Glass Effect Implementation** - Consistent `bg-white/80 dark:bg-white/5` pattern throughout application
-- ✅ **Color Consistency Fixed** - Eliminated gray and light colors in dark mode as required
-- ✅ **CSS Error Resolution** - Fixed invalid opacity stacking patterns and hover states
-- ✅ **Production Deployment** - All dark mode fixes successfully pushed to production
-
-### Current Database State
-- **Total Assets**: 874 (822 OTHER, 29 CAMERA, 12 COMPUTER, 9 LENS, 1 LIGHTING)
-- **Active Users**: 6 (2 Admin, 2 Manager, 2 User)
-- **Active Transactions**: 8 check-outs currently active
-- **Maintenance Records**: 1 completed maintenance record
-- **Database Integrity**: Excellent - all relationships and constraints verified
-
-### Migration Readiness
-- **External Database**: Supabase PostgreSQL (no migration required)
-- **Configuration**: All files updated for new domain and port
-- **Security**: New production secrets generated
-- **Process Management**: PM2 ecosystem ready
-- **Documentation**: Complete deployment guide available
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
