@@ -76,19 +76,19 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-brand-primary-text">
+      <div className="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8">
+        <div className="space-y-6 sm:space-y-8">
+          <div className="text-center sm:text-left">
+            <h1 className="text-xl sm:text-2xl font-bold text-brand-primary-text">
               Welcome back, {session.user?.name}!
             </h1>
-            <p className="mt-2 text-gray-600 dark:text-brand-secondary-text">
+            <p className="mt-2 text-sm sm:text-base text-gray-600 dark:text-brand-secondary-text">
               Here's an overview of your inventory system
             </p>
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <StatsCard
               title="Total Assets"
               value={stats.totalAssets}
@@ -162,10 +162,10 @@ export default function Dashboard() {
           </div>
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <button 
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <button
               onClick={() => router.push('/assets/new')}
-              className="bg-gray-900/5 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
+              className="bg-gray-900/5 p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
             >
               <div className="flex items-center">
                 <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">
@@ -180,9 +180,9 @@ export default function Dashboard() {
               </div>
             </button>
 
-            <button 
+            <button
               onClick={() => router.push('/assets/cart')}
-              className="bg-gray-900/5 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
+              className="bg-gray-900/5 p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
             >
               <div className="flex items-center">
                 <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">
@@ -197,9 +197,9 @@ export default function Dashboard() {
               </div>
             </button>
 
-            <button 
+            <button
               onClick={() => router.push('/transactions')}
-              className="bg-gray-900/5 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
+              className="bg-gray-900/5 p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
             >
               <div className="flex items-center">
                 <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">
@@ -214,9 +214,9 @@ export default function Dashboard() {
               </div>
             </button>
 
-            <button 
+            <button
               onClick={() => router.push('/reports')}
-              className="bg-gray-900/5 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
+              className="bg-gray-900/5 p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
             >
               <div className="flex items-center">
                 <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">

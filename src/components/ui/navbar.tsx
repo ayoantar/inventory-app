@@ -3,22 +3,24 @@
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
-import MobileHeader from '../mobile/MobileHeader'
-import { useIsMobile } from '../../hooks/useIsMobile'
 import { useTheme } from '../../hooks/useTheme'
 
 export default function Navbar() {
   const { data: session } = useSession()
   const { theme, toggleTheme } = useTheme()
   const [showAdminDropdown, setShowAdminDropdown] = useState(false)
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
   const adminDropdownRef = useRef<HTMLDivElement>(null)
-  const isMobile = useIsMobile()
+  const mobileMenuRef = useRef<HTMLDivElement>(null)
 
-  // Close dropdown when clicking outside
+  // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (adminDropdownRef.current && !adminDropdownRef.current.contains(event.target as Node)) {
         setShowAdminDropdown(false)
+      }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setShowMobileMenu(false)
       }
     }
 
@@ -27,11 +29,6 @@ export default function Navbar() {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
-
-  // Use mobile header on mobile devices
-  if (isMobile) {
-    return <MobileHeader />
-  }
 
   return (
     <nav className="bg-white dark:bg-brand-dark-blue shadow-sm border-b border-gray-300 dark:border-gray-700">
@@ -91,9 +88,24 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-4">
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setShowMobileMenu(!showMobileMenu)}
+                className="text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-md transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {showMobileMenu ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  )}
+                </svg>
+              </button>
+            </div>
+
             {session && (
               <>
-
                 {/* Admin/Manager Dropdown */}
                 {((session.user as any)?.role === 'ADMIN' || (session.user as any)?.role === 'MANAGER') && (
                   <div className="relative" ref={adminDropdownRef}>
@@ -271,6 +283,157 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {showMobileMenu && (
+        <div className="md:hidden bg-white dark:bg-brand-dark-blue border-t border-gray-300 dark:border-gray-700" ref={mobileMenuRef}>
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            <Link
+              href="/dashboard"
+              onClick={() => setShowMobileMenu(false)}
+              className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/assets"
+              onClick={() => setShowMobileMenu(false)}
+              className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+            >
+              Assets
+            </Link>
+            <Link
+              href="/asset-groups"
+              onClick={() => setShowMobileMenu(false)}
+              className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+            >
+              Asset Groups
+            </Link>
+            <Link
+              href="/presets"
+              onClick={() => setShowMobileMenu(false)}
+              className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+            >
+              Presets
+            </Link>
+            <Link
+              href="/transactions"
+              onClick={() => setShowMobileMenu(false)}
+              className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+            >
+              Transactions
+            </Link>
+            <Link
+              href="/maintenance"
+              onClick={() => setShowMobileMenu(false)}
+              className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+            >
+              Maintenance
+            </Link>
+            <Link
+              href="/reports"
+              onClick={() => setShowMobileMenu(false)}
+              className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+            >
+              Reports
+            </Link>
+
+            {/* Mobile Admin Menu */}
+            {session && ((session.user as any)?.role === 'ADMIN' || (session.user as any)?.role === 'MANAGER') && (
+              <>
+                <div className="border-t border-gray-300 dark:border-gray-700 mt-3 pt-3">
+                  <div className="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-brand-secondary-text uppercase tracking-wider">
+                    {(session.user as any)?.role === 'ADMIN' ? 'Admin' : 'Manager'} Menu
+                  </div>
+
+                  {/* User Management - Admin Only */}
+                  {(session.user as any)?.role === 'ADMIN' && (
+                    <Link
+                      href="/admin/users"
+                      onClick={() => setShowMobileMenu(false)}
+                      className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+                    >
+                      Manage Users
+                    </Link>
+                  )}
+
+                  <Link
+                    href="/admin/departments"
+                    onClick={() => setShowMobileMenu(false)}
+                    className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+                  >
+                    Manage Departments
+                  </Link>
+                  <Link
+                    href="/clients"
+                    onClick={() => setShowMobileMenu(false)}
+                    className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+                  >
+                    Manage Clients
+                  </Link>
+                  <Link
+                    href="/locations"
+                    onClick={() => setShowMobileMenu(false)}
+                    className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+                  >
+                    Manage Locations
+                  </Link>
+                  <Link
+                    href="/categories"
+                    onClick={() => setShowMobileMenu(false)}
+                    className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+                  >
+                    Manage Categories
+                  </Link>
+
+                  {/* System Settings - Admin Only */}
+                  {(session.user as any)?.role === 'ADMIN' && (
+                    <>
+                      <Link
+                        href="/admin/settings"
+                        onClick={() => setShowMobileMenu(false)}
+                        className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+                      >
+                        System Settings
+                      </Link>
+                      <Link
+                        href="/api/health"
+                        target="_blank"
+                        onClick={() => setShowMobileMenu(false)}
+                        className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+                      >
+                        System Health
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
+
+            {/* Profile & Sign Out */}
+            {session && (
+              <div className="border-t border-gray-300 dark:border-gray-700 mt-3 pt-3">
+                <Link
+                  href="/profile"
+                  onClick={() => setShowMobileMenu(false)}
+                  className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+                >
+                  My Profile
+                </Link>
+                <button
+                  onClick={() => {
+                    setShowMobileMenu(false)
+                    signOut({ callbackUrl: '/auth/signin' })
+                  }}
+                  className="block w-full text-left text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
+                >
+                  Sign Out
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   )
 }

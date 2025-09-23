@@ -8,15 +8,12 @@ import SimpleAnalytics from '@/components/reports/simple-analytics'
 import TransactionsReport from '@/components/reports/transactions-report'
 import MaintenanceReport from '@/components/reports/maintenance-report'
 import ClientAssetsReport from '@/components/reports/client-assets-report'
-import MobileLayout from '@/components/mobile/MobileLayout'
-import { useIsMobile } from '@/hooks/useIsMobile'
 
 type ReportTab = 'analytics' | 'transactions' | 'maintenance' | 'clients'
 
 export default function ReportsPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const isMobile = useIsMobile()
   const [activeTab, setActiveTab] = useState<ReportTab>('analytics')
   const [dateRange, setDateRange] = useState({
     startDate: '',
@@ -101,149 +98,25 @@ export default function ReportsPage() {
     return null
   }
 
-  // Mobile Layout
-  if (isMobile) {
-    return (
-      <MobileLayout
-        title="Reports"
-        rightAction={
-          <button
-            onClick={() => exportReport('excel')}
-            className="p-2 rounded-lg text-gray-300 hover:bg-white/10 dark:hover:bg-white/10 dark:bg-white/5"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </button>
-        }
-      >
-        {/* Mobile Period Selection */}
-        <div className="bg-white/5 rounded-xl p-4 mb-6 border border-gray-700">
-          <h3 className="text-sm font-medium text-gray-300 mb-3">Report Period</h3>
-          <div className="grid grid-cols-2 gap-2 mb-4">
-            {[
-              { key: '7d', label: '7 days' },
-              { key: '30d', label: '30 days' },
-              { key: '90d', label: '90 days' },
-              { key: '1y', label: '1 year' }
-            ].map((period) => (
-              <button
-                key={period.key}
-                onClick={() => setSelectedPeriod(period.key)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  selectedPeriod === period.key
-                    ? 'bg-brand-orange text-white'
-                    : 'bg-white/5 text-gray-300 hover:bg-white/10'
-                }`}
-              >
-                {period.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Mobile Date Inputs */}
-          <div className="space-y-2">
-            <input
-              type="date"
-              value={dateRange.startDate}
-              onChange={(e) => handleDateRangeChange('startDate', e.target.value)}
-              className="w-full border border-gray-600 rounded-lg px-3 py-2 bg-white/5 text-brand-primary-text text-sm"
-            />
-            <input
-              type="date"
-              value={dateRange.endDate}
-              onChange={(e) => handleDateRangeChange('endDate', e.target.value)}
-              className="w-full border border-gray-600 rounded-lg px-3 py-2 bg-white/5 text-brand-primary-text text-sm"
-            />
-          </div>
-        </div>
-
-        {/* Mobile Tab Navigation */}
-        <div className="bg-white/5 rounded-xl p-2 mb-6 border border-gray-700">
-          <div className="grid grid-cols-2 gap-2">
-            {[
-              { key: 'analytics', label: 'Analytics', icon: '📊' },
-              { key: 'transactions', label: 'Transactions', icon: '🔄' },
-              { key: 'maintenance', label: 'Maintenance', icon: '🔧' },
-              { key: 'clients', label: 'Clients', icon: '👥' }
-            ].map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key as ReportTab)}
-                className={`flex flex-col items-center space-y-1 py-3 px-2 rounded-lg text-sm font-medium transition-colors ${
-                  activeTab === tab.key
-                    ? 'bg-brand-orange/10 text-brand-orange border border-brand-orange/20'
-                    : 'text-white/50 hover:text-white/80 transition-colors hover:bg-white/10 bg-white/5'
-                }`}
-              >
-                <span className="text-lg">{tab.icon}</span>
-                <span className="text-xs">{tab.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Mobile Export Actions */}
-        <div className="flex space-x-2 mb-6">
-          <button
-            onClick={() => exportReport('excel')}
-            className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-xl text-sm font-medium inline-flex items-center justify-center transition-colors"
-          >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Excel
-          </button>
-          <button
-            onClick={() => exportReport('pdf')}
-            className="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-3 rounded-xl text-sm font-medium inline-flex items-center justify-center transition-colors"
-          >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            PDF
-          </button>
-        </div>
-
-        {/* Mobile Report Content */}
-        <div className="pb-20">
-          <div className={activeTab === 'analytics' ? 'block' : 'hidden'}>
-            <SimpleAnalytics dateRange={dateRange} />
-          </div>
-          <div className={activeTab === 'transactions' ? 'block' : 'hidden'}>
-            <TransactionsReport dateRange={dateRange} />
-          </div>
-          <div className={activeTab === 'maintenance' ? 'block' : 'hidden'}>
-            <MaintenanceReport dateRange={dateRange} />
-          </div>
-          <div className={activeTab === 'clients' ? 'block' : 'hidden'}>
-            <ClientAssetsReport />
-          </div>
-        </div>
-      </MobileLayout>
-    )
-  }
-
-  // Desktop Layout
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
+      <div className="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8">
+        <div className="space-y-6 sm:space-y-8">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-brand-primary-text">Reports & Analytics</h1>
-              <p className="text-brand-primary-text">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+            <div className="text-center sm:text-left">
+              <h1 className="text-xl sm:text-2xl font-bold text-brand-primary-text">Reports & Analytics</h1>
+              <p className="text-sm sm:text-base text-brand-primary-text">
                 Comprehensive insights into your inventory performance
               </p>
             </div>
-            
-            <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-0">
+
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
               <button
                 onClick={() => exportReport('excel')}
-                className="bg-emerald-600 hover text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center justify-center transition-colors"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -252,7 +125,7 @@ export default function ReportsPage() {
               </button>
               <button
                 onClick={() => exportReport('pdf')}
-                className="bg-red-600 hover text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors"
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center justify-center transition-colors"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -320,9 +193,9 @@ export default function ReportsPage() {
           </div>
 
           {/* Report Tabs */}
-          <div className="mb-6">
+          <div>
             <div className="border-b border-gray-700">
-              <nav className="-mb-px flex space-x-8">
+              <nav className="-mb-px flex flex-wrap gap-2 sm:gap-8">
                 {[
                   { key: 'analytics', label: 'Analytics', icon: '📊' },
                   { key: 'transactions', label: 'Transactions', icon: '🔄' },
@@ -332,7 +205,7 @@ export default function ReportsPage() {
                   <button
                     key={tab.key}
                     onClick={() => setActiveTab(tab.key as ReportTab)}
-                    className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    className={`py-2 px-3 border-b-2 font-medium text-xs sm:text-sm transition-colors ${
                       activeTab === tab.key
                         ? 'border-brand-orange text-brand-orange'
                         : 'border-transparent text-white/50 hover:text-white/80 transition-colors hover:bg-white/10'
