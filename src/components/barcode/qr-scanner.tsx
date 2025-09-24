@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Html5Qrcode, Html5QrcodeSupportedFormats, Html5QrcodeScanner } from 'html5-qrcode'
 
 interface QRScannerProps {
   onScanSuccess: (decodedText: string, format: string) => void
@@ -11,167 +10,105 @@ interface QRScannerProps {
 }
 
 export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose }: QRScannerProps) {
-  const scannerRef = useRef<Html5Qrcode | null>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const streamRef = useRef<MediaStream | null>(null)
   const [isScanning, setIsScanning] = useState(false)
   const [cameraError, setCameraError] = useState<string | null>(null)
-  const [permissionRequested, setPermissionRequested] = useState(false)
+  const [showManualInput, setShowManualInput] = useState(false)
+  const [manualInput, setManualInput] = useState('')
 
   useEffect(() => {
-    if (isOpen && !scannerRef.current) {
-      // Wrap initialization in try-catch to prevent app crashes
-      try {
-        initializeScanner().catch((error) => {
-          console.error('Scanner initialization failed:', error)
-          setCameraError('Failed to initialize camera: ' + (error.message || 'Unknown error'))
-        })
-      } catch (syncError) {
-        console.error('Synchronous scanner error:', syncError)
-        setCameraError('Camera initialization error: ' + (syncError.message || 'Unknown error'))
-      }
+    if (isOpen) {
+      initializeCamera()
+    } else {
+      cleanupCamera()
     }
 
     return () => {
-      handleStop().catch((error) => {
-        console.error('Error stopping scanner:', error)
-      })
+      cleanupCamera()
     }
   }, [isOpen])
 
-  const initializeScanner = async () => {
+  const initializeCamera = async () => {
     try {
       setCameraError(null)
 
-      // Create scanner instance
-      const scanner = new Html5Qrcode('qr-scanner')
-      scannerRef.current = scanner
-
-      // Get available cameras with better error handling
-      let cameras = []
-      try {
-        cameras = await Html5Qrcode.getCameras()
-      } catch (cameraError: any) {
-        console.error('Error getting cameras:', cameraError)
-        if (cameraError.name === 'NotAllowedError' || cameraError.message?.includes('Permission denied')) {
-          setCameraError('Camera permission denied. Please allow camera access and reload.')
-          return
-        }
-        throw cameraError
-      }
-
-      if (!cameras || cameras.length === 0) {
-        setCameraError('No cameras found on this device')
+      // Check if camera API is supported
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setCameraError('Camera not supported in this browser')
         return
       }
 
-      // Select camera - prefer back/environment camera
-      const preferredCamera = cameras.find(camera => {
-        const label = camera.label.toLowerCase()
-        return label.includes('back') ||
-               label.includes('environment') ||
-               label.includes('rear')
-      }) || cameras[0]
+      // Request camera access
+      const constraints = {
+        video: {
+          facingMode: 'environment', // Prefer back camera
+          width: { ideal: 640 },
+          height: { ideal: 480 }
+        }
+      }
 
-      console.log('Selected camera:', preferredCamera.label)
-      await startScanning(preferredCamera.id)
+      const stream = await navigator.mediaDevices.getUserMedia(constraints)
+      streamRef.current = stream
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream
+        await videoRef.current.play()
+        setIsScanning(true)
+        console.log('Camera started successfully')
+      }
 
     } catch (error: any) {
-      console.error('Failed to initialize camera:', error)
+      console.error('Camera initialization failed:', error)
 
-      // Handle specific error types
-      if (error.name === 'NotAllowedError' || error.message?.includes('Permission denied')) {
+      if (error.name === 'NotAllowedError') {
         setCameraError('Camera permission denied. Please allow camera access and try again.')
-      } else if (error.name === 'NotFoundError' || error.message?.includes('NotFoundError')) {
+      } else if (error.name === 'NotFoundError') {
         setCameraError('No camera found on this device')
-      } else if (error.message?.includes('NotSupported')) {
-        setCameraError('Camera scanning not supported on this browser')
+      } else if (error.name === 'NotReadableError') {
+        setCameraError('Camera is already in use by another application')
+      } else if (error.name === 'OverconstrainedError') {
+        setCameraError('Camera constraints not supported')
       } else {
-        setCameraError('Camera failed to start: ' + (error.message || 'Unknown error'))
+        setCameraError('Failed to access camera: ' + (error.message || 'Unknown error'))
       }
     }
   }
 
-  const startScanning = async (cameraId: string) => {
-    if (!scannerRef.current) {
-      console.error('Scanner ref is null')
-      return
-    }
-
+  const cleanupCamera = () => {
     try {
-      // Simplified config - remove experimental features that might cause crashes
-      const config = {
-        fps: 10,
-        qrbox: { width: 250, height: 250 },
-        aspectRatio: 1.0
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => {
+          track.stop()
+        })
+        streamRef.current = null
       }
 
-      await scannerRef.current.start(
-        cameraId,
-        config,
-        (decodedText, decodedResult) => {
-          console.log(`Code scanned: ${decodedText}`)
-          // Safely handle the result
-          try {
-            const format = decodedResult?.result?.format?.formatName || 'Unknown'
-            onScanSuccess(decodedText, format)
-            handleClose() // Auto-close on successful scan
-          } catch (resultError) {
-            console.error('Error handling scan result:', resultError)
-            onScanSuccess(decodedText, 'Unknown')
-            handleClose()
-          }
-        },
-        (error) => {
-          // Only log actual scanning errors, not "no code found" errors
-          if (error &&
-              !error.includes('NotFoundException') &&
-              !error.includes('No MultiFormat Readers') &&
-              !error.includes('NotFoundError')) {
-            console.warn(`Scanning error: ${error}`)
-          }
-        }
-      )
-
-      setIsScanning(true)
-      console.log('Camera started successfully')
-
-    } catch (error: any) {
-      console.error('Failed to start scanning:', error)
-      setCameraError('Failed to start camera: ' + (error.message || 'Unknown error'))
-      if (onScanError) {
-        onScanError('Failed to start scanning: ' + (error.message || 'Unknown error'))
+      if (videoRef.current) {
+        videoRef.current.srcObject = null
       }
+
+      setIsScanning(false)
+    } catch (error) {
+      console.error('Error cleaning up camera:', error)
     }
   }
 
-  const handleStop = async () => {
-    if (scannerRef.current) {
-      try {
-        if (isScanning) {
-          await scannerRef.current.stop()
-        }
-        await scannerRef.current.clear()
-      } catch (error) {
-        console.error('Error stopping scanner:', error)
-        // Try to force clear if stop fails
-        try {
-          if (scannerRef.current) {
-            scannerRef.current.clear()
-          }
-        } catch (clearError) {
-          console.error('Error clearing scanner:', clearError)
-        }
-      }
-      scannerRef.current = null
-      setIsScanning(false)
+  const handleManualSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (manualInput.trim()) {
+      onScanSuccess(manualInput.trim(), 'Manual')
+      handleClose()
     }
   }
 
   const handleClose = () => {
     try {
-      handleStop().catch(console.error)
+      cleanupCamera()
       onClose()
       setCameraError(null)
-      setPermissionRequested(false)
+      setShowManualInput(false)
+      setManualInput('')
     } catch (error) {
       console.error('Error closing scanner:', error)
       onClose()
@@ -188,7 +125,7 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">
-              {cameraError ? 'Camera Error' : 'Scan Barcode'}
+              {cameraError ? 'Camera Error' : showManualInput ? 'Enter Barcode' : 'Scan Barcode'}
             </h3>
             <button
               onClick={handleClose}
@@ -209,17 +146,65 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                   </svg>
                 </div>
                 <p className="text-sm text-red-800 dark:text-red-200 mb-3">{cameraError}</p>
-                <button
-                  onClick={initializeScanner}
-                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium active:scale-95 touch-manipulation transition-all"
-                >
-                  Try Again
-                </button>
+                <div className="space-x-3">
+                  <button
+                    onClick={initializeCamera}
+                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium active:scale-95 touch-manipulation transition-all"
+                  >
+                    Try Again
+                  </button>
+                  <button
+                    onClick={() => setShowManualInput(true)}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium active:scale-95 touch-manipulation transition-all"
+                  >
+                    Enter Manually
+                  </button>
+                </div>
               </div>
+            ) : showManualInput ? (
+              <form onSubmit={handleManualSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="manual-input" className="block text-sm font-medium text-gray-900 dark:text-brand-primary-text mb-2">
+                    Enter barcode or asset ID:
+                  </label>
+                  <input
+                    id="manual-input"
+                    type="text"
+                    value={manualInput}
+                    onChange={(e) => setManualInput(e.target.value)}
+                    placeholder="Type or paste the barcode here..."
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    autoFocus
+                  />
+                </div>
+                <div className="flex space-x-3">
+                  <button
+                    type="submit"
+                    disabled={!manualInput.trim()}
+                    className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg text-sm font-medium active:scale-95 touch-manipulation transition-all"
+                  >
+                    Submit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowManualInput(false)}
+                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 active:scale-95 touch-manipulation transition-all"
+                  >
+                    Camera
+                  </button>
+                </div>
+              </form>
             ) : (
               <>
-                <div id="qr-scanner" className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-black min-h-[300px] flex items-center justify-center">
-                  {!isScanning && (
+                <div className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-black min-h-[300px] flex items-center justify-center">
+                  {isScanning ? (
+                    <video
+                      ref={videoRef}
+                      className="w-full h-full object-cover"
+                      playsInline
+                      muted
+                    />
+                  ) : (
                     <div className="text-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-orange mx-auto mb-3"></div>
                       <p className="text-white text-sm">Initializing camera...</p>
@@ -230,10 +215,10 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                 {isScanning && (
                   <div className="text-sm text-gray-600 dark:text-brand-secondary-text text-center space-y-2 mt-4">
                     <p className="font-medium text-gray-900 dark:text-brand-primary-text">
-                      Point your camera at a barcode or QR code
+                      Position the barcode or QR code in front of the camera
                     </p>
                     <p className="text-xs opacity-80">
-                      The scan will happen automatically when a code is detected
+                      You can also enter the code manually if scanning doesn't work
                     </p>
                   </div>
                 )}
@@ -241,12 +226,20 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
             )}
           </div>
 
-          <div className="flex justify-center mt-6">
+          <div className="flex justify-center space-x-3 mt-6">
+            {!cameraError && !showManualInput && (
+              <button
+                onClick={() => setShowManualInput(true)}
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors active:scale-95 touch-manipulation"
+              >
+                Enter Manually
+              </button>
+            )}
             <button
               onClick={handleClose}
               className="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors active:scale-95 touch-manipulation"
             >
-              {cameraError ? 'Close' : 'Cancel'}
+              Cancel
             </button>
           </div>
         </div>
