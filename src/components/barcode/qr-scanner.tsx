@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { BrowserMultiFormatReader } from '@zxing/library'
 
 interface QRScannerProps {
   onScanSuccess: (decodedText: string, format: string) => void
@@ -12,6 +13,8 @@ interface QRScannerProps {
 export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose }: QRScannerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const streamRef = useRef<MediaStream | null>(null)
+  const scannerRef = useRef<BrowserMultiFormatReader | null>(null)
+  const scanIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const [isScanning, setIsScanning] = useState(false)
   const [cameraError, setCameraError] = useState<string | null>(null)
   const [showManualInput, setShowManualInput] = useState(false)
@@ -77,6 +80,9 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
         console.log('Video source set, attempting to play...')
         await videoRef.current.play()
         setIsScanning(true)
+
+        // Initialize barcode scanner
+        startBarcodeScanning()
         console.log('Camera started successfully')
       } else {
         console.error('Video element ref is still null after retries')
@@ -105,8 +111,65 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
     }
   }
 
+  const startBarcodeScanning = () => {
+    try {
+      console.log('Starting barcode scanning...')
+
+      // Initialize ZXing scanner
+      if (!scannerRef.current) {
+        scannerRef.current = new BrowserMultiFormatReader()
+      }
+
+      // Start continuous scanning
+      const scanBarcode = async () => {
+        try {
+          if (videoRef.current && scannerRef.current && isScanning) {
+            const result = await scannerRef.current.decodeFromVideoDevice(videoRef.current)
+            if (result) {
+              console.log('Barcode detected:', result.getText())
+              onScanSuccess(result.getText(), result.getBarcodeFormat().toString())
+              handleClose()
+              return
+            }
+          }
+        } catch (error) {
+          // Ignore scanning errors, they're normal when no barcode is visible
+          // console.log('Scan attempt failed:', error)
+        }
+
+        // Continue scanning if still active
+        if (isScanning) {
+          scanIntervalRef.current = setTimeout(scanBarcode, 100)
+        }
+      }
+
+      // Start scanning loop
+      scanBarcode()
+    } catch (error) {
+      console.error('Failed to start barcode scanning:', error)
+    }
+  }
+
+  const stopBarcodeScanning = () => {
+    if (scanIntervalRef.current) {
+      clearTimeout(scanIntervalRef.current)
+      scanIntervalRef.current = null
+    }
+
+    if (scannerRef.current) {
+      try {
+        scannerRef.current.reset()
+      } catch (error) {
+        console.error('Error resetting scanner:', error)
+      }
+    }
+  }
+
   const cleanupCamera = () => {
     try {
+      // Stop barcode scanning first
+      stopBarcodeScanning()
+
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => {
           track.stop()
@@ -227,7 +290,7 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
               </form>
             ) : (
               <>
-                <div className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-black min-h-[300px] flex items-center justify-center">
+                <div className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-black min-h-[300px] flex items-center justify-center relative">
                   {cameraRequested ? (
                     <>
                       <video
@@ -236,6 +299,33 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                         playsInline
                         muted
                       />
+
+                      {/* Scanning overlay with guide lines */}
+                      {isScanning && (
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          <div className="relative">
+                            {/* Scanning guide box */}
+                            <div className="w-64 h-32 border-2 border-brand-orange rounded-lg relative">
+                              {/* Corner indicators */}
+                              <div className="absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 border-brand-orange rounded-tl-lg"></div>
+                              <div className="absolute -top-1 -right-1 w-6 h-6 border-t-4 border-r-4 border-brand-orange rounded-tr-lg"></div>
+                              <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-4 border-l-4 border-brand-orange rounded-bl-lg"></div>
+                              <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-brand-orange rounded-br-lg"></div>
+
+                              {/* Scanning line animation */}
+                              <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 h-0.5 bg-brand-orange shadow-lg animate-pulse"></div>
+                            </div>
+
+                            {/* Instructions */}
+                            <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-center">
+                              <p className="text-white text-sm font-medium bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">
+                                Position barcode in the frame
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       {!isScanning && (
                         <div className="absolute text-center">
                           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-orange mx-auto mb-3"></div>
