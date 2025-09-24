@@ -120,31 +120,42 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
         scannerRef.current = new BrowserMultiFormatReader()
       }
 
-      // Start continuous scanning
+      // Start continuous scanning with improved detection
       const scanBarcode = async () => {
         try {
-          if (videoRef.current && scannerRef.current && isScanning) {
-            const result = await scannerRef.current.decodeFromVideoDevice(videoRef.current)
+          if (videoRef.current && scannerRef.current && isScanning && videoRef.current.readyState === 4) {
+            // Use decodeOnceFromVideoDevice for better stability
+            const result = await scannerRef.current.decodeOnceFromVideoDevice(undefined, videoRef.current)
             if (result) {
               console.log('Barcode detected:', result.getText())
+              // Add haptic feedback if available
+              if (navigator.vibrate) {
+                navigator.vibrate(100)
+              }
               onScanSuccess(result.getText(), result.getBarcodeFormat().toString())
               handleClose()
               return
             }
           }
         } catch (error) {
-          // Ignore scanning errors, they're normal when no barcode is visible
-          // console.log('Scan attempt failed:', error)
+          // Most errors are normal when no barcode is visible
+          if (error.message && !error.message.includes('No MultiFormat Readers')) {
+            console.log('Scan attempt:', error.message)
+          }
         }
 
         // Continue scanning if still active
         if (isScanning) {
-          scanIntervalRef.current = setTimeout(scanBarcode, 100)
+          scanIntervalRef.current = setTimeout(scanBarcode, 200) // Slightly slower for better performance
         }
       }
 
-      // Start scanning loop
-      scanBarcode()
+      // Wait a moment for video to be fully ready, then start scanning
+      setTimeout(() => {
+        if (isScanning) {
+          scanBarcode()
+        }
+      }, 500)
     } catch (error) {
       console.error('Failed to start barcode scanning:', error)
     }
@@ -303,24 +314,41 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                       {/* Scanning overlay with guide lines */}
                       {isScanning && (
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                          <div className="relative">
-                            {/* Scanning guide box */}
-                            <div className="w-64 h-32 border-2 border-brand-orange rounded-lg relative">
-                              {/* Corner indicators */}
-                              <div className="absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 border-brand-orange rounded-tl-lg"></div>
-                              <div className="absolute -top-1 -right-1 w-6 h-6 border-t-4 border-r-4 border-brand-orange rounded-tr-lg"></div>
-                              <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-4 border-l-4 border-brand-orange rounded-bl-lg"></div>
-                              <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-brand-orange rounded-br-lg"></div>
+                          {/* Dark overlay background */}
+                          <div className="absolute inset-0 bg-black/40"></div>
 
-                              {/* Scanning line animation */}
-                              <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 h-0.5 bg-brand-orange shadow-lg animate-pulse"></div>
-                            </div>
+                          <div className="relative z-10">
+                            {/* Scanning guide box - Square and larger */}
+                            <div className="w-72 h-72 relative">
+                              {/* Clear scanning area */}
+                              <div className="absolute inset-4 bg-transparent border-2 border-brand-orange rounded-2xl shadow-lg">
+                                {/* Corner indicators - more prominent */}
+                                <div className="absolute -top-2 -left-2 w-8 h-8 border-t-4 border-l-4 border-white rounded-tl-xl shadow-md"></div>
+                                <div className="absolute -top-2 -right-2 w-8 h-8 border-t-4 border-r-4 border-white rounded-tr-xl shadow-md"></div>
+                                <div className="absolute -bottom-2 -left-2 w-8 h-8 border-b-4 border-l-4 border-white rounded-bl-xl shadow-md"></div>
+                                <div className="absolute -bottom-2 -right-2 w-8 h-8 border-b-4 border-r-4 border-white rounded-br-xl shadow-md"></div>
 
-                            {/* Instructions */}
-                            <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-center">
-                              <p className="text-white text-sm font-medium bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">
-                                Position barcode in the frame
-                              </p>
+                                {/* Animated scanning line */}
+                                <div className="absolute inset-x-4 top-1/2 transform -translate-y-1/2 h-1 bg-gradient-to-r from-transparent via-brand-orange to-transparent shadow-lg">
+                                  <div className="w-full h-full bg-brand-orange animate-pulse opacity-80"></div>
+                                </div>
+
+                                {/* Center crosshair */}
+                                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8">
+                                  <div className="absolute top-1/2 left-0 w-full h-0.5 bg-brand-orange/60 transform -translate-y-1/2"></div>
+                                  <div className="absolute left-1/2 top-0 w-0.5 h-full bg-brand-orange/60 transform -translate-x-1/2"></div>
+                                </div>
+                              </div>
+
+                              {/* Instructions - repositioned */}
+                              <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 text-center">
+                                <p className="text-white text-base font-medium bg-black/70 px-4 py-2 rounded-xl backdrop-blur-md shadow-lg border border-white/20">
+                                  📱 Position barcode or QR code in frame
+                                </p>
+                                <p className="text-white/80 text-sm mt-2">
+                                  Hold steady for automatic detection
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
