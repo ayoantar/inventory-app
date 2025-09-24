@@ -204,9 +204,9 @@ export default function PresetsPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
+      <div className="max-w-7xl mx-auto py-3 sm:py-4 md:py-6 px-3 sm:px-4 md:px-6 lg:px-8">
+        {/* Desktop Header */}
+        <div className="hidden md:block mb-8">
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center space-x-3 mb-2">
@@ -215,11 +215,11 @@ export default function PresetsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                   </svg>
                 </div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-brand-secondary-text bg-clip-text text-transparent">
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                   Equipment Presets
                 </h1>
               </div>
-              <p className="text-gray-600 dark:text-brand-secondary-text ml-11 max-w-2xl">
+              <p className="text-base text-gray-600 dark:text-brand-secondary-text ml-11 max-w-2xl">
                 Manage reusable equipment sets for streamlined checkouts
               </p>
             </div>
@@ -237,40 +237,97 @@ export default function PresetsPage() {
           </div>
         </div>
 
+        {/* Mobile Header */}
+        <div className="md:hidden mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+              Presets
+            </h1>
+            <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-1 text-sm text-gray-600 dark:text-brand-secondary-text">
+                <svg className="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                <span>{pagination.total}</span>
+              </div>
+              <button
+                onClick={() => setShowFormModal(true)}
+                className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg font-medium transition-all duration-200 active:scale-95 touch-manipulation"
+              >
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                New
+              </button>
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-brand-secondary-text mb-4">
+            Manage reusable equipment sets for streamlined checkouts
+          </p>
+        </div>
+
         {/* Filters */}
         <PresetFilters
           filters={filters}
           onFilterChange={handleFilterChange}
         />
 
-        {/* Results Summary & Pagination */}
-        {!loading && (
-          <div className="mt-8 flex items-center justify-between">
-            <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
-              Showing {((pagination.page - 1) * pagination.limit) + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} presets
+        {/* Desktop Results Summary & Pagination */}
+        {!loading && pagination.pages > 1 && (
+          <>
+            <div className="hidden md:flex items-center justify-between mt-8">
+              <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
+                Showing {((pagination.page - 1) * pagination.limit) + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} presets
+              </div>
+
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => handlePageChange(pagination.page - 1)}
+                  disabled={pagination.page <= 1}
+                  className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 bg-white/5 dark:bg-white/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Previous
+                </button>
+                <span className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-purple-600 text-white">
+                  Page {pagination.page} of {pagination.pages}
+                </span>
+                <button
+                  onClick={() => handlePageChange(pagination.page + 1)}
+                  disabled={pagination.page >= pagination.pages}
+                  className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 bg-white/5 dark:bg-white/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Next
+                </button>
+              </div>
             </div>
-            
-            {/* Pagination */}
-            <div className="flex space-x-2">
-              <button
-                onClick={() => handlePageChange(pagination.page - 1)}
-                disabled={pagination.page <= 1}
-                className="px-4 py-2 text-sm border border-gray-300 dark:border-brand-dark-blue-deep rounded-lg hover:bg-white/10 dark:hover:bg-white/10 bg-gray-900/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Previous
-              </button>
-              <span className="px-4 py-2 text-sm border border-gray-300 dark:border-brand-dark-blue-deep rounded-lg bg-gray-900/5 text-gray-700 dark:text-brand-secondary-text">
-                Page {pagination.page} of {pagination.pages}
-              </span>
-              <button
-                onClick={() => handlePageChange(pagination.page + 1)}
-                disabled={pagination.page >= pagination.pages}
-                className="px-4 py-2 text-sm border border-gray-300 dark:border-brand-dark-blue-deep rounded-lg hover:bg-white/10 dark:hover:bg-white/10 bg-gray-900/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Next
-              </button>
+
+            {/* Mobile Pagination */}
+            <div className="md:hidden mt-6">
+              <div className="space-y-3">
+                <div className="text-center text-sm text-gray-600 dark:text-brand-secondary-text">
+                  Page {pagination.page} of {pagination.pages} ({pagination.total} total)
+                </div>
+
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => handlePageChange(pagination.page - 1)}
+                    disabled={pagination.page <= 1}
+                    className="flex-1 px-4 py-3 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 bg-white/80 dark:bg-white/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors active:scale-95 touch-manipulation"
+                  >
+                    ← Previous
+                  </button>
+
+                  <button
+                    onClick={() => handlePageChange(pagination.page + 1)}
+                    disabled={pagination.page >= pagination.pages}
+                    className="flex-1 px-4 py-3 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 bg-white/80 dark:bg-white/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors active:scale-95 touch-manipulation"
+                  >
+                    Next →
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          </>
         )}
 
         {/* Empty State */}

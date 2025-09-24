@@ -104,36 +104,83 @@ export default function ReportsPage() {
       
       <div className="max-w-7xl mx-auto py-3 sm:py-4 md:py-6 px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="space-y-4 sm:space-y-6 md:space-y-8">
-          {/* Header */}
-          <div className="text-center sm:text-left">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
+          {/* Desktop Header */}
+          <div className="hidden md:block">
+            <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-brand-primary-text">Reports & Analytics</h1>
-                <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-brand-secondary-text mt-1">
-                  Comprehensive insights into your inventory performance
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
+                    <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                    Reports & Analytics
+                  </h1>
+                </div>
+                <p className="text-base text-gray-600 dark:text-brand-secondary-text ml-11 max-w-2xl">
+                  Comprehensive insights into your inventory performance and trends
                 </p>
               </div>
-
-              <div className="grid grid-cols-2 sm:flex gap-2 w-full sm:w-auto">
+              <div className="flex space-x-3">
                 <button
                   onClick={() => exportReport('excel')}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-md text-xs sm:text-sm font-medium inline-flex items-center justify-center transition-colors active:scale-95 touch-manipulation"
+                  className="inline-flex items-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transform hover:scale-[1.02]"
                 >
-                  <svg className="w-4 h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
-                  <span className="hidden sm:inline">Export </span>Excel
+                  Export Excel
                 </button>
                 <button
                   onClick={() => exportReport('pdf')}
-                  className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-xs sm:text-sm font-medium inline-flex items-center justify-center transition-colors active:scale-95 touch-manipulation"
+                  className="inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg shadow-red-500/25 hover:shadow-red-500/40 transform hover:scale-[1.02]"
                 >
-                  <svg className="w-4 h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
-                  <span className="hidden sm:inline">Export </span>PDF
+                  Export PDF
                 </button>
               </div>
+            </div>
+          </div>
+
+          {/* Mobile Header */}
+          <div className="md:hidden mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                Reports
+              </h1>
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-brand-secondary-text mb-4">
+              Comprehensive insights and analytics
+            </p>
+
+            {/* Mobile Export Buttons */}
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              <button
+                onClick={() => exportReport('excel')}
+                className="flex items-center justify-center px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-all duration-200 active:scale-95 touch-manipulation"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Excel
+              </button>
+              <button
+                onClick={() => exportReport('pdf')}
+                className="flex items-center justify-center px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-all duration-200 active:scale-95 touch-manipulation"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                PDF
+              </button>
             </div>
           </div>
 
@@ -168,7 +215,7 @@ export default function ReportsPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label htmlFor="startDate" className="block text-xs sm:text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
+                  <label htmlFor="startDate" className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-2">
                     Start Date
                   </label>
                   <input
@@ -176,11 +223,11 @@ export default function ReportsPage() {
                     id="startDate"
                     value={dateRange.startDate}
                     onChange={(e) => handleDateRangeChange('startDate', e.target.value)}
-                    className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-3 md:py-2 text-sm bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent touch-manipulation"
                   />
                 </div>
                 <div>
-                  <label htmlFor="endDate" className="block text-xs sm:text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
+                  <label htmlFor="endDate" className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-2">
                     End Date
                   </label>
                   <input
@@ -188,7 +235,7 @@ export default function ReportsPage() {
                     id="endDate"
                     value={dateRange.endDate}
                     onChange={(e) => handleDateRangeChange('endDate', e.target.value)}
-                    className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-3 md:py-2 text-sm bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent touch-manipulation"
                   />
                 </div>
               </div>

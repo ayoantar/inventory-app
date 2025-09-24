@@ -20,9 +20,10 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
   const scannerId = 'qr-scanner-container'
 
   useEffect(() => {
-    if (isOpen && !cameraRequested) {
-      // Don't auto-initialize camera, wait for user action
-      console.log('QR Scanner opened, waiting for user to start camera')
+    if (isOpen && !cameraRequested && !showManualInput) {
+      // Auto-start camera when modal opens
+      console.log('QR Scanner opened, auto-starting camera')
+      initializeCamera()
     } else if (!isOpen) {
       cleanupCamera()
       setCameraRequested(false)
@@ -31,7 +32,7 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
     return () => {
       cleanupCamera()
     }
-  }, [isOpen, cameraRequested])
+  }, [isOpen, cameraRequested, showManualInput])
 
   const initializeCamera = async () => {
     try {
@@ -47,13 +48,25 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
       setCameraError(null)
       setCameraRequested(true)
 
-      // Wait for DOM element to be ready
-      await new Promise(resolve => setTimeout(resolve, 500))
+      // Wait for React to render the DOM elements
+      await new Promise(resolve => setTimeout(resolve, 100))
 
-      // Check if scanner container exists
-      const container = document.getElementById(scannerId)
+      // Wait for DOM element to be ready with retry logic
+      let container = null
+      let retries = 0
+      const maxRetries = 20
+
+      while (!container && retries < maxRetries) {
+        container = document.getElementById(scannerId)
+        if (!container) {
+          console.log(`🔄 Waiting for DOM element (attempt ${retries + 1}/${maxRetries})...`)
+          await new Promise(resolve => setTimeout(resolve, 200))
+          retries++
+        }
+      }
+
       if (!container) {
-        throw new Error('Scanner container not found in DOM')
+        throw new Error('Scanner container not found in DOM after retries')
       }
       console.log('📦 Scanner container found:', container)
 
@@ -71,10 +84,16 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
           navigator.vibrate(100)
         }
 
-        // Stop scanner and close modal
+        // Stop scanner first
         stopScanner()
+
+        // Call success callback and close
         onScanSuccess(decodedText, decodedResult.result?.format?.formatName || 'Unknown')
-        handleClose()
+
+        // Small delay to ensure callback completes before closing
+        setTimeout(() => {
+          handleClose()
+        }, 100)
       }
 
       // Define error callback
@@ -90,11 +109,25 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
       try {
         console.log('📱 Trying back camera first...')
         await scannerRef.current.start(
-          { facingMode: "environment" },
+          { facingMode: { exact: "environment" } },
           {
             fps: 10,
-            qrbox: { width: 280, height: 280 },
-            aspectRatio: 1.0
+            qrbox: function(viewfinderWidth, viewfinderHeight) {
+              // Make the scanning box take up most of the viewfinder
+              const minEdgePercentage = 0.7; // 70% of the smaller dimension
+              const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+              const qrboxSize = Math.floor(minEdgeSize * minEdgePercentage);
+              return {
+                width: qrboxSize,
+                height: qrboxSize
+              };
+            },
+            aspectRatio: 1.0,
+            videoConstraints: {
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+              facingMode: { exact: "environment" }
+            }
           },
           handleScanSuccess,
           onScanFailure
@@ -103,58 +136,8 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
         console.log('🚀 Back camera started successfully!')
         return
       } catch (envError) {
-        console.log('⚠️ Back camera failed, trying any available camera:', envError.message)
-      }
-
-      // Second try: Any available camera
-      try {
-        console.log('📷 Trying any available camera...')
-        await scannerRef.current.start(
-          { facingMode: "user" }, // Front camera fallback
-          {
-            fps: 10,
-            qrbox: { width: 280, height: 280 },
-            aspectRatio: 1.0
-          },
-          handleScanSuccess,
-          onScanFailure
-        )
-        setIsScanning(true)
-        console.log('🚀 Front camera started successfully!')
-        return
-      } catch (userError) {
-        console.log('⚠️ Front camera also failed:', userError.message)
-      }
-
-      // Third try: Get available cameras and use first one
-      try {
-        console.log('🔍 Getting available cameras...')
-        const cameras = await Html5Qrcode.getCameras()
-        console.log('📹 Available cameras:', cameras)
-
-        if (cameras && cameras.length > 0) {
-          const camera = cameras[0]
-          console.log('🎯 Using camera:', camera.label)
-
-          await scannerRef.current.start(
-            camera.id,
-            {
-              fps: 10,
-              qrbox: { width: 280, height: 280 },
-              aspectRatio: 1.0
-            },
-            handleScanSuccess,
-            onScanFailure
-          )
-          setIsScanning(true)
-          console.log('🚀 Camera started with ID:', camera.id)
-          return
-        } else {
-          throw new Error('No cameras available')
-        }
-      } catch (cameraError) {
-        console.error('💥 All camera initialization attempts failed:', cameraError)
-        throw cameraError
+        console.error('💥 Back camera initialization failed:', envError)
+        throw new Error('Back camera required for barcode scanning but failed to initialize: ' + envError.message)
       }
 
     } catch (error: any) {
@@ -248,30 +231,7 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
           </div>
 
           <div className="mb-4">
-            {cameraError ? (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-center">
-                <div className="flex justify-center mb-3">
-                  <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                  </svg>
-                </div>
-                <p className="text-sm text-red-800 dark:text-red-200 mb-3">{cameraError}</p>
-                <div className="space-x-3">
-                  <button
-                    onClick={initializeCamera}
-                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium active:scale-95 touch-manipulation transition-all"
-                  >
-                    Try Again
-                  </button>
-                  <button
-                    onClick={() => setShowManualInput(true)}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium active:scale-95 touch-manipulation transition-all"
-                  >
-                    Enter Manually
-                  </button>
-                </div>
-              </div>
-            ) : showManualInput ? (
+            {showManualInput ? (
               <form onSubmit={handleManualSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="manual-input" className="block text-sm font-medium text-gray-900 dark:text-brand-primary-text mb-2">
@@ -306,39 +266,57 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
               </form>
             ) : (
               <>
-                <div className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-black min-h-[400px] flex items-center justify-center relative">
-                  {cameraRequested ? (
-                    <>
-                      {/* HTML5-QRCode scanner container */}
-                      <div
-                        id={scannerId}
-                        className={`w-full h-full ${isScanning ? 'block' : 'hidden'}`}
-                      />
+                <div className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-black min-h-[500px] flex items-center justify-center relative">
+                  {/* HTML5-QRCode scanner container - always present */}
+                  <div
+                    id={scannerId}
+                    className="w-full h-full absolute inset-0"
+                    style={{
+                      minHeight: '500px',
+                      width: '100%',
+                      height: '100%'
+                    }}
+                  />
 
-                      {!isScanning && (
-                        <div className="absolute text-center">
-                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-orange mx-auto mb-3"></div>
-                          <p className="text-white text-sm">Starting camera...</p>
+                  {/* Camera Error Overlay */}
+                  {cameraError && (
+                    <div className="absolute inset-0 bg-black/80 flex items-center justify-center p-4 z-10">
+                      <div className="bg-red-50 dark:bg-red-900/90 border border-red-200 dark:border-red-800 rounded-lg p-4 text-center max-w-sm">
+                        <div className="flex justify-center mb-3">
+                          <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                          </svg>
                         </div>
-                      )}
-                    </>
-                  ) : (
-                    <div className="text-center p-8">
-                      <div className="mb-4">
-                        <svg className="w-16 h-16 text-white/60 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
+                        <p className="text-sm text-red-800 dark:text-red-200 mb-3">{cameraError}</p>
+                        <div className="space-x-3">
+                          <button
+                            onClick={initializeCamera}
+                            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium active:scale-95 touch-manipulation transition-all"
+                          >
+                            Try Again
+                          </button>
+                          <button
+                            onClick={() => setShowManualInput(true)}
+                            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium active:scale-95 touch-manipulation transition-all"
+                          >
+                            Manual
+                          </button>
+                        </div>
                       </div>
-                      <p className="text-white text-sm mb-4">Ready to scan barcode or QR code</p>
-                      <button
-                        onClick={initializeCamera}
-                        className="px-6 py-3 bg-brand-orange hover:bg-brand-orange/90 text-white rounded-lg font-medium active:scale-95 touch-manipulation transition-all"
-                      >
-                        Start Camera
-                      </button>
                     </div>
                   )}
+
+                  {/* Loading State - Show immediately when modal opens */}
+                  {!isScanning && !cameraError && !showManualInput && (
+                    <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-10">
+                      <div className="text-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange mx-auto mb-4"></div>
+                        <p className="text-white text-base font-medium">Starting camera...</p>
+                        <p className="text-white/80 text-sm mt-2">Please allow camera permissions</p>
+                      </div>
+                    </div>
+                  )}
+
                 </div>
 
                 {isScanning && (

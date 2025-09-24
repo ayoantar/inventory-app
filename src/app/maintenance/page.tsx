@@ -35,6 +35,7 @@ export default function MaintenancePage() {
     type: '',
     search: ''
   })
+  const [filtersExpanded, setFiltersExpanded] = useState(false)
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 20,
@@ -165,26 +166,27 @@ export default function MaintenancePage() {
       <div className="max-w-7xl mx-auto py-3 sm:py-4 md:py-6 px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="space-y-4 sm:space-y-6 md:space-y-8">
           {/* Header */}
-          <div className="text-center sm:text-left">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+          {/* Desktop Header */}
+          <div className="hidden md:block">
+            <div className="flex items-center justify-between">
               <div>
-                <div className="flex items-center justify-center sm:justify-start space-x-2 sm:space-x-3 mb-2">
+                <div className="flex items-center space-x-3 mb-2">
                   <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
                     </svg>
                   </div>
-                  <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-brand-primary-text">
+                  <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                     Maintenance
                   </h1>
                 </div>
-                <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-brand-secondary-text">
-                  Manage maintenance schedules and track repairs ({pagination.total} records)
+                <p className="text-base text-gray-600 dark:text-brand-secondary-text">
+                  Manage maintenance schedules and track repairs
                 </p>
               </div>
               <Link
                 href="/assets"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-md text-xs sm:text-sm font-medium inline-flex items-center justify-center transition-colors active:scale-95 touch-manipulation"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center justify-center transition-colors active:scale-95 touch-manipulation"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
@@ -194,8 +196,65 @@ export default function MaintenancePage() {
             </div>
           </div>
 
+          {/* Mobile Header */}
+          <div className="md:hidden">
+            <div className="flex items-center justify-between mb-2">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                Maintenance
+              </h1>
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-1 text-sm text-gray-600 dark:text-brand-secondary-text">
+                  <svg className="w-4 h-4 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
+                  </svg>
+                  <span>{pagination.total}</span>
+                </div>
+                <Link
+                  href="/assets"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-xs font-medium inline-flex items-center justify-center transition-colors active:scale-95 touch-manipulation"
+                >
+                  Assets
+                </Link>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-brand-secondary-text mb-4">
+              Manage maintenance schedules and track repairs
+            </p>
+          </div>
+
+          {/* Mobile Filter Button */}
+          <div className="md:hidden mb-4">
+            <button
+              onClick={() => setFiltersExpanded(!filtersExpanded)}
+              className="w-full flex items-center justify-between px-4 py-3 bg-gray-900/5 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 text-left active:scale-95 touch-manipulation transition-all"
+            >
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z" />
+                </svg>
+                <span className="text-sm font-medium text-brand-primary-text">
+                  {Object.values(filters).some(value => value && value !== '')
+                    ? 'Filters Applied'
+                    : 'Show Filters'
+                  }
+                </span>
+                {Object.values(filters).some(value => value && value !== '') && (
+                  <span className="px-2 py-1 text-xs bg-brand-orange text-white rounded-full">
+                    {Object.values(filters).filter(value => value && value !== '').length}
+                  </span>
+                )}
+              </div>
+              <svg
+                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${filtersExpanded ? 'rotate-180' : ''}`}
+                fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+
           {/* Filters */}
-          <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+          <div className={`bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6 ${!filtersExpanded ? 'hidden md:block' : ''}`}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               <div className="sm:col-span-2 lg:col-span-1">
                 <label htmlFor="search" className="block text-xs sm:text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
@@ -207,7 +266,7 @@ export default function MaintenancePage() {
                   value={filters.search}
                   onChange={(e) => handleFilterChange('search', e.target.value)}
                   placeholder="Search descriptions..."
-                  className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-3 md:py-2 text-sm bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent touch-manipulation"
                 />
               </div>
 
@@ -219,7 +278,7 @@ export default function MaintenancePage() {
                   id="status"
                   value={filters.status}
                   onChange={(e) => handleFilterChange('status', e.target.value)}
-                  className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-3 md:py-2 text-sm bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent touch-manipulation"
                 >
                   <option value="">All Status</option>
                   <option value="SCHEDULED">Scheduled</option>
@@ -238,7 +297,7 @@ export default function MaintenancePage() {
                   id="type"
                   value={filters.type}
                   onChange={(e) => handleFilterChange('type', e.target.value)}
-                  className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-3 md:py-2 text-sm bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent touch-manipulation"
                 >
                   <option value="">All Types</option>
                   <option value="INSPECTION">Inspection</option>
@@ -287,35 +346,63 @@ export default function MaintenancePage() {
 
           {/* Pagination */}
           {maintenanceRecords.length > 0 && pagination.pages > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between space-y-3 sm:space-y-0">
-              <div className="text-xs sm:text-sm text-gray-600 dark:text-brand-secondary-text text-center sm:text-left">
-                Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
-                {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
-                {pagination.total} results
+            <>
+              {/* Desktop Pagination */}
+              <div className="hidden md:flex items-center justify-between">
+                <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
+                  Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
+                  {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
+                  {pagination.total} results
+                </div>
+
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
+                    disabled={pagination.page === 1}
+                    className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 bg-white/80 dark:bg-white/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Previous
+                  </button>
+
+                  <span className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-blue-600 text-white">
+                    {pagination.page} of {pagination.pages}
+                  </span>
+
+                  <button
+                    onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
+                    disabled={pagination.page === pagination.pages}
+                    className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 bg-white/80 dark:bg-white/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
 
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
-                  disabled={pagination.page === 1}
-                  className="px-3 py-2 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 bg-white/80 dark:bg-white/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors active:scale-95 touch-manipulation"
-                >
-                  Previous
-                </button>
+              {/* Mobile Pagination */}
+              <div className="md:hidden space-y-3">
+                <div className="text-center text-sm text-gray-600 dark:text-brand-secondary-text">
+                  Page {pagination.page} of {pagination.pages} ({pagination.total} total)
+                </div>
 
-                <span className="px-3 py-2 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-blue-600 text-white">
-                  {pagination.page} of {pagination.pages}
-                </span>
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
+                    disabled={pagination.page === 1}
+                    className="flex-1 px-4 py-3 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 bg-white/80 dark:bg-white/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors active:scale-95 touch-manipulation"
+                  >
+                    ← Previous
+                  </button>
 
-                <button
-                  onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
-                  disabled={pagination.page === pagination.pages}
-                  className="px-3 py-2 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 bg-white/80 dark:bg-white/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors active:scale-95 touch-manipulation"
-                >
-                  Next
-                </button>
+                  <button
+                    onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
+                    disabled={pagination.page === pagination.pages}
+                    className="flex-1 px-4 py-3 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 bg-white/80 dark:bg-white/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors active:scale-95 touch-manipulation"
+                  >
+                    Next →
+                  </button>
+                </div>
               </div>
-            </div>
+            </>
           )}
 
           {/* Empty State */}

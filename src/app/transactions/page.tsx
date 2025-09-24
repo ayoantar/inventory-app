@@ -38,6 +38,7 @@ export default function TransactionsPage() {
     status: '',
     type: ''
   })
+  const [filtersExpanded, setFiltersExpanded] = useState(false)
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 20,
@@ -143,25 +144,81 @@ export default function TransactionsPage() {
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center space-x-3 mb-2">
-              <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
-                <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
+          <div className="mb-6 md:mb-8">
+            {/* Desktop Header */}
+            <div className="hidden md:block">
+              <div className="flex items-center space-x-3 mb-2">
+                <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
+                  <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                </div>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                  Transactions
+                </h1>
               </div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-                Transactions
-              </h1>
+              <p className="text-gray-800 dark:text-brand-secondary-text ml-11">
+                Track asset check-ins and check-outs ({pagination.total} total)
+              </p>
             </div>
-            <p className="text-gray-800 dark:text-brand-secondary-text ml-11">
-              Track asset check-ins and check-outs ({pagination.total} total)
-            </p>
+
+            {/* Mobile Header */}
+            <div className="md:hidden">
+              <div className="flex items-center justify-between mb-2">
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                  Transactions
+                </h1>
+                <div className="flex items-center space-x-1 text-sm text-gray-600 dark:text-brand-secondary-text">
+                  <svg className="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 712-2h2a2 2 0 012 2" />
+                  </svg>
+                  <span>{pagination.total}</span>
+                </div>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
+                Asset check-ins and check-outs
+              </p>
+            </div>
+          </div>
+
+          {/* Mobile Filter Button */}
+          <div className="md:hidden mb-4">
+            <button
+              onClick={() => setFiltersExpanded(!filtersExpanded)}
+              className="w-full flex items-center justify-between px-4 py-3 bg-gray-900/5 rounded-lg border border-gray-700 text-left active:scale-95 touch-manipulation transition-all"
+            >
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z" />
+                </svg>
+                <span className="text-sm font-medium text-brand-primary-text">
+                  {Object.values(filter).some(value => value && value !== '')
+                    ? 'Filters Applied'
+                    : 'Show Filters'
+                  }
+                </span>
+                {Object.values(filter).some(value => value && value !== '') && (
+                  <span className="bg-brand-orange text-white text-xs px-2 py-0.5 rounded-full">
+                    {Object.values(filter).filter(value => value && value !== '').length}
+                  </span>
+                )}
+              </div>
+              <svg
+                className={`w-5 h-5 text-gray-600 dark:text-gray-400 transition-transform ${
+                  filtersExpanded ? 'rotate-180' : ''
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
           </div>
 
           {/* Filters */}
-          <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6 mb-8">
-            <div className="flex flex-wrap gap-4">
+          <div className={`bg-gray-900/5 rounded-lg border border-gray-700 p-4 md:p-6 mb-6 md:mb-8 ${filtersExpanded ? 'block' : 'hidden md:block'}`}>
+            <div className="flex flex-col md:flex-row md:flex-wrap gap-4">
               <div>
                 <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Status
@@ -170,7 +227,7 @@ export default function TransactionsPage() {
                   id="status"
                   value={filter.status}
                   onChange={(e) => setFilter(prev => ({ ...prev, status: e.target.value }))}
-                  className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                  className="w-full md:w-auto border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-3 md:py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent touch-manipulation"
                 >
                   <option value="">All Status</option>
                   <option value="ACTIVE">Active</option>
@@ -187,7 +244,7 @@ export default function TransactionsPage() {
                   id="type"
                   value={filter.type}
                   onChange={(e) => setFilter(prev => ({ ...prev, type: e.target.value }))}
-                  className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                  className="w-full md:w-auto border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-3 md:py-2 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent touch-manipulation"
                 >
                   <option value="">All Types</option>
                   <option value="CHECK_OUT">Check Out</option>
@@ -196,13 +253,14 @@ export default function TransactionsPage() {
               </div>
 
               {(filter.status || filter.type) && (
-                <div className="flex items-end">
+                <div className="flex items-end md:col-span-2">
                   <button
                     onClick={() => {
                       setFilter({ status: '', type: '' })
                       setPagination(prev => ({ ...prev, page: 1 }))
+                      setFiltersExpanded(false)
                     }}
-                    className="text-gray-700 dark:text-brand-secondary-text hover:text-gray-700 dark:hover:text-gray-300 text-sm px-3 py-2"
+                    className="w-full md:w-auto px-4 py-3 md:py-2 text-sm font-medium text-gray-700 dark:text-brand-secondary-text hover:text-gray-700 dark:hover:text-gray-300 bg-white/50 dark:bg-white/5 hover:bg-white/70 dark:hover:bg-white/10 rounded-lg border border-gray-300 dark:border-gray-600 transition-colors active:scale-95 touch-manipulation"
                   >
                     Clear Filters
                   </button>
@@ -347,33 +405,61 @@ export default function TransactionsPage() {
 
           {/* Pagination */}
           {transactions.length > 0 && pagination.pages > 1 && (
-            <div className="mt-6 flex items-center justify-between">
-              <div className="text-sm text-gray-700 dark:text-gray-300">
-                Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
-                {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
-                {pagination.total} results
+            <div className="mt-6">
+              {/* Desktop Pagination */}
+              <div className="hidden md:flex items-center justify-between">
+                <div className="text-sm text-gray-700 dark:text-gray-300">
+                  Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
+                  {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
+                  {pagination.total} results
+                </div>
+
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
+                    disabled={pagination.page === 1}
+                    className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-white/10 dark:hover:bg-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Previous
+                  </button>
+
+                  <span className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-900/5 text-gray-700 dark:text-gray-300">
+                    {pagination.page} of {pagination.pages}
+                  </span>
+
+                  <button
+                    onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
+                    disabled={pagination.page === pagination.pages}
+                    className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-white/10 dark:hover:bg-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
-              
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
-                  disabled={pagination.page === 1}
-                  className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-white/10 dark:hover:bg-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  Previous
-                </button>
-                
-                <span className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-900/5 text-gray-700 dark:text-gray-300">
-                  {pagination.page} of {pagination.pages}
-                </span>
-                
-                <button
-                  onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
-                  disabled={pagination.page === pagination.pages}
-                  className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-white/10 dark:hover:bg-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  Next
-                </button>
+
+              {/* Mobile Pagination */}
+              <div className="md:hidden">
+                <div className="text-center text-sm text-gray-700 dark:text-gray-300 mb-4">
+                  Page {pagination.page} of {pagination.pages} • {pagination.total} total
+                </div>
+
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
+                    disabled={pagination.page === 1}
+                    className="flex-1 px-4 py-3 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors active:scale-95 touch-manipulation"
+                  >
+                    ← Previous
+                  </button>
+
+                  <button
+                    onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
+                    disabled={pagination.page === pagination.pages}
+                    className="flex-1 px-4 py-3 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-white/10 dark:hover:bg-white/10 bg-white dark:bg-white/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors active:scale-95 touch-manipulation"
+                  >
+                    Next →
+                  </button>
+                </div>
               </div>
             </div>
           )}

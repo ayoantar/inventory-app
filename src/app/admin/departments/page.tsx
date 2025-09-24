@@ -42,6 +42,7 @@ export default function DepartmentManagement() {
   })
   const [createLoading, setCreateLoading] = useState(false)
   const [createError, setCreateError] = useState('')
+  const [filtersExpanded, setFiltersExpanded] = useState(false)
 
   useEffect(() => {
     if (status === 'loading') return
@@ -178,84 +179,170 @@ export default function DepartmentManagement() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
-      {/* Header */}
-      <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm shadow-sm border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
+
+      <div className="max-w-7xl mx-auto py-3 sm:py-4 md:py-6 px-3 sm:px-4 md:px-6 lg:px-8">
+        {/* Desktop Header */}
+        <div className="hidden md:block mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center space-x-3 mb-2">
+                <button
+                  onClick={() => router.back()}
+                  className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
+                  <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-6m-8 0H3m2 0h6M9 7h6m-6 4h6m-6 4h6" />
+                  </svg>
+                </div>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                  Department Management
+                </h1>
+              </div>
+              <p className="text-base text-gray-600 dark:text-brand-secondary-text ml-16 max-w-2xl">
+                Manage organizational departments and team structures
+              </p>
+            </div>
+            <div className="flex space-x-3">
+              <button
+                onClick={() => setShowNewDepartmentForm(true)}
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transform hover:scale-[1.02]"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Add Department
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Header */}
+        <div className="md:hidden mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-3">
               <button
                 onClick={() => router.back()}
-                className="text-white/60 dark:text-white/60 hover:text-slate-500 dark:hover:text-slate-200"
+                className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors active:scale-95 touch-manipulation"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
-              <div>
-                <h1 className="text-2xl font-bold text-brand-primary-text">Department Management</h1>
-                <p className="text-sm text-gray-600 dark:text-brand-secondary-text">Manage organizational departments</p>
-              </div>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                Departments
+              </h1>
             </div>
-            <button
-              onClick={() => setShowNewDepartmentForm(true)}
-              className="bg-blue-600 hover text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              <span>Add Department</span>
-            </button>
+            <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-1 text-sm text-gray-600 dark:text-brand-secondary-text">
+                <svg className="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-6m-8 0H3m2 0h6M9 7h6m-6 4h6m-6 4h6" />
+                </svg>
+                <span>{departments.length}</span>
+              </div>
+              <button
+                onClick={() => setShowNewDepartmentForm(true)}
+                className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-medium transition-all duration-200 active:scale-95 touch-manipulation"
+              >
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                New
+              </button>
+            </div>
           </div>
+          <p className="text-sm text-gray-600 dark:text-brand-secondary-text mb-4">
+            Manage organizational departments and team structures
+          </p>
         </div>
-      </div>
+        {/* Mobile Filter Button */}
+        <div className="md:hidden mb-4">
+          <button
+            onClick={() => setFiltersExpanded(!filtersExpanded)}
+            className="w-full flex items-center justify-between px-4 py-3 bg-gray-900/5 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 text-left active:scale-95 touch-manipulation transition-all"
+          >
+            <div className="flex items-center space-x-2">
+              <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z" />
+              </svg>
+              <span className="text-sm font-medium text-brand-primary-text">
+                {(searchTerm || activeFilter || showUsers) ? 'Filters Applied' : 'Show Filters'}
+              </span>
+              {(searchTerm || activeFilter || showUsers) && (
+                <span className="px-2 py-1 text-xs bg-blue-600 dark:bg-blue-500 text-white rounded-full">
+                  {[searchTerm, activeFilter, showUsers].filter(Boolean).length}
+                </span>
+              )}
+            </div>
+            <svg
+              className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${filtersExpanded ? 'rotate-180' : ''}`}
+              fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Filters */}
-        <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-700 p-6 mb-6">
+        <div className={`bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-6 ${!filtersExpanded ? 'hidden md:block' : ''}`}>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-2">
                 Search Departments
               </label>
-              <input
-                type="text"
-                placeholder="Search by name, description, or manager..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search departments..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 md:py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent touch-manipulation"
+                />
+                <svg
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
             </div>
-            
+
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-2">
                 Status
               </label>
               <select
                 value={activeFilter}
                 onChange={(e) => setActiveFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-3 md:py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent touch-manipulation"
               >
                 <option value="">All Status</option>
                 <option value="true">Active</option>
                 <option value="false">Inactive</option>
               </select>
             </div>
-            
+
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-2">
                 Show Users
               </label>
-              <label className="flex items-center">
+              <label className="flex items-center py-2">
                 <input
                   type="checkbox"
                   checked={showUsers}
                   onChange={(e) => setShowUsers(e.target.checked)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 rounded"
+                  className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded touch-manipulation"
                 />
-                <span className="ml-2 text-sm text-gray-300">Include user details</span>
+                <span className="ml-3 text-sm text-gray-700 dark:text-gray-300">Include user details</span>
               </label>
             </div>
-            
+
             <div className="flex items-end">
               <button
                 onClick={() => {
@@ -263,7 +350,7 @@ export default function DepartmentManagement() {
                   setActiveFilter('')
                   setShowUsers(false)
                 }}
-                className="w-full px-4 py-2 text-brand-primary-text hover border border-gray-600 rounded-lg hover transition-colors"
+                className="w-full px-4 py-3 md:py-2 text-sm font-medium text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors active:scale-95 touch-manipulation"
               >
                 Clear Filters
               </button>
@@ -273,7 +360,7 @@ export default function DepartmentManagement() {
 
         {/* New Department Form Modal */}
         {showNewDepartmentForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg shadow-xl max-w-md w-full mx-4">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
@@ -307,7 +394,7 @@ export default function DepartmentManagement() {
                       value={newDepartment.name}
                       onChange={(e) => setNewDepartment(prev => ({ ...prev, name: e.target.value }))}
                       required
-                      className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-3 md:py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent touch-manipulation"
                       placeholder="Enter department name"
                     />
                   </div>
@@ -320,7 +407,7 @@ export default function DepartmentManagement() {
                       value={newDepartment.description}
                       onChange={(e) => setNewDepartment(prev => ({ ...prev, description: e.target.value }))}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-3 md:py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent touch-manipulation"
                       placeholder="Enter department description (optional)"
                     />
                   </div>
@@ -333,7 +420,7 @@ export default function DepartmentManagement() {
                       type="text"
                       value={newDepartment.manager}
                       onChange={(e) => setNewDepartment(prev => ({ ...prev, manager: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-3 md:py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent touch-manipulation"
                       placeholder="Enter manager name (optional)"
                     />
                   </div>
@@ -350,21 +437,21 @@ export default function DepartmentManagement() {
                     </label>
                   </div>
 
-                  <div className="flex justify-end space-x-3 pt-4">
+                  <div className="flex flex-col md:flex-row justify-end space-y-2 md:space-y-0 md:space-x-3 pt-4">
                     <button
                       type="button"
                       onClick={() => {
                         setShowNewDepartmentForm(false)
                         setCreateError('')
                       }}
-                      className="px-4 py-2 text-gray-300 hover border border-gray-600 rounded-lg hover transition-colors"
+                      className="w-full md:w-auto px-4 py-3 md:py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors active:scale-95 touch-manipulation"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={createLoading}
-                      className="px-4 py-2 bg-blue-600 hover disabled:opacity-50 text-white rounded-lg transition-colors flex items-center space-x-2"
+                      className="w-full md:w-auto px-4 py-3 md:py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-lg transition-colors flex items-center justify-center active:scale-95 touch-manipulation"
                     >
                       {createLoading && (
                         <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
@@ -381,8 +468,91 @@ export default function DepartmentManagement() {
           </div>
         )}
 
-        {/* Departments Table */}
-        <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-700 overflow-hidden">
+        {/* Mobile View - Cards */}
+        <div className="md:hidden space-y-3 mb-6">
+          {departments.map((department) => (
+            <div key={department.id} className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+              {/* Header */}
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-6m-8 0H3m2 0h6M9 7h6m-6 4h6m-6 4h6" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-sm font-semibold text-brand-primary-text">{department.name}</h3>
+                    {department.description && (
+                      <p className="text-xs text-gray-600 dark:text-brand-secondary-text mt-1">{department.description}</p>
+                    )}
+                  </div>
+                </div>
+                <button
+                  onClick={() => toggleDepartmentStatus(department.id, department.isActive)}
+                  className={`px-2 py-1 text-xs font-medium rounded-full transition-colors active:scale-95 touch-manipulation ${
+                    department.isActive
+                      ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                      : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+                  }`}
+                >
+                  {department.isActive ? 'Active' : 'Inactive'}
+                </button>
+              </div>
+
+              {/* Details */}
+              <div className="grid grid-cols-2 gap-3 text-xs mb-4">
+                <div>
+                  <span className="text-gray-500 dark:text-gray-400">Manager:</span>
+                  <span className="ml-1 text-brand-primary-text">{department.manager || 'N/A'}</span>
+                </div>
+                <div>
+                  <span className="text-gray-500 dark:text-gray-400">Users:</span>
+                  <span className="ml-1 font-semibold text-brand-primary-text">{department._count.users}</span>
+                </div>
+                <div className="col-span-2">
+                  <span className="text-gray-500 dark:text-gray-400">Created:</span>
+                  <span className="ml-1 text-brand-primary-text">{new Date(department.createdAt).toLocaleDateString()}</span>
+                </div>
+                {showUsers && department.users && department.users.length > 0 && (
+                  <div className="col-span-2">
+                    <span className="text-gray-500 dark:text-gray-400">Members:</span>
+                    <p className="text-xs text-brand-primary-text mt-1">
+                      {department.users.slice(0, 3).map(user => user.name || user.email).join(', ')}
+                      {department.users.length > 3 && ` +${department.users.length - 3} more`}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Actions */}
+              <div className="flex space-x-2 pt-3 border-t border-gray-200 dark:border-gray-700">
+                <Link
+                  href={`/admin/departments/${department.id}/edit`}
+                  className="flex-1 px-3 py-2 text-center text-sm font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-md hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors active:scale-95 touch-manipulation"
+                >
+                  Edit
+                </Link>
+                {userRole === 'ADMIN' && (
+                  <button
+                    onClick={() => deleteDepartment(department.id, department.name)}
+                    disabled={department._count.users > 0}
+                    className={`flex-1 px-3 py-2 text-center text-sm font-medium rounded-md transition-colors active:scale-95 touch-manipulation ${
+                      department._count.users > 0
+                        ? 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                        : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50'
+                    }`}
+                    title={department._count.users > 0 ? 'Cannot delete department with users' : 'Delete department'}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop Table */}
+        <div className="hidden md:block bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-300">
               <thead className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm">

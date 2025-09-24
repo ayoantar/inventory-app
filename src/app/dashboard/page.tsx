@@ -78,12 +78,23 @@ export default function Dashboard() {
       
       <div className="max-w-7xl mx-auto py-3 sm:py-4 md:py-6 px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="space-y-4 sm:space-y-6 md:space-y-8">
-          <div className="text-center sm:text-left">
-            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-brand-primary-text">
+          {/* Desktop Header */}
+          <div className="hidden md:block">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
               Welcome back, {session.user?.name}!
             </h1>
-            <p className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-gray-600 dark:text-brand-secondary-text">
+            <p className="mt-2 text-base text-gray-600 dark:text-brand-secondary-text">
               Here's an overview of your inventory system
+            </p>
+          </div>
+
+          {/* Mobile Header */}
+          <div className="md:hidden">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+              Welcome back!
+            </h1>
+            <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
+              {session.user?.name && `Hi ${session.user.name.split(' ')[0]}, `}here's your inventory overview
             </p>
           </div>
 
@@ -161,75 +172,143 @@ export default function Dashboard() {
             />
           </div>
 
-          {/* Quick Actions - Mobile optimized with better touch targets */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
-            <button
-              onClick={() => router.push('/assets/new')}
-              className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-2 sm:p-3 md:p-4 lg:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
-            >
-              <div className="flex flex-col sm:flex-row items-center sm:items-start">
-                <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-2 sm:p-3 rounded-lg transition-colors">
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 dark:text-white/60 group-hover:text-gray-800 dark:group-hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                </div>
-                <div className="mt-2 sm:mt-0 sm:ml-3 text-center sm:text-left">
-                  <h3 className="text-xs sm:text-sm font-medium text-brand-primary-text">Add Asset</h3>
-                  <p className="hidden sm:block text-xs text-gray-600 dark:text-brand-secondary-text">Register new</p>
-                </div>
-              </div>
-            </button>
+          {/* Quick Actions */}
+          <div>
+            <h2 className="text-lg font-semibold text-brand-primary-text mb-3 md:mb-4">Quick Actions</h2>
 
-            <button
-              onClick={() => router.push('/assets/cart')}
-              className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-2 sm:p-3 md:p-4 lg:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
-            >
-              <div className="flex items-center">
-                <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">
-                  <svg className="w-6 h-6 text-brand-orange hover:text-brand-orange-soft transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V6a1 1 0 00-1-1H5a1 1 0 00-1 1v1a1 1 0 001 1zm12 0h2a1 1 0 001-1V6a1 1 0 00-1-1h-2a1 1 0 00-1 1v1a1 1 0 001 1zM5 20h2a1 1 0 001-1v-1a1 1 0 00-1-1H5a1 1 0 00-1 1v1a1 1 0 001 1z" />
-                  </svg>
+            {/* Mobile Quick Actions - 2 columns with vertical layout */}
+            <div className="md:hidden grid grid-cols-2 gap-3">
+              <button
+                onClick={() => router.push('/assets/new')}
+                className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg mb-2">
+                    <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-medium text-brand-primary-text mb-1">Add Asset</h3>
+                  <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Register new item</p>
                 </div>
-                <div className="ml-4">
-                  <h3 className="text-sm font-medium text-brand-primary-text group-hover">Scan to Cart</h3>
-                  <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Quick scan for transactions</p>
-                </div>
-              </div>
-            </button>
+              </button>
 
-            <button
-              onClick={() => router.push('/transactions')}
-              className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-2 sm:p-3 md:p-4 lg:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
-            >
-              <div className="flex items-center">
-                <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">
-                  <svg className="w-6 h-6 text-white/60 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                  </svg>
+              <button
+                onClick={() => router.push('/assets/cart')}
+                className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-lg mb-2">
+                    <svg className="w-6 h-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V6a1 1 0 00-1-1H5a1 1 0 00-1 1v1a1 1 0 001 1zm12 0h2a1 1 0 001-1V6a1 1 0 00-1-1h-2a1 1 0 00-1 1v1a1 1 0 001 1zM5 20h2a1 1 0 001-1v-1a1 1 0 00-1-1H5a1 1 0 00-1 1v1a1 1 0 001 1z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-medium text-brand-primary-text mb-1">Scan Cart</h3>
+                  <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Quick transactions</p>
                 </div>
-                <div className="ml-4">
-                  <h3 className="text-sm font-medium text-brand-primary-text group-hover">View Transactions</h3>
+              </button>
+
+              <button
+                onClick={() => router.push('/transactions')}
+                className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg mb-2">
+                    <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 712-2h2a2 2 0 712 2" />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-medium text-brand-primary-text mb-1">Transactions</h3>
                   <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Check-in/out history</p>
                 </div>
-              </div>
-            </button>
+              </button>
 
-            <button
-              onClick={() => router.push('/reports')}
-              className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-2 sm:p-3 md:p-4 lg:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
-            >
-              <div className="flex items-center">
-                <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">
-                  <svg className="w-6 h-6 text-white/60 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-sm font-medium text-brand-primary-text group-hover">Generate Reports</h3>
+              <button
+                onClick={() => router.push('/reports')}
+                className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-lg mb-2">
+                    <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-medium text-brand-primary-text mb-1">Reports</h3>
                   <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Analytics & insights</p>
                 </div>
-              </div>
-            </button>
+              </button>
+            </div>
+
+            {/* Desktop Quick Actions - 4 columns horizontal layout */}
+            <div className="hidden md:grid grid-cols-4 gap-4">
+              <button
+                onClick={() => router.push('/assets/new')}
+                className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
+              >
+                <div className="flex items-center">
+                  <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg">
+                    <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                  </div>
+                  <div className="ml-4">
+                    <h3 className="text-sm font-medium text-brand-primary-text">Add Asset</h3>
+                    <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Register new item</p>
+                  </div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => router.push('/assets/cart')}
+                className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
+              >
+                <div className="flex items-center">
+                  <div className="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-lg">
+                    <svg className="w-6 h-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V6a1 1 0 00-1-1H5a1 1 0 00-1 1v1a1 1 0 001 1zm12 0h2a1 1 0 001-1V6a1 1 0 00-1-1h-2a1 1 0 00-1 1v1a1 1 0 001 1zM5 20h2a1 1 0 001-1v-1a1 1 0 00-1-1H5a1 1 0 00-1 1v1a1 1 0 001 1z" />
+                    </svg>
+                  </div>
+                  <div className="ml-4">
+                    <h3 className="text-sm font-medium text-brand-primary-text">Scan Cart</h3>
+                    <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Quick transactions</p>
+                  </div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => router.push('/transactions')}
+                className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
+              >
+                <div className="flex items-center">
+                  <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg">
+                    <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 712-2h2a2 2 0 712 2" />
+                    </svg>
+                  </div>
+                  <div className="ml-4">
+                    <h3 className="text-sm font-medium text-brand-primary-text">Transactions</h3>
+                    <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Check-in/out history</p>
+                  </div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => router.push('/reports')}
+                className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
+              >
+                <div className="flex items-center">
+                  <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-lg">
+                    <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <div className="ml-4">
+                    <h3 className="text-sm font-medium text-brand-primary-text">Reports</h3>
+                    <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Analytics & insights</p>
+                  </div>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>

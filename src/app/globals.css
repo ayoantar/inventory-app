@@ -125,4 +125,38 @@ body {
     background: transparent !important;
     background-color: transparent !important;
   }
+
+  /* HTML5-QRCode library styling overrides */
+  #qr-scanner-container {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 500px !important;
+  }
+
+  #qr-scanner-container > div {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 500px !important;
+  }
+
+  #qr-scanner-container video {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 500px !important;
+    object-fit: cover !important;
+  }
+
+  #qr-scanner-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 500px !important;
+  }
+
+  /* Force the qr reader container to take full space */
+  #qr-scanner-container .qr-code-reader-container,
+  #qr-scanner-container .qr-code-reader {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 500px !important;
+  }
 }

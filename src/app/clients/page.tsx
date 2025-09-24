@@ -43,6 +43,7 @@ export default function ClientsPage() {
   const [showModal, setShowModal] = useState(false)
   const [editingClient, setEditingClient] = useState<Client | null>(null)
   const [modalLoading, setModalLoading] = useState(false)
+  const [filtersExpanded, setFiltersExpanded] = useState(false)
   const [formData, setFormData] = useState<ClientFormData>({
     name: '',
     code: '',
@@ -217,109 +218,166 @@ export default function ClientsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
-      <Navbar />
-      
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          {/* Header */}
-          <div className="mb-8">
-            <nav className="flex mb-4" aria-label="Breadcrumb">
-              <ol className="inline-flex items-center space-x-2">
-                <li className="inline-flex items-center">
-                  <button 
-                    onClick={() => router.push('/dashboard')}
-                    className="text-gray-600 dark:text-brand-secondary-text hover"
-                  >
-                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                    </svg>
-                    Dashboard
-                  </button>
-                </li>
-                <li>
-                  <div className="flex items-center">
-                    <svg className="w-4 h-4 text-white/50 hover:text-white/80 transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="ml-2 text-brand-primary-text font-medium">Clients</span>
-                  </div>
-                </li>
-              </ol>
-            </nav>
-            
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
-                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                  </div>
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-brand-secondary-text bg-clip-text text-transparent">
-                    Client Management
-                  </h1>
-                </div>
-                <p className="text-brand-primary-text ml-11 max-w-2xl">
-                  Manage clients and companies that own assets in your inventory
-                </p>
-              </div>
-              <div className="flex space-x-3">
+    <>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
+        <Navbar />
+
+        <div className="max-w-7xl mx-auto py-3 sm:py-4 md:py-6 px-3 sm:px-4 md:px-6 lg:px-8">
+        {/* Desktop Header */}
+        <div className="hidden md:block mb-8">
+          <nav className="flex mb-4" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-2">
+              <li className="inline-flex items-center">
                 <button
+                  onClick={() => router.push('/dashboard')}
+                  className="text-gray-600 dark:text-brand-secondary-text hover:text-gray-900 dark:hover:text-brand-primary-text transition-colors"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                  </svg>
+                  Dashboard
+                </button>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span className="ml-2 text-brand-primary-text font-medium">Clients</span>
+                </div>
+              </li>
+            </ol>
+          </nav>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center space-x-3 mb-2">
+                <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
+                  <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                  Client Management
+                </h1>
+              </div>
+              <p className="text-base text-gray-600 dark:text-brand-secondary-text ml-11 max-w-2xl">
+                Manage clients and companies that own assets in your inventory
+              </p>
+            </div>
+            <div className="flex space-x-3">
+              <button
                 onClick={() => openModal()}
                 className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg shadow-green-500/25 hover:shadow-green-500/40 transform hover:scale-[1.02]"
               >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
                 Add Client
               </button>
-              </div>
             </div>
           </div>
+        </div>
 
-          {/* Search and Filters */}
-          <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-700 p-4 mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Search
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search clients by name, code, or contact..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-600 rounded-md bg-gray-900 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                  <svg
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/50 hover:text-white/80 transition-colors"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
+        {/* Mobile Header */}
+        <div className="md:hidden mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+              Clients
+            </h1>
+            <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-1 text-sm text-gray-600 dark:text-brand-secondary-text">
+                <svg className="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span>{clients.length}</span>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Status
-                </label>
-                <select
-                  value={showActiveOnly ? 'true' : ''}
-                  onChange={(e) => setShowActiveOnly(e.target.value === 'true')}
-                  className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              <button
+                onClick={() => openModal()}
+                className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg font-medium transition-all duration-200 active:scale-95 touch-manipulation"
+              >
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                New
+              </button>
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-brand-secondary-text mb-4">
+            Manage clients and companies that own assets
+          </p>
+        </div>
+
+        {/* Mobile Filter Button */}
+        <div className="md:hidden mb-4">
+          <button
+            onClick={() => setFiltersExpanded(!filtersExpanded)}
+            className="w-full flex items-center justify-between px-4 py-3 bg-gray-900/5 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 text-left active:scale-95 touch-manipulation transition-all"
+          >
+            <div className="flex items-center space-x-2">
+              <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z" />
+              </svg>
+              <span className="text-sm font-medium text-brand-primary-text">
+                {(searchTerm || showActiveOnly) ? 'Filters Applied' : 'Show Filters'}
+              </span>
+              {(searchTerm || showActiveOnly) && (
+                <span className="px-2 py-1 text-xs bg-green-600 dark:bg-green-500 text-white rounded-full">
+                  {[searchTerm, showActiveOnly].filter(Boolean).length}
+                </span>
+              )}
+            </div>
+            <svg
+              className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${filtersExpanded ? 'rotate-180' : ''}`}
+              fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Search and Filters */}
+        <div className={`bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-6 ${!filtersExpanded ? 'hidden md:block' : ''}`}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-2">
+                Search
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search clients..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 md:py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent touch-manipulation"
+                />
+                <svg
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <option value="">All Status</option>
-                  <option value="true">Active Only</option>
-                </select>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
               </div>
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-2">
+                Status
+              </label>
+              <select
+                value={showActiveOnly ? 'true' : ''}
+                onChange={(e) => setShowActiveOnly(e.target.value === 'true')}
+                className="w-full px-3 py-3 md:py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent touch-manipulation"
+              >
+                <option value="">All Status</option>
+                <option value="true">Active Only</option>
+              </select>
+            </div>
           </div>
+        </div>
 
-          {/* Error Message */}
+        {/* Error Message */}
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
               <div className="flex items-start">
@@ -342,8 +400,101 @@ export default function ClientsPage() {
             </div>
           )}
 
-          {/* Clients Table */}
-          <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 overflow-hidden">
+          {/* Mobile View - Cards */}
+          <div className="md:hidden space-y-3 mb-6">
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-orange"></div>
+                <span className="ml-2 text-gray-600 dark:text-brand-secondary-text">Loading clients...</span>
+              </div>
+            ) : clients.length === 0 ? (
+              <div className="text-center py-12">
+                <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No clients found</h3>
+                <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
+                  Try adjusting your search criteria
+                </p>
+              </div>
+            ) : (
+              clients.map((client) => (
+                <div key={client.id} className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+                  {/* Header */}
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <h3 className="text-sm font-semibold text-brand-primary-text mb-1">{client.name}</h3>
+                      {client.description && (
+                        <p className="text-xs text-gray-600 dark:text-brand-secondary-text">{client.description}</p>
+                      )}
+                    </div>
+                    <div className="flex items-center space-x-2 ml-2">
+                      <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 rounded-full">
+                        {client.code}
+                      </span>
+                      <span className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${
+                        client.isActive
+                          ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                          : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+                      }`}>
+                        {client.isActive ? 'Active' : 'Inactive'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Details */}
+                  <div className="grid grid-cols-2 gap-3 text-xs mb-4">
+                    <div>
+                      <span className="text-gray-500 dark:text-gray-400">Contact:</span>
+                      <span className="ml-1 text-brand-primary-text">{client.contact || 'N/A'}</span>
+                    </div>
+                    <div>
+                      <span className="text-gray-500 dark:text-gray-400">Assets:</span>
+                      <span className="ml-1 font-semibold text-brand-primary-text">{client._count.assets}</span>
+                    </div>
+                    {client.email && (
+                      <div className="col-span-2">
+                        <span className="text-gray-500 dark:text-gray-400">Email:</span>
+                        <span className="ml-1 text-brand-primary-text">{client.email}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex space-x-2 pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <button
+                      onClick={() => openModal(client)}
+                      className="flex-1 px-3 py-2 text-center text-sm font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-md hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors active:scale-95 touch-manipulation"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleToggleActive(client)}
+                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-md transition-colors active:scale-95 touch-manipulation ${
+                        client.isActive
+                          ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 hover:bg-yellow-200 dark:hover:bg-yellow-900/50'
+                          : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50'
+                      }`}
+                    >
+                      {client.isActive ? 'Deactivate' : 'Activate'}
+                    </button>
+                    {session?.user?.role === 'ADMIN' && (
+                      <button
+                        onClick={() => handleDelete(client)}
+                        className="px-3 py-2 text-sm font-medium bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-md hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors active:scale-95 touch-manipulation"
+                        title={client._count.assets > 0 ? 'Deactivate client (has assets)' : 'Delete client'}
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* Desktop View - Table */}
+          <div className="hidden md:block bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-300/50">
                 <thead className="bg-gradient-to-r from-gray-50/50 to-gray-100/30">
@@ -643,6 +794,6 @@ export default function ClientsPage() {
           </div>
         </div>
       )}
-    </div>
+    </>
   )
 }

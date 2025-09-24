@@ -26,6 +26,7 @@ export default function Navbar() {
       }
       if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
         setShowMobileMenu(false)
+        document.body.style.overflow = 'unset'
       }
     }
 
@@ -57,7 +58,16 @@ export default function Navbar() {
             {/* Mobile menu button - moved to left */}
             <div className="md:hidden mr-3">
               <button
-                onClick={() => setShowMobileMenu(!showMobileMenu)}
+                onClick={() => {
+                  const newShowMobileMenu = !showMobileMenu
+                  setShowMobileMenu(newShowMobileMenu)
+                  // Prevent body scroll when mobile menu is open
+                  if (newShowMobileMenu) {
+                    document.body.style.overflow = 'hidden'
+                  } else {
+                    document.body.style.overflow = 'unset'
+                  }
+                }}
                 className="text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-md transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -368,49 +378,70 @@ export default function Navbar() {
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
               href="/dashboard"
-              onClick={() => setShowMobileMenu(false)}
+              onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
               Dashboard
             </Link>
             <Link
               href="/assets"
-              onClick={() => setShowMobileMenu(false)}
+              onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
               Assets
             </Link>
             <Link
               href="/asset-groups"
-              onClick={() => setShowMobileMenu(false)}
+              onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
               Asset Groups
             </Link>
             <Link
               href="/presets"
-              onClick={() => setShowMobileMenu(false)}
+              onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
               Presets
             </Link>
             <Link
               href="/transactions"
-              onClick={() => setShowMobileMenu(false)}
+              onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
               Transactions
             </Link>
             <Link
               href="/maintenance"
-              onClick={() => setShowMobileMenu(false)}
+              onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
               Maintenance
             </Link>
             <Link
               href="/reports"
-              onClick={() => setShowMobileMenu(false)}
+              onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
               Reports
@@ -428,7 +459,10 @@ export default function Navbar() {
                   {(session.user as any)?.role === 'ADMIN' && (
                     <Link
                       href="/admin/users"
-                      onClick={() => setShowMobileMenu(false)}
+                      onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
                       className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                     >
                       Manage Users
@@ -437,28 +471,40 @@ export default function Navbar() {
 
                   <Link
                     href="/admin/departments"
-                    onClick={() => setShowMobileMenu(false)}
+                    onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
                     className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                   >
                     Manage Departments
                   </Link>
                   <Link
                     href="/clients"
-                    onClick={() => setShowMobileMenu(false)}
+                    onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
                     className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                   >
                     Manage Clients
                   </Link>
                   <Link
                     href="/locations"
-                    onClick={() => setShowMobileMenu(false)}
+                    onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
                     className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                   >
                     Manage Locations
                   </Link>
                   <Link
                     href="/categories"
-                    onClick={() => setShowMobileMenu(false)}
+                    onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
                     className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                   >
                     Manage Categories
@@ -469,7 +515,10 @@ export default function Navbar() {
                     <>
                       <Link
                         href="/admin/settings"
-                        onClick={() => setShowMobileMenu(false)}
+                        onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
                         className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                       >
                         System Settings
@@ -477,7 +526,10 @@ export default function Navbar() {
                       <Link
                         href="/api/health"
                         target="_blank"
-                        onClick={() => setShowMobileMenu(false)}
+                        onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
                         className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                       >
                         System Health
@@ -493,7 +545,10 @@ export default function Navbar() {
               <div className="border-t border-gray-300 dark:border-gray-700 mt-3 pt-3">
                 <Link
                   href="/profile"
-                  onClick={() => setShowMobileMenu(false)}
+                  onClick={() => {
+                setShowMobileMenu(false)
+                document.body.style.overflow = 'unset'
+              }}
                   className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                 >
                   My Profile
@@ -501,6 +556,7 @@ export default function Navbar() {
                 <button
                   onClick={() => {
                     setShowMobileMenu(false)
+                    document.body.style.overflow = 'unset'
                     signOut({ callbackUrl: '/auth/signin' })
                   }}
                   className="block w-full text-left text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
