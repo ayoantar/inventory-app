@@ -449,15 +449,58 @@ export default function AssetsPage() {
             <BarcodeSearch className="" />
           </div>
 
-          {/* Advanced Filters */}
-          <AdvancedFilters
-            filters={filters}
-            onFiltersChange={setFilters}
-            onApply={handleFiltersApply}
-            onReset={handleFiltersReset}
-            isExpanded={filtersExpanded}
-            onToggle={() => setFiltersExpanded(!filtersExpanded)}
-          />
+          {/* Advanced Filters - Hidden by default on mobile */}
+          <div className="hidden md:block">
+            <AdvancedFilters
+              filters={filters}
+              onFiltersChange={setFilters}
+              onApply={handleFiltersApply}
+              onReset={handleFiltersReset}
+              isExpanded={filtersExpanded}
+              onToggle={() => setFiltersExpanded(!filtersExpanded)}
+            />
+          </div>
+
+          {/* Mobile Filter Button */}
+          <div className="md:hidden mb-4">
+            <button
+              onClick={() => setFiltersExpanded(!filtersExpanded)}
+              className="w-full bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 border border-gray-600 rounded-lg px-4 py-3 text-sm font-medium text-gray-200 flex items-center justify-between transition-colors active:scale-95 touch-manipulation"
+            >
+              <div className="flex items-center space-x-2">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
+                </svg>
+                <span>
+                  {Object.values(filters).some(value => value && value !== '')
+                    ? 'Filters Applied'
+                    : 'Show Filters'
+                  }
+                </span>
+              </div>
+              <svg
+                className={`w-4 h-4 transition-transform ${filtersExpanded ? 'rotate-180' : ''}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {filtersExpanded && (
+              <div className="mt-3">
+                <AdvancedFilters
+                  filters={filters}
+                  onFiltersChange={setFilters}
+                  onApply={handleFiltersApply}
+                  onReset={handleFiltersReset}
+                  isExpanded={filtersExpanded}
+                  onToggle={() => setFiltersExpanded(!filtersExpanded)}
+                />
+              </div>
+            )}
+          </div>
 
           {/* Bulk Actions Toolbar */}
           {bulkMode && selectedAssets.length > 0 && (
