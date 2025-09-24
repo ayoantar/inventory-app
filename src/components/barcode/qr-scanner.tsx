@@ -38,6 +38,9 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
       setCameraError(null)
       setCameraRequested(true)
 
+      // Wait a bit for the video element to be rendered in the DOM
+      await new Promise(resolve => setTimeout(resolve, 100))
+
       // Check if camera API is supported
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         console.error('Camera API not supported')
@@ -60,6 +63,15 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
       console.log('Camera stream acquired successfully')
       streamRef.current = stream
 
+      // Wait for video element to be available and retry if needed
+      let retries = 0
+      const maxRetries = 10
+      while (!videoRef.current && retries < maxRetries) {
+        console.log(`Waiting for video element... (attempt ${retries + 1}/${maxRetries})`)
+        await new Promise(resolve => setTimeout(resolve, 100))
+        retries++
+      }
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream
         console.log('Video source set, attempting to play...')
@@ -67,8 +79,8 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
         setIsScanning(true)
         console.log('Camera started successfully')
       } else {
-        console.error('Video element ref is null')
-        setCameraError('Video element not found')
+        console.error('Video element ref is still null after retries')
+        setCameraError('Video element not found - please try again')
       }
 
     } catch (error: any) {
@@ -216,18 +228,21 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
             ) : (
               <>
                 <div className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-black min-h-[300px] flex items-center justify-center">
-                  {isScanning ? (
-                    <video
-                      ref={videoRef}
-                      className="w-full h-full object-cover"
-                      playsInline
-                      muted
-                    />
-                  ) : cameraRequested ? (
-                    <div className="text-center">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-orange mx-auto mb-3"></div>
-                      <p className="text-white text-sm">Initializing camera...</p>
-                    </div>
+                  {cameraRequested ? (
+                    <>
+                      <video
+                        ref={videoRef}
+                        className={`w-full h-full object-cover ${isScanning ? 'block' : 'hidden'}`}
+                        playsInline
+                        muted
+                      />
+                      {!isScanning && (
+                        <div className="absolute text-center">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-orange mx-auto mb-3"></div>
+                          <p className="text-white text-sm">Initializing camera...</p>
+                        </div>
+                      )}
+                    </>
                   ) : (
                     <div className="text-center p-8">
                       <div className="mb-4">
