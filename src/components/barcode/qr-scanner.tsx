@@ -36,15 +36,30 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
   const initializeCamera = async () => {
     try {
       console.log('🔍 Starting HTML5-QRCode scanner initialization...')
+      console.log('🔧 Environment check:', {
+        navigator: !!navigator,
+        mediaDevices: !!navigator?.mediaDevices,
+        getUserMedia: !!navigator?.mediaDevices?.getUserMedia,
+        userAgent: navigator.userAgent,
+        platform: navigator.platform
+      })
+
       setCameraError(null)
       setCameraRequested(true)
 
       // Wait for DOM element to be ready
-      await new Promise(resolve => setTimeout(resolve, 100))
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      // Check if scanner container exists
+      const container = document.getElementById(scannerId)
+      if (!container) {
+        throw new Error('Scanner container not found in DOM')
+      }
+      console.log('📦 Scanner container found:', container)
 
       // Create scanner instance
       scannerRef.current = new Html5Qrcode(scannerId)
-      console.log('📷 Scanner instance created')
+      console.log('📷 Scanner instance created successfully')
 
       // Define success callback
       const handleScanSuccess = (decodedText: string, decodedResult: any) => {
@@ -68,37 +83,87 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
         // console.log('Scan attempt:', error)
       }
 
-      // Scanner configuration
-      const config = {
-        fps: 10,
-        qrbox: { width: 280, height: 280 }, // Square scanning box
-        aspectRatio: 1.0,
-        formatsToSupport: [
-          Html5QrcodeSupportedFormats.QR_CODE,
-          Html5QrcodeSupportedFormats.UPC_A,
-          Html5QrcodeSupportedFormats.UPC_E,
-          Html5QrcodeSupportedFormats.EAN_13,
-          Html5QrcodeSupportedFormats.EAN_8,
-          Html5QrcodeSupportedFormats.CODE_128,
-          Html5QrcodeSupportedFormats.CODE_39,
-          Html5QrcodeSupportedFormats.CODE_93,
-          Html5QrcodeSupportedFormats.CODABAR
-        ]
+      // Try multiple initialization approaches
+      console.log('🎯 Attempting camera initialization...')
+
+      // First try: Simple config with environment camera
+      try {
+        console.log('📱 Trying back camera first...')
+        await scannerRef.current.start(
+          { facingMode: "environment" },
+          {
+            fps: 10,
+            qrbox: { width: 280, height: 280 },
+            aspectRatio: 1.0
+          },
+          handleScanSuccess,
+          onScanFailure
+        )
+        setIsScanning(true)
+        console.log('🚀 Back camera started successfully!')
+        return
+      } catch (envError) {
+        console.log('⚠️ Back camera failed, trying any available camera:', envError.message)
       }
 
-      // Start scanning with back camera preference
-      await scannerRef.current.start(
-        { facingMode: "environment" }, // Use back camera
-        config,
-        handleScanSuccess,
-        onScanFailure
-      )
+      // Second try: Any available camera
+      try {
+        console.log('📷 Trying any available camera...')
+        await scannerRef.current.start(
+          { facingMode: "user" }, // Front camera fallback
+          {
+            fps: 10,
+            qrbox: { width: 280, height: 280 },
+            aspectRatio: 1.0
+          },
+          handleScanSuccess,
+          onScanFailure
+        )
+        setIsScanning(true)
+        console.log('🚀 Front camera started successfully!')
+        return
+      } catch (userError) {
+        console.log('⚠️ Front camera also failed:', userError.message)
+      }
 
-      setIsScanning(true)
-      console.log('🚀 Scanner started successfully!')
+      // Third try: Get available cameras and use first one
+      try {
+        console.log('🔍 Getting available cameras...')
+        const cameras = await Html5Qrcode.getCameras()
+        console.log('📹 Available cameras:', cameras)
+
+        if (cameras && cameras.length > 0) {
+          const camera = cameras[0]
+          console.log('🎯 Using camera:', camera.label)
+
+          await scannerRef.current.start(
+            camera.id,
+            {
+              fps: 10,
+              qrbox: { width: 280, height: 280 },
+              aspectRatio: 1.0
+            },
+            handleScanSuccess,
+            onScanFailure
+          )
+          setIsScanning(true)
+          console.log('🚀 Camera started with ID:', camera.id)
+          return
+        } else {
+          throw new Error('No cameras available')
+        }
+      } catch (cameraError) {
+        console.error('💥 All camera initialization attempts failed:', cameraError)
+        throw cameraError
+      }
 
     } catch (error: any) {
-      console.error('❌ Scanner initialization failed:', error)
+      console.error('❌ Complete scanner initialization failed:', error)
+      console.error('🔍 Error details:', {
+        name: error.name,
+        message: error.message,
+        stack: error.stack
+      })
 
       if (error.name === 'NotAllowedError') {
         setCameraError('Camera permission denied. Please allow camera access and try again.')
@@ -106,8 +171,10 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
         setCameraError('No camera found on this device')
       } else if (error.message?.includes('Permission denied')) {
         setCameraError('Camera permission denied. Please allow camera access.')
+      } else if (error.message?.includes('container not found')) {
+        setCameraError('Scanner interface not ready. Please try again.')
       } else {
-        setCameraError('Failed to start camera: ' + (error.message || 'Unknown error'))
+        setCameraError('Failed to start camera: ' + (error.message || 'Unknown error. Check console for details.'))
       }
     }
   }
