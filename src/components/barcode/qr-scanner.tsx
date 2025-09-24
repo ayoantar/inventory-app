@@ -18,59 +18,90 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
 
   useEffect(() => {
     if (isOpen && !scannerRef.current) {
-      initializeScanner()
+      // Wrap initialization in try-catch to prevent app crashes
+      try {
+        initializeScanner().catch((error) => {
+          console.error('Scanner initialization failed:', error)
+          setCameraError('Failed to initialize camera: ' + (error.message || 'Unknown error'))
+        })
+      } catch (syncError) {
+        console.error('Synchronous scanner error:', syncError)
+        setCameraError('Camera initialization error: ' + (syncError.message || 'Unknown error'))
+      }
     }
 
     return () => {
-      handleStop()
+      handleStop().catch((error) => {
+        console.error('Error stopping scanner:', error)
+      })
     }
   }, [isOpen])
 
   const initializeScanner = async () => {
     try {
       setCameraError(null)
+
+      // Create scanner instance
       const scanner = new Html5Qrcode('qr-scanner')
       scannerRef.current = scanner
 
-      // Get available cameras
-      const cameras = await Html5Qrcode.getCameras()
-      if (cameras && cameras.length > 0) {
-        // Use back camera if available (environment facing), otherwise use first camera
-        const preferredCamera = cameras.find(camera =>
-          camera.label.toLowerCase().includes('back') ||
-          camera.label.toLowerCase().includes('environment')
-        ) || cameras[0]
-
-        await startScanning(preferredCamera.id)
-      } else {
-        setCameraError('No cameras found on this device')
+      // Get available cameras with better error handling
+      let cameras = []
+      try {
+        cameras = await Html5Qrcode.getCameras()
+      } catch (cameraError: any) {
+        console.error('Error getting cameras:', cameraError)
+        if (cameraError.name === 'NotAllowedError' || cameraError.message?.includes('Permission denied')) {
+          setCameraError('Camera permission denied. Please allow camera access and reload.')
+          return
+        }
+        throw cameraError
       }
+
+      if (!cameras || cameras.length === 0) {
+        setCameraError('No cameras found on this device')
+        return
+      }
+
+      // Select camera - prefer back/environment camera
+      const preferredCamera = cameras.find(camera => {
+        const label = camera.label.toLowerCase()
+        return label.includes('back') ||
+               label.includes('environment') ||
+               label.includes('rear')
+      }) || cameras[0]
+
+      console.log('Selected camera:', preferredCamera.label)
+      await startScanning(preferredCamera.id)
+
     } catch (error: any) {
       console.error('Failed to initialize camera:', error)
-      if (error.message?.includes('Permission denied')) {
+
+      // Handle specific error types
+      if (error.name === 'NotAllowedError' || error.message?.includes('Permission denied')) {
         setCameraError('Camera permission denied. Please allow camera access and try again.')
-      } else if (error.message?.includes('NotFoundError')) {
+      } else if (error.name === 'NotFoundError' || error.message?.includes('NotFoundError')) {
         setCameraError('No camera found on this device')
-      } else if (error.message?.includes('NotAllowedError')) {
-        setCameraError('Camera access was blocked. Please enable camera permissions.')
+      } else if (error.message?.includes('NotSupported')) {
+        setCameraError('Camera scanning not supported on this browser')
       } else {
-        setCameraError('Camera initialization failed: ' + error.message)
+        setCameraError('Camera failed to start: ' + (error.message || 'Unknown error'))
       }
     }
   }
 
   const startScanning = async (cameraId: string) => {
-    if (!scannerRef.current) return
+    if (!scannerRef.current) {
+      console.error('Scanner ref is null')
+      return
+    }
 
     try {
+      // Simplified config - remove experimental features that might cause crashes
       const config = {
         fps: 10,
         qrbox: { width: 250, height: 250 },
-        aspectRatio: 1.0,
-        // Optimize for mobile
-        experimentalFeatures: {
-          useBarCodeDetectorIfSupported: true
-        }
+        aspectRatio: 1.0
       }
 
       await scannerRef.current.start(
@@ -78,34 +109,57 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
         config,
         (decodedText, decodedResult) => {
           console.log(`Code scanned: ${decodedText}`)
-          onScanSuccess(decodedText, decodedResult.result.format?.formatName || 'Unknown')
-          handleClose() // Auto-close on successful scan
+          // Safely handle the result
+          try {
+            const format = decodedResult?.result?.format?.formatName || 'Unknown'
+            onScanSuccess(decodedText, format)
+            handleClose() // Auto-close on successful scan
+          } catch (resultError) {
+            console.error('Error handling scan result:', resultError)
+            onScanSuccess(decodedText, 'Unknown')
+            handleClose()
+          }
         },
         (error) => {
           // Only log actual scanning errors, not "no code found" errors
-          if (!error.includes('NotFoundException') && !error.includes('No MultiFormat Readers')) {
+          if (error &&
+              !error.includes('NotFoundException') &&
+              !error.includes('No MultiFormat Readers') &&
+              !error.includes('NotFoundError')) {
             console.warn(`Scanning error: ${error}`)
           }
         }
       )
 
       setIsScanning(true)
+      console.log('Camera started successfully')
+
     } catch (error: any) {
       console.error('Failed to start scanning:', error)
-      setCameraError('Failed to start camera: ' + error.message)
+      setCameraError('Failed to start camera: ' + (error.message || 'Unknown error'))
       if (onScanError) {
-        onScanError('Failed to start scanning: ' + error.message)
+        onScanError('Failed to start scanning: ' + (error.message || 'Unknown error'))
       }
     }
   }
 
   const handleStop = async () => {
-    if (scannerRef.current && isScanning) {
+    if (scannerRef.current) {
       try {
-        await scannerRef.current.stop()
-        scannerRef.current.clear()
+        if (isScanning) {
+          await scannerRef.current.stop()
+        }
+        await scannerRef.current.clear()
       } catch (error) {
         console.error('Error stopping scanner:', error)
+        // Try to force clear if stop fails
+        try {
+          if (scannerRef.current) {
+            scannerRef.current.clear()
+          }
+        } catch (clearError) {
+          console.error('Error clearing scanner:', clearError)
+        }
       }
       scannerRef.current = null
       setIsScanning(false)
@@ -113,10 +167,15 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
   }
 
   const handleClose = () => {
-    handleStop()
-    onClose()
-    setCameraError(null)
-    setPermissionRequested(false)
+    try {
+      handleStop().catch(console.error)
+      onClose()
+      setCameraError(null)
+      setPermissionRequested(false)
+    } catch (error) {
+      console.error('Error closing scanner:', error)
+      onClose()
+    }
   }
 
   if (!isOpen) {
