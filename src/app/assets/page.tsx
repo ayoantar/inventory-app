@@ -273,7 +273,8 @@ export default function AssetsPage() {
         <div className="px-4 py-6 sm:px-0">
           {/* Header */}
           <div className="mb-8">
-            <div className="flex items-center justify-between">
+            {/* Desktop Header */}
+            <div className="hidden md:flex items-center justify-between">
               <div>
                 <div className="flex items-center space-x-3 mb-2">
                   <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
@@ -302,8 +303,8 @@ export default function AssetsPage() {
               <button
                 onClick={toggleBulkMode}
                 className={`px-4 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors ${
-                  bulkMode 
-                    ? 'bg-brand-orange hover:bg-primary-600 text-brand-primary-text' 
+                  bulkMode
+                    ? 'bg-brand-orange hover:bg-primary-600 text-brand-primary-text'
                     : 'bg-gray-100 hover:bg-white/10 text-gray-700 dark:bg-white/5 dark:hover:bg-white/10 dark:text-gray-200'
                 }`}
               >
@@ -353,6 +354,93 @@ export default function AssetsPage() {
                 Add Asset
               </Link>
               </div>
+            </div>
+
+            {/* Mobile Header */}
+            <div className="md:hidden">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
+                  <svg className="w-5 h-5 text-brand-orange dark:text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-brand-primary-text dark:to-gray-200 bg-clip-text text-transparent">
+                    Assets
+                  </h1>
+                  <p className="text-sm text-gray-800 dark:text-brand-secondary-text">
+                    {pagination.total} total assets
+                  </p>
+                </div>
+              </div>
+
+              {/* Mobile Action Grid */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <Link
+                  href="/assets/cart"
+                  className="bg-brand-orange hover:bg-primary-600 text-brand-primary-text px-4 py-3 rounded-lg text-sm font-medium flex items-center justify-center transition-colors active:scale-95 touch-manipulation"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6H19M7 13v0a2 2 0 002 2h8.5m-10.5-2v-2a2 2 0 012-2h8.5" />
+                  </svg>
+                  Scan to Cart
+                </Link>
+                <button
+                  onClick={toggleBulkMode}
+                  className={`px-4 py-3 rounded-lg text-sm font-medium flex items-center justify-center transition-colors active:scale-95 touch-manipulation ${
+                    bulkMode
+                      ? 'bg-brand-orange hover:bg-primary-600 text-brand-primary-text'
+                      : 'bg-gray-100 hover:bg-white/10 text-gray-700 dark:bg-white/5 dark:hover:bg-white/10 dark:text-gray-200'
+                  }`}
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {bulkMode ? 'Exit Bulk' : 'Bulk Actions'}
+                </button>
+                <button
+                  onClick={() => setShowImportDialog(true)}
+                  className="bg-primary-600 hover:bg-primary-700 text-brand-primary-text px-4 py-3 rounded-lg text-sm font-medium flex items-center justify-center transition-colors active:scale-95 touch-manipulation"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                  </svg>
+                  Import Excel
+                </button>
+                <Link
+                  href="/assets/new"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg text-sm font-medium flex items-center justify-center active:scale-95 touch-manipulation"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Add Asset
+                </Link>
+              </div>
+
+              {/* Mobile Export Button - Full Width */}
+              <button
+                onClick={handleExport}
+                disabled={exporting}
+                className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-brand-primary-text px-4 py-3 rounded-lg text-sm font-medium flex items-center justify-center transition-colors active:scale-95 touch-manipulation"
+              >
+                {exporting ? (
+                  <>
+                    <svg className="w-4 h-4 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Exporting...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Export Excel
+                  </>
+                )}
+              </button>
             </div>
           </div>
 

@@ -37,33 +37,34 @@ export default function BulkActionsToolbar({
   }
 
   return (
-    <div className="bg-blue-50 border-b border-blue-200 px-4 py-3">
-      <div className="flex items-center justify-between">
+    <div className="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-700 px-4 py-3">
+      {/* Desktop Layout */}
+      <div className="hidden md:flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <span className="text-sm font-medium text-blue-900">
+          <span className="text-sm font-medium text-blue-900 dark:text-blue-200">
             {selectedCount} asset{selectedCount !== 1 ? 's' : ''} selected
           </span>
-          
+
           <div className="flex items-center space-x-2">
             {/* Change Status */}
             <div className="relative">
               <button
                 onClick={() => setShowStatusMenu(!showStatusMenu)}
-                className="inline-flex items-center px-3 py-1.5 border border-blue-300 text-sm font-medium rounded-md text-blue-700 bg-gray-900 hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="inline-flex items-center px-3 py-1.5 border border-blue-300 dark:border-blue-600 text-sm font-medium rounded-md text-blue-700 dark:text-blue-200 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Change Status
                 <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              
+
               {showStatusMenu && (
-                <div className="absolute z-10 mt-1 w-48 bg-gray-900/5 shadow-lg border border-gray-600 rounded-md py-1">
+                <div className="absolute z-10 mt-1 w-48 bg-white dark:bg-gray-800 shadow-lg border border-gray-300 dark:border-gray-600 rounded-md py-1">
                   {statusOptions.map((option) => (
                     <button
                       key={option.value}
                       onClick={() => handleStatusChange(option.value as AssetStatus)}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-200 hover"
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
                       <span className={`font-medium ${option.color}`}>
                         {option.label}
@@ -77,7 +78,7 @@ export default function BulkActionsToolbar({
             {/* Export Selected */}
             <button
               onClick={() => onBulkAction('export')}
-              className="inline-flex items-center px-3 py-1.5 border border-blue-300 text-sm font-medium rounded-md text-blue-700 bg-gray-900 hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="inline-flex items-center px-3 py-1.5 border border-blue-300 dark:border-blue-600 text-sm font-medium rounded-md text-blue-700 dark:text-blue-200 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               <svg className="mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -88,7 +89,7 @@ export default function BulkActionsToolbar({
             {/* Delete */}
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="inline-flex items-center px-3 py-1.5 border border-red-300 text-sm font-medium rounded-md text-red-700 bg-gray-900 hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              className="inline-flex items-center px-3 py-1.5 border border-red-300 dark:border-red-600 text-sm font-medium rounded-md text-red-700 dark:text-red-300 bg-white dark:bg-gray-800 hover:bg-red-50 dark:hover:bg-red-900/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             >
               <svg className="mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -100,24 +101,99 @@ export default function BulkActionsToolbar({
 
         <button
           onClick={onCancel}
-          className="text-sm text-blue-600 hover font-medium"
+          className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
         >
           Cancel
         </button>
       </div>
 
+      {/* Mobile Layout */}
+      <div className="md:hidden">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-sm font-medium text-blue-900 dark:text-blue-200">
+            {selectedCount} selected
+          </span>
+          <button
+            onClick={onCancel}
+            className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
+          >
+            Cancel
+          </button>
+        </div>
+
+        {/* Mobile Action Grid */}
+        <div className="grid grid-cols-1 gap-2">
+          {/* Change Status - Mobile */}
+          <div className="relative">
+            <button
+              onClick={() => setShowStatusMenu(!showStatusMenu)}
+              className="w-full flex items-center justify-center px-4 py-3 border border-blue-300 dark:border-blue-600 text-sm font-medium rounded-lg text-blue-700 dark:text-blue-200 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 active:scale-95 touch-manipulation transition-all"
+            >
+              <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Change Status
+              <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {showStatusMenu && (
+              <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg border border-gray-300 dark:border-gray-600 rounded-lg py-1 max-h-60 overflow-y-auto">
+                {statusOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    onClick={() => handleStatusChange(option.value as AssetStatus)}
+                    className="block w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 active:scale-95 touch-manipulation"
+                  >
+                    <span className={`font-medium ${option.color}`}>
+                      {option.label}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons Grid */}
+          <div className="grid grid-cols-2 gap-2">
+            {/* Export Selected - Mobile */}
+            <button
+              onClick={() => onBulkAction('export')}
+              className="flex items-center justify-center px-4 py-3 border border-blue-300 dark:border-blue-600 text-sm font-medium rounded-lg text-blue-700 dark:text-blue-200 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 active:scale-95 touch-manipulation transition-all"
+            >
+              <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Export
+            </button>
+
+            {/* Delete - Mobile */}
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="flex items-center justify-center px-4 py-3 border border-red-300 dark:border-red-600 text-sm font-medium rounded-lg text-red-700 dark:text-red-300 bg-white dark:bg-gray-800 hover:bg-red-50 dark:hover:bg-red-900/20 active:scale-95 touch-manipulation transition-all"
+            >
+              <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-900/5 rounded-lg p-6 max-w-md w-mx-4">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-brand-dark-blue/95 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
             <div className="flex items-center mb-4">
               <div className="flex-shrink-0">
-                <svg className="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-6 w-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
               </div>
               <div className="ml-3">
-                <h3 className="text-lg font-medium text-brand-primary-text">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-brand-primary-text">
                   Delete Selected Assets
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-brand-secondary-text mt-1">
@@ -125,16 +201,16 @@ export default function BulkActionsToolbar({
                 </p>
               </div>
             </div>
-            <div className="flex justify-end space-x-3">
+            <div className="flex justify-end space-x-3 mt-6">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-300 bg-gray-900 border border-gray-600 rounded-md hover"
+                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 active:scale-95 touch-manipulation transition-all"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 border border-transparent rounded-lg active:scale-95 touch-manipulation transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               >
                 Delete
               </button>

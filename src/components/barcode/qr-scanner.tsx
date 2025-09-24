@@ -79,14 +79,14 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
   }
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900/5 rounded-lg shadow-xl max-w-md w-full">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-brand-dark-blue/95 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl max-w-md w-full mx-4">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-brand-primary-text">Scan QR Code or Barcode</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">Scan QR Code or Barcode</h3>
             <button
               onClick={handleClose}
-              className="text-white/50 hover:text-white/80 transition-colors hover transition-colors"
+              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 active:scale-95 touch-manipulation"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -95,18 +95,18 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
           </div>
 
           <div className="mb-4">
-            <div id="qr-scanner" className="border rounded-lg overflow-hidden"></div>
+            <div id="qr-scanner" className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-black"></div>
           </div>
 
-          <div className="text-sm text-gray-600 dark:text-brand-secondary-text text-center">
+          <div className="text-sm text-gray-600 dark:text-brand-secondary-text text-center space-y-1">
             <p>Position the QR code or barcode within the camera view to scan.</p>
-            <p className="mt-1">Supported formats: QR Code, Code 128</p>
+            <p className="text-xs opacity-80">Supported formats: QR Code, Code 128, Code 39</p>
           </div>
 
-          <div className="flex justify-end mt-4">
+          <div className="flex justify-end mt-6">
             <button
               onClick={handleClose}
-              className="px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900/5 transition-colors"
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors active:scale-95 touch-manipulation"
             >
               Cancel
             </button>

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Asset, AssetStatus, AssetCategory, AssetCondition } from '../../../generated/prisma'
 import AssetPreviewModal from './asset-preview-modal'
+import MobileAssetCard from './mobile-asset-card'
 import { useState, useEffect, useRef } from 'react'
 import { useCart } from '@/contexts/cart-context'
 
@@ -172,8 +173,39 @@ export default function AssetTable({
   }
 
   return (
-    <div className="bg-gray-900/5 shadow-sm rounded-lg border border-gray-600 overflow-hidden">
-      <div className="overflow-x-auto">
+    <>
+      {/* Mobile View - Cards */}
+      <div className="md:hidden space-y-3">
+        {assets.map((asset) => (
+          <MobileAssetCard
+            key={asset.id}
+            asset={asset}
+            selected={selectedAssets.includes(asset.id)}
+            onSelect={() => handleSelectAsset(asset.id)}
+            bulkMode={bulkMode}
+            onPreview={() => {
+              setPreviewAssetId(asset.id)
+              setShowPreview(true)
+            }}
+            onDuplicate={onDuplicate ? () => onDuplicate(asset) : undefined}
+          />
+        ))}
+        {assets.length === 0 && (
+          <div className="text-center py-12 bg-white dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg">
+            <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+            </svg>
+            <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No assets found</h3>
+            <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
+              Try adjusting your search or filter criteria
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop View - Table */}
+      <div className="hidden md:block bg-gray-900/5 shadow-sm rounded-lg border border-gray-600 overflow-hidden">
+        <div className="overflow-x-auto">
         <table ref={tableRef} className="w-full divide-y divide-gray-300 border-collapse">
           <thead className="bg-gray-100 dark:bg-gray-800">
             <tr className="divide-x divide-gray-300">
@@ -361,18 +393,7 @@ export default function AssetTable({
           </tbody>
         </table>
       </div>
-      
-      {assets.length === 0 && (
-        <div className="text-center py-12">
-          <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-          </svg>
-          <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No assets found</h3>
-          <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
-            Try adjusting your search criteria or filters
-          </p>
-        </div>
-      )}
+      </div>
 
       <AssetPreviewModal
         assetId={previewAssetId}
@@ -382,6 +403,6 @@ export default function AssetTable({
           setPreviewAssetId(null)
         }}
       />
-    </div>
+    </>
   )
 }

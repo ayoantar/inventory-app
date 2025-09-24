@@ -7,6 +7,7 @@ import PasswordResetModal from '@/components/admin/password-reset-modal'
 import AddUserModal from '@/components/admin/add-user-modal'
 import UserTransferModal from '@/components/admin/user-transfer-modal'
 import EditUserModal from '@/components/admin/edit-user-modal'
+import MobileUserCard from '@/components/admin/mobile-user-card'
 
 interface User {
   id: string
@@ -204,249 +205,290 @@ export default function UserManagement() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
-      {/* Header */}
-      <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm shadow-sm border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => router.back()}
-                className="text-white/60 dark:text-white/60 hover:text-slate-500 dark:hover:text-slate-200"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <div>
-                <h1 className="text-2xl font-bold text-brand-primary-text">User Management</h1>
-                <p className="text-sm text-gray-600 dark:text-brand-secondary-text">Manage system users and permissions</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setShowAddUserModal(true)}
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transform hover:scale-[1.02]"
-            >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              Add User
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Filters */}
-        <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Search Users
-              </label>
-              <input
-                type="text"
-                placeholder="Search by name, email, or department..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Role
-              </label>
-              <select
-                value={roleFilter}
-                onChange={(e) => setRoleFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="">All Roles</option>
-                <option value="ADMIN">Admin</option>
-                <option value="MANAGER">Manager</option>
-                <option value="USER">User</option>
-                <option value="VIEWER">Viewer</option>
-              </select>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Status
-              </label>
-              <select
-                value={activeFilter}
-                onChange={(e) => setActiveFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="">All Status</option>
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
-              </select>
-            </div>
-            
-            <div className="flex items-end">
-              <button
-                onClick={() => {
-                  setSearchTerm('')
-                  setRoleFilter('')
-                  setActiveFilter('')
-                }}
-                className="w-full px-4 py-2 text-brand-primary-text hover border border-gray-600 rounded-lg hover transition-colors"
-              >
-                Clear Filters
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Users Table */}
-        <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-300">
-              <thead className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
-                    User
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
-                    Role
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
-                    Department
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
-                    Activity
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
-                    Last Login
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm divide-y divide-gray-300">
-                {users.map((user) => (
-                  <tr key={user.id} className="hover transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10">
-                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                            <span className="text-white font-medium text-sm">
-                              {user.name ? user.name.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-brand-primary-text">
-                            {user.name || 'No name'}
-                          </div>
-                          <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
-                            {user.email}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getRoleColor(user.role)}`}>
-                        {user.role}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-brand-secondary-text">
-                      {user.department || '-'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-brand-secondary-text">
-                      <div className="space-y-1">
-                        <div>{user._count.createdAssets} assets</div>
-                        <div>{user._count.transactions} transactions</div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <button
-                        onClick={() => toggleUserStatus(user.id, user.isActive)}
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors ${
-                          user.isActive
-                            ? 'bg-green-100 text-green-800 hover'
-                            : 'bg-red-100 text-red-800 hover'
-                        }`}
-                      >
-                        {user.isActive ? 'Active' : 'Inactive'}
-                      </button>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-brand-secondary-text">
-                      {user.lastLoginAt 
-                        ? new Date(user.lastLoginAt).toLocaleDateString()
-                        : 'Never'
-                      }
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex justify-end space-x-2">
-                        <button
-                          onClick={() => {
-                            setSelectedUser(user)
-                            setShowEditModal(true)
-                          }}
-                          className="inline-flex items-center px-3 py-1.5 bg-blue-100 hover text-blue-700 rounded-md transition-colors text-xs font-medium"
-                        >
-                          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                          </svg>
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => {
-                            setSelectedUser(user)
-                            setShowPasswordResetModal(true)
-                          }}
-                          className="inline-flex items-center px-3 py-1.5 bg-orange-100 hover text-orange-700 rounded-md transition-colors text-xs font-medium"
-                        >
-                          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m0 0a2 2 0 01-2 2m2-2h6m-6 0H9m12 0v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h4m6 0V7a2 2 0 112 2v0z" />
-                          </svg>
-                          Reset
-                        </button>
-                        <button
-                          onClick={() => handleDeleteUser(user)}
-                          className="inline-flex items-center px-3 py-1.5 bg-red-100 hover text-red-700 rounded-md transition-colors text-xs font-medium"
-                        >
-                          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-                          Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
-          {users.length === 0 && (
-            <div className="text-center py-12">
-              <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-              </svg>
-              <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No users found</h3>
-              <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
-                Get started by creating a new user.
-              </p>
-              <div className="mt-6">
+      <div className="max-w-7xl mx-auto py-3 sm:py-4 md:py-6 px-3 sm:px-4 md:px-6 lg:px-8">
+        <div className="space-y-4 sm:space-y-6 md:space-y-8">
+          {/* Header */}
+          <div className="text-center sm:text-left">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
+              <div className="flex items-center space-x-3">
                 <button
-                  onClick={() => setShowAddUserModal(true)}
-                  className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  onClick={() => router.back()}
+                  className="text-gray-600 dark:text-gray-400 hover:text-brand-primary-text transition-colors"
                 >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
-                  Add User
+                </button>
+                <div>
+                  <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-brand-primary-text">User Management</h1>
+                  <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-brand-secondary-text mt-1">Manage system users and permissions</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowAddUserModal(true)}
+                className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg sm:rounded-xl font-semibold text-sm transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transform hover:scale-[1.02] active:scale-95 touch-manipulation"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                Add User
+              </button>
+            </div>
+          </div>
+          {/* Filters */}
+          <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="sm:col-span-2 lg:col-span-1">
+                <label className="block text-xs sm:text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
+                  Search Users
+                </label>
+                <input
+                  type="text"
+                  placeholder="Search by name, email..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs sm:text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
+                  Role
+                </label>
+                <select
+                  value={roleFilter}
+                  onChange={(e) => setRoleFilter(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                >
+                  <option value="">All Roles</option>
+                  <option value="ADMIN">Admin</option>
+                  <option value="MANAGER">Manager</option>
+                  <option value="USER">User</option>
+                  <option value="VIEWER">Viewer</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs sm:text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
+                  Status
+                </label>
+                <select
+                  value={activeFilter}
+                  onChange={(e) => setActiveFilter(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                >
+                  <option value="">All Status</option>
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
+              </div>
+
+              <div className="flex items-end sm:col-span-2 lg:col-span-1">
+                <button
+                  onClick={() => {
+                    setSearchTerm('')
+                    setRoleFilter('')
+                    setActiveFilter('')
+                  }}
+                  className="w-full px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg transition-colors text-sm font-medium active:scale-95 touch-manipulation"
+                >
+                  Clear Filters
                 </button>
               </div>
             </div>
-          )}
+          </div>
+
+          {/* Mobile View - Cards */}
+          <div className="md:hidden space-y-3">
+            {users.map((user) => (
+              <MobileUserCard
+                key={user.id}
+                user={user}
+                onToggleStatus={toggleUserStatus}
+                onEdit={(user) => {
+                  setSelectedUser(user)
+                  setShowEditModal(true)
+                }}
+                onPasswordReset={(user) => {
+                  setSelectedUser(user)
+                  setShowPasswordResetModal(true)
+                }}
+                onDelete={handleDeleteUser}
+              />
+            ))}
+            {users.length === 0 && (
+              <div className="text-center py-12">
+                <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                </svg>
+                <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No users found</h3>
+                <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
+                  Get started by creating a new user.
+                </p>
+                <div className="mt-6">
+                  <button
+                    onClick={() => setShowAddUserModal(true)}
+                    className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors active:scale-95 touch-manipulation"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add User
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Desktop View - Table */}
+          <div className="hidden md:block bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead className="bg-gray-50 dark:bg-gray-800">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      User
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Role
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Department
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Activity
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Last Login
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white dark:bg-brand-dark-blue/90 divide-y divide-gray-200 dark:divide-gray-700">
+                  {users.map((user) => (
+                    <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 h-10 w-10">
+                            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                              <span className="text-white font-medium text-sm">
+                                {user.name ? user.name.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="ml-4">
+                            <div className="text-sm font-medium text-brand-primary-text">
+                              {user.name || 'No name'}
+                            </div>
+                            <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
+                              {user.email}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getRoleColor(user.role)}`}>
+                          {user.role}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-brand-secondary-text">
+                        {user.department || '-'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-brand-secondary-text">
+                        <div className="space-y-1">
+                          <div>{user._count.createdAssets} assets</div>
+                          <div>{user._count.transactions} transactions</div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <button
+                          onClick={() => toggleUserStatus(user.id, user.isActive)}
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors ${
+                            user.isActive
+                              ? 'bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-300'
+                              : 'bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-300'
+                          }`}
+                        >
+                          {user.isActive ? 'Active' : 'Inactive'}
+                        </button>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-brand-secondary-text">
+                        {user.lastLoginAt
+                          ? new Date(user.lastLoginAt).toLocaleDateString()
+                          : 'Never'
+                        }
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div className="flex justify-end space-x-2">
+                          <button
+                            onClick={() => {
+                              setSelectedUser(user)
+                              setShowEditModal(true)
+                            }}
+                            className="inline-flex items-center px-3 py-1.5 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-md transition-colors text-xs font-medium"
+                          >
+                            <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => {
+                              setSelectedUser(user)
+                              setShowPasswordResetModal(true)
+                            }}
+                            className="inline-flex items-center px-3 py-1.5 bg-orange-100 hover:bg-orange-200 dark:bg-orange-900/30 dark:hover:bg-orange-900/50 text-orange-700 dark:text-orange-300 rounded-md transition-colors text-xs font-medium"
+                          >
+                            <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m0 0a2 2 0 01-2 2m2-2h6m-6 0H9m12 0v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h4m6 0V7a2 2 0 112 2v0z" />
+                            </svg>
+                            Reset
+                          </button>
+                          <button
+                            onClick={() => handleDeleteUser(user)}
+                            className="inline-flex items-center px-3 py-1.5 bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-700 dark:text-red-300 rounded-md transition-colors text-xs font-medium"
+                          >
+                            <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {users.length === 0 && (
+              <div className="text-center py-12">
+                <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                </svg>
+                <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No users found</h3>
+                <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
+                  Get started by creating a new user.
+                </p>
+                <div className="mt-6">
+                  <button
+                    onClick={() => setShowAddUserModal(true)}
+                    className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add User
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

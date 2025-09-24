@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Navbar from '@/components/ui/navbar'
+import MobileTransactionCard from '@/components/transactions/mobile-transaction-card'
 import { AssetTransaction } from '../../../generated/prisma'
 
 interface TransactionWithRelations extends AssetTransaction {
@@ -91,6 +92,33 @@ export default function TransactionsPage() {
       CHECK_IN: 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-700'
     }
     return colors[type as keyof typeof colors] || 'bg-gray-50 text-gray-700 border-gray-300 dark:bg-white/5 dark:text-white/50 hover:text-white/80 transition-colors dark:border-gray-600'
+  }
+
+  const handleQuickReturn = async (transaction: TransactionWithRelations) => {
+    if (confirm(`Return ${transaction.asset.name}?`)) {
+      try {
+        const response = await fetch(`/api/transactions`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            assetId: transaction.asset.id,
+            type: 'CHECK_IN',
+            notes: `Quick return via mobile`,
+            parentTransactionId: transaction.id
+          })
+        })
+
+        if (response.ok) {
+          fetchTransactions() // Refresh the list
+        } else {
+          const data = await response.json()
+          alert(data.error || 'Failed to return asset')
+        }
+      } catch (error) {
+        console.error('Quick return failed:', error)
+        alert('Failed to return asset')
+      }
+    }
   }
 
   if (status === 'loading' || loading) {
@@ -183,8 +211,30 @@ export default function TransactionsPage() {
             </div>
           </div>
 
-          {/* Transactions Table */}
-          <div className="bg-gray-900/5 rounded-lg border border-gray-700 overflow-hidden">
+          {/* Mobile View - Transaction Cards */}
+          <div className="md:hidden space-y-3">
+            {transactions.map((transaction) => (
+              <MobileTransactionCard
+                key={transaction.id}
+                transaction={transaction}
+                onQuickReturn={handleQuickReturn}
+              />
+            ))}
+            {transactions.length === 0 && (
+              <div className="text-center py-12 bg-white dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg">
+                <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+                <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No transactions found</h3>
+                <p className="mt-1 text-sm text-gray-600 dark:text-brand-secondary-text">
+                  Try adjusting your filters or check back later
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Desktop View - Transactions Table */}
+          <div className="hidden md:block bg-gray-900/5 rounded-lg border border-gray-700 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full divide-y divide-gray-300 dark:divide-gray-700">
                 <thead className="bg-gray-900/5">

@@ -76,19 +76,19 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8">
-        <div className="space-y-6 sm:space-y-8">
+      <div className="max-w-7xl mx-auto py-3 sm:py-4 md:py-6 px-3 sm:px-4 md:px-6 lg:px-8">
+        <div className="space-y-4 sm:space-y-6 md:space-y-8">
           <div className="text-center sm:text-left">
-            <h1 className="text-xl sm:text-2xl font-bold text-brand-primary-text">
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-brand-primary-text">
               Welcome back, {session.user?.name}!
             </h1>
-            <p className="mt-2 text-sm sm:text-base text-gray-600 dark:text-brand-secondary-text">
+            <p className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-gray-600 dark:text-brand-secondary-text">
               Here's an overview of your inventory system
             </p>
           </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {/* Stats Grid - Mobile optimized with 2 columns */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6">
             <StatsCard
               title="Total Assets"
               value={stats.totalAssets}
@@ -161,28 +161,28 @@ export default function Dashboard() {
             />
           </div>
 
-          {/* Quick Actions */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Quick Actions - Mobile optimized with better touch targets */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
             <button
               onClick={() => router.push('/assets/new')}
-              className="bg-gray-900/5 p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
+              className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-2 sm:p-3 md:p-4 lg:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
             >
-              <div className="flex items-center">
-                <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">
-                  <svg className="w-6 h-6 text-white/60 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start">
+                <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-2 sm:p-3 rounded-lg transition-colors">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 dark:text-white/60 group-hover:text-gray-800 dark:group-hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                 </div>
-                <div className="ml-4">
-                  <h3 className="text-sm font-medium text-brand-primary-text group-hover">Add Asset</h3>
-                  <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Register new equipment</p>
+                <div className="mt-2 sm:mt-0 sm:ml-3 text-center sm:text-left">
+                  <h3 className="text-xs sm:text-sm font-medium text-brand-primary-text">Add Asset</h3>
+                  <p className="hidden sm:block text-xs text-gray-600 dark:text-brand-secondary-text">Register new</p>
                 </div>
               </div>
             </button>
 
             <button
               onClick={() => router.push('/assets/cart')}
-              className="bg-gray-900/5 p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
+              className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-2 sm:p-3 md:p-4 lg:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
             >
               <div className="flex items-center">
                 <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">
@@ -199,7 +199,7 @@ export default function Dashboard() {
 
             <button
               onClick={() => router.push('/transactions')}
-              className="bg-gray-900/5 p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
+              className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-2 sm:p-3 md:p-4 lg:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
             >
               <div className="flex items-center">
                 <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">
@@ -216,7 +216,7 @@ export default function Dashboard() {
 
             <button
               onClick={() => router.push('/reports')}
-              className="bg-gray-900/5 p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-700 hover:border-gray-600:border-gray-600 group"
+              className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm p-2 sm:p-3 md:p-4 lg:p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-600 group active:scale-95 touch-manipulation"
             >
               <div className="flex items-center">
                 <div className="bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 p-3 rounded-lg transition-colors">

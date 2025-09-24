@@ -102,70 +102,73 @@ export default function ReportsPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8">
-        <div className="space-y-6 sm:space-y-8">
+      <div className="max-w-7xl mx-auto py-3 sm:py-4 md:py-6 px-3 sm:px-4 md:px-6 lg:px-8">
+        <div className="space-y-4 sm:space-y-6 md:space-y-8">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
-            <div className="text-center sm:text-left">
-              <h1 className="text-xl sm:text-2xl font-bold text-brand-primary-text">Reports & Analytics</h1>
-              <p className="text-sm sm:text-base text-brand-primary-text">
-                Comprehensive insights into your inventory performance
-              </p>
-            </div>
+          <div className="text-center sm:text-left">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
+              <div>
+                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-brand-primary-text">Reports & Analytics</h1>
+                <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-brand-secondary-text mt-1">
+                  Comprehensive insights into your inventory performance
+                </p>
+              </div>
 
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
-              <button
-                onClick={() => exportReport('excel')}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center justify-center transition-colors"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Export Excel
-              </button>
-              <button
-                onClick={() => exportReport('pdf')}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center justify-center transition-colors"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Export PDF
-              </button>
+              <div className="grid grid-cols-2 sm:flex gap-2 w-full sm:w-auto">
+                <button
+                  onClick={() => exportReport('excel')}
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-md text-xs sm:text-sm font-medium inline-flex items-center justify-center transition-colors active:scale-95 touch-manipulation"
+                >
+                  <svg className="w-4 h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span className="hidden sm:inline">Export </span>Excel
+                </button>
+                <button
+                  onClick={() => exportReport('pdf')}
+                  className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-xs sm:text-sm font-medium inline-flex items-center justify-center transition-colors active:scale-95 touch-manipulation"
+                >
+                  <svg className="w-4 h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V4a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span className="hidden sm:inline">Export </span>PDF
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Date Range Controls */}
-          <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6 mb-6">
-            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-4 lg:space-y-0">
+          <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+            <div className="space-y-4">
               <div>
-                <h3 className="text-lg font-medium text-brand-primary-text mb-2">Report Period</h3>
-                <div className="flex flex-wrap gap-2">
+                <h3 className="text-sm sm:text-base md:text-lg font-medium text-brand-primary-text mb-2 sm:mb-3">Report Period</h3>
+                <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
                   {[
-                    { key: '7d', label: 'Last 7 days' },
-                    { key: '30d', label: 'Last 30 days' },
-                    { key: '90d', label: 'Last 90 days' },
-                    { key: '1y', label: 'Last year' },
-                    { key: 'custom', label: 'Custom range' }
+                    { key: '7d', label: '7 days', fullLabel: 'Last 7 days' },
+                    { key: '30d', label: '30 days', fullLabel: 'Last 30 days' },
+                    { key: '90d', label: '90 days', fullLabel: 'Last 90 days' },
+                    { key: '1y', label: '1 year', fullLabel: 'Last year' },
+                    { key: 'custom', label: 'Custom', fullLabel: 'Custom range' }
                   ].map((period) => (
                     <button
                       key={period.key}
                       onClick={() => setSelectedPeriod(period.key)}
-                      className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-colors active:scale-95 touch-manipulation ${
                         selectedPeriod === period.key
                           ? 'bg-blue-600 text-white'
-                          : 'bg-gray-900/5 text-gray-300 hover'
+                          : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                       }`}
                     >
-                      {period.label}
+                      <span className="sm:hidden">{period.label}</span>
+                      <span className="hidden sm:inline">{period.fullLabel}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label htmlFor="startDate" className="block text-sm font-medium text-gray-300 mb-1">
+                  <label htmlFor="startDate" className="block text-xs sm:text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
                     Start Date
                   </label>
                   <input
@@ -173,11 +176,11 @@ export default function ReportsPage() {
                     id="startDate"
                     value={dateRange.startDate}
                     onChange={(e) => handleDateRangeChange('startDate', e.target.value)}
-                    className="border border-gray-600 rounded-md px-3 py-2 bg-white/5 text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
                 <div>
-                  <label htmlFor="endDate" className="block text-sm font-medium text-gray-300 mb-1">
+                  <label htmlFor="endDate" className="block text-xs sm:text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
                     End Date
                   </label>
                   <input
@@ -185,7 +188,7 @@ export default function ReportsPage() {
                     id="endDate"
                     value={dateRange.endDate}
                     onChange={(e) => handleDateRangeChange('endDate', e.target.value)}
-                    className="border border-gray-600 rounded-md px-3 py-2 bg-white/5 text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
               </div>
@@ -194,25 +197,28 @@ export default function ReportsPage() {
 
           {/* Report Tabs */}
           <div>
-            <div className="border-b border-gray-700">
-              <nav className="-mb-px flex flex-wrap gap-2 sm:gap-8">
+            <div className="border-b border-gray-200 dark:border-gray-700">
+              <nav className="-mb-px grid grid-cols-2 sm:flex gap-0 sm:gap-4">
                 {[
-                  { key: 'analytics', label: 'Analytics', icon: '📊' },
-                  { key: 'transactions', label: 'Transactions', icon: '🔄' },
-                  { key: 'maintenance', label: 'Maintenance', icon: '🔧' },
-                  { key: 'clients', label: 'Client Assets', icon: '👥' }
+                  { key: 'analytics', label: 'Analytics', shortLabel: 'Analytics', icon: '📊' },
+                  { key: 'transactions', label: 'Transactions', shortLabel: 'Trans.', icon: '🔄' },
+                  { key: 'maintenance', label: 'Maintenance', shortLabel: 'Maint.', icon: '🔧' },
+                  { key: 'clients', label: 'Client Assets', shortLabel: 'Clients', icon: '👥' }
                 ].map((tab) => (
                   <button
                     key={tab.key}
                     onClick={() => setActiveTab(tab.key as ReportTab)}
-                    className={`py-2 px-3 border-b-2 font-medium text-xs sm:text-sm transition-colors ${
+                    className={`py-2 sm:py-3 px-2 sm:px-3 border-b-2 font-medium text-xs sm:text-sm transition-colors active:scale-95 touch-manipulation ${
                       activeTab === tab.key
                         ? 'border-brand-orange text-brand-orange'
-                        : 'border-transparent text-white/50 hover:text-white/80 transition-colors hover:bg-white/10'
+                        : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-brand-primary-text hover:bg-gray-100 dark:hover:bg-gray-800/50'
                     }`}
                   >
-                    <span className="mr-2">{tab.icon}</span>
-                    {tab.label}
+                    <div className="flex items-center justify-center sm:justify-start">
+                      <span className="text-sm sm:text-base mr-1 sm:mr-2">{tab.icon}</span>
+                      <span className="sm:hidden">{tab.shortLabel}</span>
+                      <span className="hidden sm:inline">{tab.label}</span>
+                    </div>
                   </button>
                 ))}
               </nav>
@@ -220,17 +226,19 @@ export default function ReportsPage() {
           </div>
 
           {/* Report Content */}
-          <div className={activeTab === 'analytics' ? 'block' : 'hidden'}>
-            <SimpleAnalytics dateRange={dateRange} />
-          </div>
-          <div className={activeTab === 'transactions' ? 'block' : 'hidden'}>
-            <TransactionsReport dateRange={dateRange} />
-          </div>
-          <div className={activeTab === 'maintenance' ? 'block' : 'hidden'}>
-            <MaintenanceReport dateRange={dateRange} />
-          </div>
-          <div className={activeTab === 'clients' ? 'block' : 'hidden'}>
-            <ClientAssetsReport />
+          <div className="min-h-96">
+            <div className={activeTab === 'analytics' ? 'block' : 'hidden'}>
+              <SimpleAnalytics dateRange={dateRange} />
+            </div>
+            <div className={activeTab === 'transactions' ? 'block' : 'hidden'}>
+              <TransactionsReport dateRange={dateRange} />
+            </div>
+            <div className={activeTab === 'maintenance' ? 'block' : 'hidden'}>
+              <MaintenanceReport dateRange={dateRange} />
+            </div>
+            <div className={activeTab === 'clients' ? 'block' : 'hidden'}>
+              <ClientAssetsReport />
+            </div>
           </div>
         </div>
       </div>
