@@ -23,7 +23,6 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/qrcode": "^1.5.5",
     "@types/xlsx": "^0.0.35",
-    "@zxing/library": "^0.21.3",
     "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
     "date-fns": "^4.1.0",
