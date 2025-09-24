@@ -428,25 +428,6 @@ export default function Navbar() {
             {/* Profile & Sign Out */}
             {session && (
               <div className="border-t border-gray-300 dark:border-gray-700 mt-3 pt-3">
-                {/* User info in mobile menu */}
-                <div className="flex items-center space-x-3 px-3 py-2 mb-2">
-                  <div className="flex-shrink-0">
-                    <div className="w-10 h-10 bg-gradient-to-br from-brand-orange to-primary-600 rounded-full flex items-center justify-center">
-                      <span className="text-white font-medium text-sm">
-                        {session.user?.name ? session.user.name.charAt(0).toUpperCase() : session.user?.email?.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="font-medium text-gray-700 dark:text-brand-primary-text text-sm truncate">
-                      {session.user?.name || 'User'}
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-brand-secondary-text">
-                      {(session.user as any)?.role}
-                    </div>
-                  </div>
-                </div>
-
                 <Link
                   href="/profile"
                   onClick={() => setShowMobileMenu(false)}
@@ -463,6 +444,25 @@ export default function Navbar() {
                 >
                   Sign Out
                 </button>
+
+                {/* User info at the bottom - last item */}
+                <div className="flex items-center space-x-3 px-3 py-2 mt-3 pt-3 border-t border-gray-300 dark:border-gray-700">
+                  <div className="flex-shrink-0">
+                    <div className="w-10 h-10 bg-gradient-to-br from-brand-orange to-primary-600 rounded-full flex items-center justify-center">
+                      <span className="text-white font-medium text-sm">
+                        {session.user?.name ? session.user.name.charAt(0).toUpperCase() : session.user?.email?.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-medium text-gray-700 dark:text-brand-primary-text text-sm truncate">
+                      {session.user?.name || 'User'}
+                    </div>
+                    <div className="text-xs text-gray-500 dark:text-brand-secondary-text">
+                      {(session.user as any)?.role}
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
