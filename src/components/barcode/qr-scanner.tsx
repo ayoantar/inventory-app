@@ -16,28 +16,36 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
   const [cameraError, setCameraError] = useState<string | null>(null)
   const [showManualInput, setShowManualInput] = useState(false)
   const [manualInput, setManualInput] = useState('')
+  const [cameraRequested, setCameraRequested] = useState(false)
 
   useEffect(() => {
-    if (isOpen) {
-      initializeCamera()
-    } else {
+    if (isOpen && !cameraRequested) {
+      // Don't auto-initialize camera, wait for user action
+      console.log('QR Scanner opened, waiting for user to start camera')
+    } else if (!isOpen) {
       cleanupCamera()
+      setCameraRequested(false)
     }
 
     return () => {
       cleanupCamera()
     }
-  }, [isOpen])
+  }, [isOpen, cameraRequested])
 
   const initializeCamera = async () => {
     try {
+      console.log('Starting camera initialization...')
       setCameraError(null)
+      setCameraRequested(true)
 
       // Check if camera API is supported
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.error('Camera API not supported')
         setCameraError('Camera not supported in this browser')
         return
       }
+
+      console.log('Requesting camera permissions...')
 
       // Request camera access
       const constraints = {
@@ -49,17 +57,27 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
       }
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints)
+      console.log('Camera stream acquired successfully')
       streamRef.current = stream
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream
+        console.log('Video source set, attempting to play...')
         await videoRef.current.play()
         setIsScanning(true)
         console.log('Camera started successfully')
+      } else {
+        console.error('Video element ref is null')
+        setCameraError('Video element not found')
       }
 
     } catch (error: any) {
       console.error('Camera initialization failed:', error)
+      console.error('Error details:', {
+        name: error.name,
+        message: error.message,
+        stack: error.stack
+      })
 
       if (error.name === 'NotAllowedError') {
         setCameraError('Camera permission denied. Please allow camera access and try again.')
@@ -109,6 +127,7 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
       setCameraError(null)
       setShowManualInput(false)
       setManualInput('')
+      setCameraRequested(false)
     } catch (error) {
       console.error('Error closing scanner:', error)
       onClose()
@@ -204,10 +223,26 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                       playsInline
                       muted
                     />
-                  ) : (
+                  ) : cameraRequested ? (
                     <div className="text-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-orange mx-auto mb-3"></div>
                       <p className="text-white text-sm">Initializing camera...</p>
+                    </div>
+                  ) : (
+                    <div className="text-center p-8">
+                      <div className="mb-4">
+                        <svg className="w-16 h-16 text-white/60 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      </div>
+                      <p className="text-white text-sm mb-4">Ready to scan barcode or QR code</p>
+                      <button
+                        onClick={initializeCamera}
+                        className="px-6 py-3 bg-brand-orange hover:bg-brand-orange/90 text-white rounded-lg font-medium active:scale-95 touch-manipulation transition-all"
+                      >
+                        Start Camera
+                      </button>
                     </div>
                   )}
                 </div>
