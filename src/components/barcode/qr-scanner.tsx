@@ -12,6 +12,7 @@ interface QRScannerProps {
 
 export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose }: QRScannerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
   const streamRef = useRef<MediaStream | null>(null)
   const scannerRef = useRef<BrowserMultiFormatReader | null>(null)
   const scanIntervalRef = useRef<NodeJS.Timeout | null>(null)
@@ -118,16 +119,46 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
       // Initialize ZXing scanner
       if (!scannerRef.current) {
         scannerRef.current = new BrowserMultiFormatReader()
+        console.log('ZXing scanner initialized')
       }
 
-      // Start continuous scanning with improved detection
+      // Start continuous scanning with canvas approach
       const scanBarcode = async () => {
         try {
-          if (videoRef.current && scannerRef.current && isScanning && videoRef.current.readyState === 4) {
-            // Use decodeOnceFromVideoDevice for better stability
-            const result = await scannerRef.current.decodeOnceFromVideoDevice(undefined, videoRef.current)
+          if (!videoRef.current || !canvasRef.current || !isScanning) {
+            return
+          }
+
+          const video = videoRef.current
+          const canvas = canvasRef.current
+
+          // Check if video is ready and playing
+          if (video.readyState !== 4 || video.videoWidth === 0 || video.videoHeight === 0) {
+            console.log('Video not ready for scanning')
+            if (isScanning) {
+              scanIntervalRef.current = setTimeout(scanBarcode, 100)
+            }
+            return
+          }
+
+          // Set canvas size to match video
+          canvas.width = video.videoWidth
+          canvas.height = video.videoHeight
+
+          const ctx = canvas.getContext('2d')
+          if (!ctx) {
+            console.error('Could not get canvas context')
+            return
+          }
+
+          // Draw current video frame to canvas
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+
+          try {
+            // Try to decode from canvas
+            const result = await scannerRef.current!.decodeFromCanvas(canvas)
             if (result) {
-              console.log('Barcode detected:', result.getText())
+              console.log('✅ Barcode detected:', result.getText())
               // Add haptic feedback if available
               if (navigator.vibrate) {
                 navigator.vibrate(100)
@@ -136,26 +167,28 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
               handleClose()
               return
             }
+          } catch (decodeError) {
+            // This is normal when no barcode is visible
+            // console.log('No barcode found in frame')
           }
+
         } catch (error) {
-          // Most errors are normal when no barcode is visible
-          if (error.message && !error.message.includes('No MultiFormat Readers')) {
-            console.log('Scan attempt:', error.message)
-          }
+          console.error('Scanning error:', error)
         }
 
         // Continue scanning if still active
         if (isScanning) {
-          scanIntervalRef.current = setTimeout(scanBarcode, 200) // Slightly slower for better performance
+          scanIntervalRef.current = setTimeout(scanBarcode, 300) // 300ms for better performance
         }
       }
 
-      // Wait a moment for video to be fully ready, then start scanning
+      // Wait for video to be fully ready, then start scanning
       setTimeout(() => {
+        console.log('Starting scan loop, isScanning:', isScanning)
         if (isScanning) {
           scanBarcode()
         }
-      }, 500)
+      }, 1000) // Longer delay to ensure video is stable
     } catch (error) {
       console.error('Failed to start barcode scanning:', error)
     }
@@ -310,6 +343,11 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                         playsInline
                         muted
                       />
+                      {/* Hidden canvas for barcode processing */}
+                      <canvas
+                        ref={canvasRef}
+                        className="hidden"
+                      />
 
                       {/* Scanning overlay with guide lines */}
                       {isScanning && (
@@ -340,15 +378,6 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                                 </div>
                               </div>
 
-                              {/* Instructions - repositioned */}
-                              <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 text-center">
-                                <p className="text-white text-base font-medium bg-black/70 px-4 py-2 rounded-xl backdrop-blur-md shadow-lg border border-white/20">
-                                  📱 Position barcode or QR code in frame
-                                </p>
-                                <p className="text-white/80 text-sm mt-2">
-                                  Hold steady for automatic detection
-                                </p>
-                              </div>
                             </div>
                           </div>
                         </div>
