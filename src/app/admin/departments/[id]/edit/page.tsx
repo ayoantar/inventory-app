@@ -160,7 +160,7 @@ export default function EditDepartment() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       {/* Header */}
-      <div className="bg-gray-900/5 shadow-sm border-b border-gray-700">
+      <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm shadow-sm border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
@@ -187,7 +187,7 @@ export default function EditDepartment() {
       </div>
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-gray-900/5 rounded-lg border border-gray-700">
+        <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-700">
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">

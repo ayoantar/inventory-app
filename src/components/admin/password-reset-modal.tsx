@@ -73,7 +73,7 @@ export default function PasswordResetModal({ isOpen, onClose, user, onSuccess }:
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-gray-900/5 rounded-lg max-w-md w-full">
+      <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg max-w-md w-full">
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-brand-primary-text">
@@ -95,7 +95,7 @@ export default function PasswordResetModal({ isOpen, onClose, user, onSuccess }:
                 <p className="text-sm text-brand-primary-text mb-4">
                   Are you sure you want to reset the password for:
                 </p>
-                <div className="bg-gray-900/5 rounded-lg p-4">
+                <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg p-4">
                   <p className="font-medium text-brand-primary-text">
                     {user.name || 'Unnamed User'}
                   </p>
@@ -150,7 +150,7 @@ export default function PasswordResetModal({ isOpen, onClose, user, onSuccess }:
                     Temporary Password:
                   </p>
                   <div className="flex items-center space-x-2">
-                    <code className="flex-1 bg-gray-900/5 border border-gray-600 rounded px-3 py-2 text-sm font-mono text-brand-primary-text">
+                    <code className="flex-1 bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm border border-gray-600 rounded px-3 py-2 text-sm font-mono text-brand-primary-text">
                       {tempPassword}
                     </code>
                     <button

@@ -9,8 +9,10 @@ export default function Navbar() {
   const { data: session } = useSession()
   const { theme, toggleTheme } = useTheme()
   const [showAdminDropdown, setShowAdminDropdown] = useState(false)
+  const [showUserDropdown, setShowUserDropdown] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const adminDropdownRef = useRef<HTMLDivElement>(null)
+  const userDropdownRef = useRef<HTMLDivElement>(null)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
 
   // Close dropdowns when clicking outside
@@ -18,6 +20,9 @@ export default function Navbar() {
     function handleClickOutside(event: MouseEvent) {
       if (adminDropdownRef.current && !adminDropdownRef.current.contains(event.target as Node)) {
         setShowAdminDropdown(false)
+      }
+      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target as Node)) {
+        setShowUserDropdown(false)
       }
       if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
         setShowMobileMenu(false)
@@ -138,7 +143,7 @@ export default function Navbar() {
                     </button>
 
                     {showAdminDropdown && (
-                      <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                      <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-brand-dark-blue rounded-md shadow-lg ring-1 ring-black dark:ring-gray-600 ring-opacity-5 dark:ring-opacity-30 z-50">
                         <div className="py-1">
                           {/* User Management Section - Admin Only */}
                           {(session.user as any)?.role === 'ADMIN' && (
@@ -277,22 +282,80 @@ export default function Navbar() {
                 )}
 
 
-                {/* User info - Hidden on mobile */}
-                <div className="hidden md:flex items-center space-x-2 text-sm text-gray-500 dark:text-brand-secondary-text">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-gradient-to-br from-brand-orange to-primary-600 rounded-full flex items-center justify-center">
-                      <span className="text-white font-medium text-xs">
-                        {session.user?.name ? session.user.name.charAt(0).toUpperCase() : session.user?.email?.charAt(0).toUpperCase()}
-                      </span>
+                {/* User dropdown for regular users - Hidden on mobile */}
+                {((session.user as any)?.role === 'USER' || (session.user as any)?.role === 'VIEWER') && (
+                  <div className="hidden md:block relative" ref={userDropdownRef}>
+                    <button
+                      onClick={() => setShowUserDropdown(!showUserDropdown)}
+                      className="flex items-center space-x-2 text-sm text-gray-500 dark:text-brand-secondary-text hover:text-gray-700 dark:hover:text-brand-primary-text transition-colors"
+                    >
+                      <div className="flex-shrink-0">
+                        <div className="w-8 h-8 bg-gradient-to-br from-brand-orange to-primary-600 rounded-full flex items-center justify-center">
+                          <span className="text-white font-medium text-xs">
+                            {session.user?.name ? session.user.name.charAt(0).toUpperCase() : session.user?.email?.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-medium">{session.user?.name || 'User'}</div>
+                        <div className="text-xs text-gray-500 dark:text-brand-secondary-text">
+                          {(session.user as any)?.role}
+                        </div>
+                      </div>
+                      <svg className={`w-4 h-4 transition-transform ${showUserDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+
+                    {showUserDropdown && (
+                      <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-brand-dark-blue rounded-md shadow-lg ring-1 ring-black dark:ring-gray-600 ring-opacity-5 dark:ring-opacity-30 z-50">
+                        <div className="py-1">
+                          <Link
+                            href="/profile"
+                            onClick={() => setShowUserDropdown(false)}
+                            className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                          >
+                            <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            My Profile
+                          </Link>
+                          <button
+                            onClick={() => {
+                              setShowUserDropdown(false)
+                              signOut({ callbackUrl: '/auth/signin' })
+                            }}
+                            className="flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                          >
+                            <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            Sign Out
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Static user info for admins/managers (they use the admin dropdown) */}
+                {((session.user as any)?.role === 'ADMIN' || (session.user as any)?.role === 'MANAGER') && (
+                  <div className="hidden md:flex items-center space-x-2 text-sm text-gray-500 dark:text-brand-secondary-text">
+                    <div className="flex-shrink-0">
+                      <div className="w-8 h-8 bg-gradient-to-br from-brand-orange to-primary-600 rounded-full flex items-center justify-center">
+                        <span className="text-white font-medium text-xs">
+                          {session.user?.name ? session.user.name.charAt(0).toUpperCase() : session.user?.email?.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="font-medium">{session.user?.name || 'User'}</div>
+                      <div className="text-xs text-gray-500 dark:text-brand-secondary-text">
+                        {(session.user as any)?.role}
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <div className="font-medium">{session.user?.name || 'User'}</div>
-                    <div className="text-xs text-gray-500 dark:text-brand-secondary-text">
-                      {(session.user as any)?.role}
-                    </div>
-                  </div>
-                </div>
+                )}
               </>
             )}
           </div>

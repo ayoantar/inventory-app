@@ -167,7 +167,7 @@ export default function UserTransferModal({
                     <h4 className="text-sm font-medium text-brand-primary-text mb-2">
                       Checked-out items ({activeTransactions.length}):
                     </h4>
-                    <div className="bg-gray-900/5 rounded-lg p-3 max-h-32 overflow-y-auto">
+                    <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg p-3 max-h-32 overflow-y-auto">
                       <div className="space-y-1">
                         {activeTransactions.map((transaction) => (
                           <div key={transaction.id} className="text-sm text-gray-300">

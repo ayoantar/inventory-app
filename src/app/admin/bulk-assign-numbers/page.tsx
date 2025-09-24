@@ -123,7 +123,7 @@ export default function BulkAssignNumbersPage() {
         </div>
 
         {/* Count Summary */}
-        <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6 mb-6">
+        <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-700 p-6 mb-6">
           <h2 className="text-lg font-semibold text-brand-primary-text mb-4">
             Assets Without Asset Numbers
           </h2>
@@ -140,7 +140,7 @@ export default function BulkAssignNumbersPage() {
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {countData.breakdown.map(item => (
-                    <div key={item.category} className="bg-gray-900/5 rounded p-2">
+                    <div key={item.category} className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded p-2">
                       <div className="text-sm font-medium text-brand-primary-text">
                         {item.category}
                       </div>
@@ -156,14 +156,14 @@ export default function BulkAssignNumbersPage() {
         </div>
 
         {/* Action Button */}
-        <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6 mb-6">
+        <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-700 p-6 mb-6">
           <h2 className="text-lg font-semibold text-brand-primary-text mb-4">
             Bulk Assignment
           </h2>
           
           <p className="text-sm text-brand-primary-text mb-6">
             This will automatically generate and assign unique asset numbers to all assets that currently don't have them. 
-            Asset numbers will follow the format: <code className="bg-gray-900/5 px-2 py-1 rounded">LSVR-{'{CATEGORY}'}-{'{NUMBER}'}</code>
+            Asset numbers will follow the format: <code className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm px-2 py-1 rounded">LSVR-{'{CATEGORY}'}-{'{NUMBER}'}</code>
           </p>
           
           <button

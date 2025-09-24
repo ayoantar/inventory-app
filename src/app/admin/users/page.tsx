@@ -205,7 +205,7 @@ export default function UserManagement() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       {/* Header */}
-      <div className="bg-gray-900/5 shadow-sm border-b border-gray-700">
+      <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm shadow-sm border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
@@ -237,7 +237,7 @@ export default function UserManagement() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Filters */}
-        <div className="bg-gray-900/5 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 p-6 mb-8">
+        <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -300,10 +300,10 @@ export default function UserManagement() {
         </div>
 
         {/* Users Table */}
-        <div className="bg-gray-900/5 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 overflow-hidden">
+        <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-300">
-              <thead className="bg-gray-900/5">
+              <thead className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                     User
@@ -328,7 +328,7 @@ export default function UserManagement() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-gray-900/5 divide-y divide-gray-300">
+              <tbody className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm divide-y divide-gray-300">
                 {users.map((user) => (
                   <tr key={user.id} className="hover transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">

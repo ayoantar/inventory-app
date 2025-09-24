@@ -161,7 +161,7 @@ export default function CategoriesPage() {
       <Navbar />
       
       {/* Compact Header */}
-      <div className="bg-gray-900/5 shadow-sm border-b border-gray-700">
+      <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm shadow-sm border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -190,7 +190,7 @@ export default function CategoriesPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Compact Search */}
-        <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-4 mb-4">
+        <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-700 p-4 mb-4">
           <div className="flex gap-4">
             <div className="flex-1">
               <input
@@ -211,10 +211,10 @@ export default function CategoriesPage() {
         </div>
 
         {/* Compact Table */}
-        <div className="bg-gray-900/5 rounded-lg border border-gray-700 overflow-hidden">
+        <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-700 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-300">
-              <thead className="bg-gray-900/5">
+              <thead className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-white/60 dark:text-white/60 uppercase tracking-wider">
                     Category
@@ -230,7 +230,7 @@ export default function CategoriesPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-gray-900/5 divide-y divide-gray-300">
+              <tbody className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm divide-y divide-gray-300">
                 {filteredCategories.map((category) => (
                   <tr key={category.id} className="hover transition-colors">
                     <td className="px-4 py-3 whitespace-nowrap">
@@ -324,7 +324,7 @@ export default function CategoriesPage() {
       {/* Add/Edit Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-900/5 rounded-lg p-6 w-full max-w-md mx-4">
+          <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg p-6 w-full max-w-md mx-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-medium text-brand-primary-text">
                 {editingCategory ? 'Edit Category' : 'Add Category'}

@@ -279,7 +279,7 @@ export default function ClientsPage() {
           </div>
 
           {/* Search and Filters */}
-          <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-4 mb-8">
+          <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-700 p-4 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -343,7 +343,7 @@ export default function ClientsPage() {
           )}
 
           {/* Clients Table */}
-          <div className="bg-gray-900/5/80 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 overflow-hidden">
+          <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-300/50">
                 <thead className="bg-gradient-to-r from-gray-50/50 to-gray-100/30">
@@ -368,7 +368,7 @@ export default function ClientsPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-gray-900/50 divide-y divide-gray-300/30">
+                <tbody className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm divide-y divide-gray-300/30">
                   {loading ? (
                     <tr>
                       <td colSpan={6} className="px-6 py-12 text-center">
@@ -411,7 +411,7 @@ export default function ClientsPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-brand-primary-text">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-900/5 text-brand-primary-text">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm text-brand-primary-text">
                             {client._count.assets} assets
                           </span>
                         </td>
@@ -476,7 +476,7 @@ export default function ClientsPage() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-gray-900/5">
+          <div className="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm">
             <div className="mt-3">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-medium text-brand-primary-text">

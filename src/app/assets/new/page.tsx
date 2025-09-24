@@ -266,10 +266,10 @@ function NewAssetForm() {
                 </li>
                 <li>
                   <div className="flex items-center">
-                    <svg className="w-4 h-4 text-white/50 hover:text-white/80 transition-colors" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-4 h-4 text-gray-500 dark:text-brand-secondary-text hover:text-gray-700 dark:hover:text-brand-primary-text transition-colors" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                     </svg>
-                    <button 
+                    <button
                       onClick={() => router.push('/assets')}
                       className="ml-2 text-gray-600 dark:text-brand-secondary-text hover"
                     >
@@ -279,7 +279,7 @@ function NewAssetForm() {
                 </li>
                 <li>
                   <div className="flex items-center">
-                    <svg className="w-4 h-4 text-white/50 hover:text-white/80 transition-colors" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-4 h-4 text-gray-500 dark:text-brand-secondary-text hover:text-gray-700 dark:hover:text-brand-primary-text transition-colors" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                     </svg>
                     <span className="ml-2 text-brand-primary-text font-medium">
@@ -712,7 +712,7 @@ function NewAssetForm() {
 
                   <div className="space-y-4">
                     <div className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center hover:border-gray-400:border-gray-500 transition-colors">
-                      <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                      <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-brand-secondary-text hover:text-gray-600 dark:hover:text-brand-primary-text transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                       <div className="mt-4">

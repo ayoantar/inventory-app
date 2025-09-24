@@ -190,7 +190,7 @@ export default function SystemSettings() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
       {/* Header */}
-      <div className="bg-gray-900/5 shadow-sm border-b border-gray-700">
+      <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm shadow-sm border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
@@ -227,7 +227,7 @@ export default function SystemSettings() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* General Settings */}
-          <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6">
+          <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-700 p-6">
             <div className="flex items-center mb-4">
               <div className="p-2 bg-blue-50 rounded-lg mr-3">
                 <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -281,7 +281,7 @@ export default function SystemSettings() {
           </div>
 
           {/* Security Settings */}
-          <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6">
+          <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-700 p-6">
             <div className="flex items-center mb-4">
               <div className="p-2 bg-red-50 rounded-lg mr-3">
                 <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -345,7 +345,7 @@ export default function SystemSettings() {
           </div>
 
           {/* System Information */}
-          <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6">
+          <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-700 p-6">
             <div className="flex items-center mb-4">
               <div className="p-2 bg-green-50 rounded-lg mr-3">
                 <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -451,7 +451,7 @@ export default function SystemSettings() {
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
           <button 
             onClick={() => handleQuickAction('create-backup')}
-            className="p-4 bg-gray-900/5 border border-gray-700 rounded-lg hover transition-colors text-left"
+            className="p-4 bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm border border-gray-700 rounded-lg hover transition-colors text-left"
           >
             <div className="flex items-center">
               <svg className="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -466,7 +466,7 @@ export default function SystemSettings() {
 
           <button 
             onClick={() => handleQuickAction('test-system')}
-            className="p-4 bg-gray-900/5 border border-gray-700 rounded-lg hover transition-colors text-left"
+            className="p-4 bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm border border-gray-700 rounded-lg hover transition-colors text-left"
           >
             <div className="flex items-center">
               <svg className="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -481,7 +481,7 @@ export default function SystemSettings() {
 
           <button 
             onClick={() => handleQuickAction('clear-cache')}
-            className="p-4 bg-gray-900/5 border border-gray-700 rounded-lg hover transition-colors text-left"
+            className="p-4 bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm border border-gray-700 rounded-lg hover transition-colors text-left"
           >
             <div className="flex items-center">
               <svg className="w-5 h-5 text-orange-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
