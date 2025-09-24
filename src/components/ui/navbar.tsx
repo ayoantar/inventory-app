@@ -287,7 +287,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {showMobileMenu && (
-        <div className="md:hidden bg-white dark:bg-brand-dark-blue border-t border-gray-300 dark:border-gray-700" ref={mobileMenuRef}>
+        <div className="md:hidden fixed top-16 left-0 right-0 z-50 bg-white dark:bg-brand-dark-blue border-t border-gray-300 dark:border-gray-700 shadow-lg max-h-screen overflow-y-auto" ref={mobileMenuRef}>
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
               href="/dashboard"
