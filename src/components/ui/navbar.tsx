@@ -106,9 +106,9 @@ export default function Navbar() {
           <div className="flex items-center space-x-4">
             {session && (
               <>
-                {/* Admin/Manager Dropdown */}
+                {/* Admin/Manager Dropdown - Hidden on mobile */}
                 {((session.user as any)?.role === 'ADMIN' || (session.user as any)?.role === 'MANAGER') && (
-                  <div className="relative" ref={adminDropdownRef}>
+                  <div className="hidden md:block relative" ref={adminDropdownRef}>
                     <button
                       onClick={() => setShowAdminDropdown(!showAdminDropdown)}
                       className="bg-brand-orange hover:bg-brand-orange-soft text-white px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center space-x-1"
@@ -263,7 +263,8 @@ export default function Navbar() {
                 )}
 
 
-                <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-brand-secondary-text">
+                {/* User info - Hidden on mobile */}
+                <div className="hidden md:flex items-center space-x-2 text-sm text-gray-500 dark:text-brand-secondary-text">
                   <div className="flex-shrink-0">
                     <div className="w-8 h-8 bg-gradient-to-br from-brand-orange to-primary-600 rounded-full flex items-center justify-center">
                       <span className="text-white font-medium text-xs">
@@ -413,6 +414,25 @@ export default function Navbar() {
             {/* Profile & Sign Out */}
             {session && (
               <div className="border-t border-gray-300 dark:border-gray-700 mt-3 pt-3">
+                {/* User info in mobile menu */}
+                <div className="flex items-center space-x-3 px-3 py-2 mb-2">
+                  <div className="flex-shrink-0">
+                    <div className="w-10 h-10 bg-gradient-to-br from-brand-orange to-primary-600 rounded-full flex items-center justify-center">
+                      <span className="text-white font-medium text-sm">
+                        {session.user?.name ? session.user.name.charAt(0).toUpperCase() : session.user?.email?.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-medium text-gray-700 dark:text-brand-primary-text text-sm truncate">
+                      {session.user?.name || 'User'}
+                    </div>
+                    <div className="text-xs text-gray-500 dark:text-brand-secondary-text">
+                      {(session.user as any)?.role}
+                    </div>
+                  </div>
+                </div>
+
                 <Link
                   href="/profile"
                   onClick={() => setShowMobileMenu(false)}
