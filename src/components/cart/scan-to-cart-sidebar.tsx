@@ -161,21 +161,21 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
       />
       
       {/* Sidebar */}
-      <div className="fixed right-0 top-0 h-full w-96 bg-gray-900/5 shadow-xl z-50 flex flex-col">
+      <div className="fixed right-0 top-0 h-full w-full sm:w-96 bg-gray-900/5 shadow-xl z-50 flex flex-col">
         {/* Header */}
-        <div className="p-4 border-b border-gray-700">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 className="text-lg font-semibold text-brand-primary-text">
+        <div className="p-3 sm:p-4 border-b border-gray-700">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <div className="flex-1 min-w-0">
+              <h2 className="text-base sm:text-lg font-semibold text-brand-primary-text truncate">
                 Scan to Cart
               </h2>
-              <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-brand-secondary-text">
                 Scan items to build your transaction cart
               </p>
             </div>
             <button
               onClick={onClose}
-              className="text-white/50 hover:text-white/80 transition-colors hover"
+              className="flex-shrink-0 ml-3 p-1 text-white/50 hover:text-white/80 transition-colors hover touch-manipulation"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -187,49 +187,51 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
           <div className="flex bg-gray-900/5 rounded-lg p-1">
             <button
               onClick={() => setScanMode('CHECK_OUT')}
-              className={`flex-1 px-3 py-2 text-sm font-medium rounded-md transition-colors flex items-center justify-center ${
+              className={`flex-1 px-2 sm:px-3 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors flex items-center justify-center touch-manipulation ${
                 scanMode === 'CHECK_OUT'
                   ? 'bg-orange-500 text-white shadow-sm'
                   : 'text-brand-primary-text hover'
               }`}
             >
-              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 sm:w-4 h-3 sm:h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
-              Check Out Mode
+              <span className="hidden xs:inline">Check Out Mode</span>
+              <span className="xs:hidden">Check Out</span>
             </button>
             <button
               onClick={() => setScanMode('CHECK_IN')}
-              className={`flex-1 px-3 py-2 text-sm font-medium rounded-md transition-colors flex items-center justify-center ${
+              className={`flex-1 px-2 sm:px-3 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors flex items-center justify-center touch-manipulation ${
                 scanMode === 'CHECK_IN'
                   ? 'bg-green-500 text-white shadow-sm'
                   : 'text-brand-primary-text hover'
               }`}
             >
-              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 sm:w-4 h-3 sm:h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Check In Mode
+              <span className="hidden xs:inline">Check In Mode</span>
+              <span className="xs:hidden">Check In</span>
             </button>
           </div>
         </div>
 
         {/* Scanning Interface */}
-        <div className="p-4 border-b border-gray-700">
-          <div className="space-y-4">
+        <div className="p-3 sm:p-4 border-b border-gray-700">
+          <div className="space-y-3 sm:space-y-4">
             {/* Manual Search/Input */}
-            <form onSubmit={handleManualSearch} className="flex">
+            <form onSubmit={handleManualSearch} className="flex flex-col sm:flex-row gap-2 sm:gap-0">
               <div className="relative flex-1">
                 <input
                   type="text"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   placeholder="Scan or enter barcode, serial number..."
-                  className="w-full pl-10 pr-4 py-3 border border-gray-600 rounded-l-md bg-gray-900 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2.5 sm:py-3 border border-gray-600 rounded-md sm:rounded-l-md sm:rounded-r-none bg-gray-900 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm touch-manipulation"
                   autoFocus
                 />
                 <svg
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/50 hover:text-white/80 transition-colors"
+                  className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/50 hover:text-white/80 transition-colors"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -237,37 +239,46 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
-              
-              <button
-                type="button"
-                onClick={() => setShowScanner(true)}
-                className="px-4 py-3 bg-gray-100 dark:bg-gray-800 hover border border-l-0 border-gray-600 text-gray-300 transition-colors"
-                title="Open Camera Scanner"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </button>
-              
-              <button
-                type="submit"
-                disabled={searching || !searchValue.trim()}
-                className={`px-6 py-3 text-white rounded-r-md text-sm font-medium transition-colors ${
-                  scanMode === 'CHECK_OUT'
-                    ? 'bg-orange-600 hover disabled'
-                    : 'bg-green-600 hover disabled'
-                }`}
-              >
+
+              <div className="flex sm:inline-flex">
+                <button
+                  type="button"
+                  onClick={() => setShowScanner(true)}
+                  className="flex-1 sm:flex-initial px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-100 dark:bg-gray-800 hover border border-gray-600 sm:border-l-0 text-gray-300 transition-colors rounded-l-md sm:rounded-none touch-manipulation"
+                  title="Open Camera Scanner"
+                >
+                  <svg className="w-4 sm:w-5 h-4 sm:h-5 mx-auto sm:mx-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={searching || !searchValue.trim()}
+                  className={`flex-1 sm:flex-initial px-4 sm:px-6 py-2.5 sm:py-3 text-white rounded-r-md text-xs sm:text-sm font-medium transition-colors touch-manipulation ${
+                    scanMode === 'CHECK_OUT'
+                      ? 'bg-orange-600 hover disabled'
+                      : 'bg-green-600 hover disabled'
+                  }`}
+                >
                 {searching ? (
                   <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l-3-2.647z"></path>
                   </svg>
                 ) : (
-                  scanMode === 'CHECK_OUT' ? 'Add to Check Out' : 'Add to Check In'
+                  <>
+                    <span className="hidden sm:inline">
+                      {scanMode === 'CHECK_OUT' ? 'Add to Check Out' : 'Add to Check In'}
+                    </span>
+                    <span className="sm:hidden">
+                      Add
+                    </span>
+                  </>
                 )}
               </button>
+            </div>
             </form>
 
             {/* Status Messages */}
@@ -296,7 +307,7 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
         </div>
 
         {/* Scanned Items List */}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-4">
           {state.items.length === 0 ? (
             <div className="text-center py-8">
               <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -325,37 +336,37 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
               </h3>
               
               {state.items.map((item) => (
-                <div key={item.assetId} className={`rounded-md p-2 border ${
+                <div key={item.assetId} className={`rounded-md p-2.5 sm:p-3 border ${
                   scanMode === 'CHECK_OUT'
                     ? 'bg-orange-50 border-orange-200'
                     : 'bg-green-50 border-green-200'
                 }`}>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2 flex-1 min-w-0">
+                  <div className="flex items-start sm:items-center justify-between">
+                    <div className="flex items-start sm:items-center space-x-2 flex-1 min-w-0">
                       {item.asset.imageUrl ? (
                         <img
                           src={item.asset.imageUrl}
                           alt={getAssetDisplayName(item.asset)}
-                          className="w-6 h-6 object-cover rounded"
+                          className="w-6 h-6 sm:w-7 sm:h-7 object-cover rounded flex-shrink-0"
                         />
                       ) : (
-                        <div className="w-6 h-6 bg-gray-900/5 rounded flex items-center justify-center">
+                        <div className="w-6 h-6 sm:w-7 sm:h-7 bg-gray-900/5 rounded flex items-center justify-center flex-shrink-0">
                           <span className="text-xs">📦</span>
                         </div>
                       )}
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-brand-primary-text truncate">
+                        <p className="text-sm font-medium text-brand-primary-text truncate leading-tight">
                           {getAssetDisplayName(item.asset)}
                         </p>
-                        <p className="text-xs text-gray-600 dark:text-brand-secondary-text">
+                        <p className="text-xs text-gray-600 dark:text-brand-secondary-text mt-0.5 leading-tight">
                           {item.asset.category.replace('_', ' ')} • {item.asset.serialNumber || item.asset.name || 'No S/N'}
                         </p>
                       </div>
                     </div>
-                    
+
                     <button
                       onClick={() => removeItem(item.assetId)}
-                      className="ml-2 text-red-400 hover p-0.5"
+                      className="ml-2 p-1.5 sm:p-1 text-red-400 hover:text-red-600 transition-colors touch-manipulation"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -370,33 +381,38 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
 
         {/* Footer Actions */}
         {state.items.length > 0 && (
-          <div className="p-4 border-t border-gray-700 space-y-3">
+          <div className="p-3 sm:p-4 border-t border-gray-700 space-y-3">
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-600 dark:text-brand-secondary-text">Total items:</span>
               <span className="font-medium text-brand-primary-text">{state.items.length}</span>
             </div>
-            
-            <div className="flex space-x-2">
+
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
               <button
                 onClick={clearCart}
-                className="flex-1 px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover transition-colors"
+                className="w-full sm:flex-1 px-3 sm:px-4 py-2.5 sm:py-2 border border-gray-600 rounded-md text-xs sm:text-sm font-medium text-gray-300 hover transition-colors touch-manipulation"
               >
                 Clear All
               </button>
-              
+
               <button
                 onClick={() => setShowConfirmation(true)}
                 disabled={state.items.length === 0}
-                className={`flex-1 px-4 py-2 text-white rounded-md text-sm font-medium disabled:cursor-not-allowed transition-colors flex items-center justify-center ${
+                className={`w-full sm:flex-1 px-3 sm:px-4 py-2.5 sm:py-2 text-white rounded-md text-xs sm:text-sm font-medium disabled:cursor-not-allowed transition-colors flex items-center justify-center touch-manipulation ${
                   scanMode === 'CHECK_OUT'
                     ? 'bg-orange-600 hover disabled'
                     : 'bg-green-600 hover disabled'
                 }`}
               >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3 sm:w-4 h-3 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-                {scanMode === 'CHECK_OUT' ? 'Process Check Outs' : 'Process Check Ins'}
+                <span className="hidden xs:inline">
+                  {scanMode === 'CHECK_OUT' ? 'Process Check Outs' : 'Process Check Ins'}
+                </span>
+                <span className="xs:hidden">
+                  Process
+                </span>
               </button>
             </div>
           </div>

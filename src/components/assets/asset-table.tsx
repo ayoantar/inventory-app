@@ -247,13 +247,6 @@ export default function AssetTable({
                   onMouseDown={(e) => handleMouseDown(e, 'status')}
                 />
               </th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600 relative" style={getColumnStyle('condition')}>
-                Condition
-                <div 
-                  className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800"
-                  onMouseDown={(e) => handleMouseDown(e, 'condition')}
-                />
-              </th>
               <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider border-r border-gray-600 relative" style={getColumnStyle('location')}>
                 Location
                 <div 
@@ -344,12 +337,6 @@ export default function AssetTable({
                 <td className="px-3 py-3 whitespace-nowrap border-r border-gray-600 text-center" style={getColumnStyle('status')}>
                   <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wide border ${statusColors[asset.status as AssetStatus]}`}>
                     {asset.status.replace('_', ' ')}
-                  </span>
-                </td>
-                
-                <td className="px-3 py-3 whitespace-nowrap border-r border-gray-600 text-center" style={getColumnStyle('condition')}>
-                  <span className="text-sm font-medium text-brand-primary-text">
-                    {asset.condition.replace('_', ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase())}
                   </span>
                 </td>
                 

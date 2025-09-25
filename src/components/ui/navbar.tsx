@@ -63,9 +63,9 @@ export default function Navbar() {
                   setShowMobileMenu(newShowMobileMenu)
                   // Prevent body scroll when mobile menu is open
                   if (newShowMobileMenu) {
-                    document.body.style.overflow = 'hidden'
+                    document.body.classList.add('overflow-hidden')
                   } else {
-                    document.body.style.overflow = 'unset'
+                    document.body.classList.remove('overflow-hidden')
                   }
                 }}
                 className="text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-md transition-colors"
@@ -374,13 +374,13 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {showMobileMenu && (
-        <div className="md:hidden fixed top-16 left-0 right-0 z-50 bg-white dark:bg-brand-dark-blue border-t border-gray-300 dark:border-gray-700 shadow-lg max-h-screen overflow-y-auto" ref={mobileMenuRef}>
+        <div className="md:hidden fixed top-16 left-0 right-0 bottom-0 z-50 bg-white dark:bg-brand-dark-blue border-t border-gray-300 dark:border-gray-700 shadow-lg overflow-y-auto" ref={mobileMenuRef}>
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
               href="/dashboard"
               onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
@@ -390,7 +390,7 @@ export default function Navbar() {
               href="/assets"
               onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
@@ -400,7 +400,7 @@ export default function Navbar() {
               href="/asset-groups"
               onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
@@ -410,7 +410,7 @@ export default function Navbar() {
               href="/presets"
               onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
@@ -420,7 +420,7 @@ export default function Navbar() {
               href="/transactions"
               onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
@@ -430,7 +430,7 @@ export default function Navbar() {
               href="/maintenance"
               onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
@@ -440,7 +440,7 @@ export default function Navbar() {
               href="/reports"
               onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
               className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
@@ -461,7 +461,7 @@ export default function Navbar() {
                       href="/admin/users"
                       onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
                       className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                     >
@@ -473,7 +473,7 @@ export default function Navbar() {
                     href="/admin/departments"
                     onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
                     className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                   >
@@ -483,7 +483,7 @@ export default function Navbar() {
                     href="/clients"
                     onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
                     className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                   >
@@ -493,7 +493,7 @@ export default function Navbar() {
                     href="/locations"
                     onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
                     className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                   >
@@ -503,7 +503,7 @@ export default function Navbar() {
                     href="/categories"
                     onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
                     className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                   >
@@ -517,7 +517,7 @@ export default function Navbar() {
                         href="/admin/settings"
                         onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
                         className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                       >
@@ -528,7 +528,7 @@ export default function Navbar() {
                         target="_blank"
                         onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
                         className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                       >
@@ -547,7 +547,7 @@ export default function Navbar() {
                   href="/profile"
                   onClick={() => {
                 setShowMobileMenu(false)
-                document.body.style.overflow = 'unset'
+                document.body.classList.remove('overflow-hidden')
               }}
                   className="block text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
                 >
@@ -556,7 +556,7 @@ export default function Navbar() {
                 <button
                   onClick={() => {
                     setShowMobileMenu(false)
-                    document.body.style.overflow = 'unset'
+                    document.body.classList.remove('overflow-hidden')
                     signOut({ callbackUrl: '/auth/signin' })
                   }}
                   className="block w-full text-left text-gray-700 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"

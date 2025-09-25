@@ -329,54 +329,54 @@ export default function CartPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Scanning Interface - Left Column */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-900/5 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 p-8 sticky top-6 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-200/30:shadow-gray-900/60">
+            <div className="bg-gray-900/5 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 p-4 sm:p-6 lg:p-8 lg:sticky lg:top-6 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-200/30:shadow-gray-900/60">
               {/* Mode Toggle */}
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold text-brand-primary-text mb-6 flex items-center">
+              <div className="mb-6 sm:mb-8">
+                <h2 className="text-lg sm:text-xl font-semibold text-brand-primary-text mb-4 sm:mb-6 flex items-center">
                   <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
                   Transaction Mode
                 </h2>
                 <div className="bg-gray-900/5 rounded-xl p-1.5 border border-gray-600">
                   <button
                     onClick={() => setScanMode('CHECK_OUT')}
-                    className={`flex-1 px-6 py-4 text-sm font-semibold rounded-lg transition-all duration-200 flex items-center justify-center w-full ${
+                    className={`flex-1 px-4 sm:px-6 py-3 sm:py-4 text-sm font-semibold rounded-lg transition-all duration-200 flex items-center justify-center w-full touch-manipulation ${
                       scanMode === 'CHECK_OUT'
                         ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/25 transform scale-[1.02]'
                         : 'text-brand-primary-text hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800'
                     }`}
                   >
-                    <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 sm:w-5 h-4 sm:h-5 mr-2 sm:mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
-                    Check Out Assets
+                    <span className="text-xs sm:text-sm">Check Out Assets</span>
                   </button>
                   <button
                     onClick={() => setScanMode('CHECK_IN')}
-                    className={`flex-1 px-6 py-4 text-sm font-semibold rounded-lg transition-all duration-200 flex items-center justify-center w-full mt-2 ${
+                    className={`flex-1 px-4 sm:px-6 py-3 sm:py-4 text-sm font-semibold rounded-lg transition-all duration-200 flex items-center justify-center w-full mt-2 touch-manipulation ${
                       scanMode === 'CHECK_IN'
                         ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/25 transform scale-[1.02]'
                         : 'text-brand-primary-text hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800'
                     }`}
                   >
-                    <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 sm:w-5 h-4 sm:h-5 mr-2 sm:mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Return Assets
+                    <span className="text-xs sm:text-sm">Return Assets</span>
                   </button>
                 </div>
               </div>
 
               {/* Scanning Interface */}
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
-                  <h3 className="text-lg font-semibold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-brand-secondary-text bg-clip-text text-transparent">Add Items</h3>
+                  <h3 className="text-base sm:text-lg font-semibold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-brand-secondary-text bg-clip-text text-transparent">Add Items</h3>
                 </div>
-                
-                <form onSubmit={handleManualSearch} className="space-y-5">
+
+                <form onSubmit={handleManualSearch} className="space-y-4 sm:space-y-5">
                   {/* Input Field */}
                   <div className="relative group">
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
@@ -385,10 +385,10 @@ export default function CartPage() {
                       value={searchValue}
                       onChange={(e) => setSearchValue(e.target.value)}
                       placeholder="Scan barcode or enter ID"
-                      className="relative w-full pl-12 pr-14 py-4 border-2 border-gray-600 rounded-xl bg-gray-900/5 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:border-blue-500/50:border-blue-400/50 focus transition-all duration-200 shadow-sm focus:shadow-lg text-base font-medium text-center"
+                      className="relative w-full pl-10 sm:pl-12 pr-12 sm:pr-14 py-3 sm:py-4 border-2 border-gray-600 rounded-xl bg-gray-900/5 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:border-blue-500/50:border-blue-400/50 focus transition-all duration-200 shadow-sm focus:shadow-lg text-sm sm:text-base font-medium text-center touch-manipulation"
                       autoFocus
                     />
-                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                    <div className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2">
                       <svg
                         className="w-4 h-4 text-white/50 hover:text-white/80 transition-colors group-focus-within transition-colors duration-200"
                         fill="none"
@@ -402,10 +402,10 @@ export default function CartPage() {
                       <button
                         type="button"
                         onClick={() => setShowScanner(true)}
-                        className="p-1 text-white/50 hover:text-white/80 transition-colors hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800 rounded-md transition-all duration-200 transform hover:scale-110"
+                        className="p-2 text-white/50 hover:text-white/80 transition-colors hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800 rounded-md transition-all duration-200 transform hover:scale-110 touch-manipulation"
                         title="Open camera scanner"
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
@@ -417,7 +417,7 @@ export default function CartPage() {
                   <button
                     type="submit"
                     disabled={searching || !searchValue.trim()}
-                    className={`w-full px-6 py-4 text-white rounded-xl font-semibold transition-all duration-200 flex items-center justify-center shadow-lg transform hover:scale-[1.02] disabled:transform-none disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap ${
+                    className={`w-full px-4 sm:px-6 py-3 sm:py-4 text-white rounded-xl font-semibold transition-all duration-200 flex items-center justify-center shadow-lg transform hover:scale-[1.02] active:scale-95 disabled:transform-none disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap text-sm sm:text-base touch-manipulation ${
                       scanMode === 'CHECK_OUT'
                         ? 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-orange-500/25 hover:shadow-orange-500/40'
                         : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 shadow-green-500/25 hover:shadow-green-500/40'
@@ -487,32 +487,32 @@ export default function CartPage() {
             
             <div className="bg-gray-900/5 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-200/30:shadow-gray-900/60">
               {/* Header */}
-              <div className="p-8 border-b border-gray-600/50">
-                <div className="flex items-center justify-between">
+              <div className="p-4 sm:p-6 lg:p-8 border-b border-gray-600/50">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
                   <div>
                     <div className="flex items-center space-x-3 mb-2">
                       <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
-                      <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-brand-secondary-text bg-clip-text text-transparent">
+                      <h2 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-brand-secondary-text bg-clip-text text-transparent">
                         Cart Items ({state.items.length})
                       </h2>
                     </div>
-                    <p className="text-sm text-brand-primary-text ml-5">
+                    <div className="text-sm text-brand-primary-text ml-5 flex flex-wrap gap-2">
                       {checkOutItems.length > 0 && (
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 mr-2">
+                        <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
                           {checkOutItems.length} to check out
                         </span>
                       )}
                       {checkInItems.length > 0 && (
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                           {checkInItems.length} to check in
                         </span>
                       )}
-                    </p>
+                    </div>
                   </div>
                   {state.items.length > 0 && (
                     <button
                       onClick={clearCart}
-                      className="px-6 py-3 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800 rounded-xl transition-all duration-200 text-sm font-semibold shadow-sm hover:shadow-md transform hover:scale-[1.02] border border-red-200"
+                      className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800 rounded-xl transition-all duration-200 text-sm font-semibold shadow-sm hover:shadow-md transform hover:scale-[1.02] active:scale-95 border border-red-200 touch-manipulation"
                     >
                       Clear All
                     </button>
@@ -521,7 +521,7 @@ export default function CartPage() {
               </div>
 
               {/* Items List */}
-              <div className="p-8">
+              <div className="p-4 sm:p-6 lg:p-8">
                 {state.items.length === 0 ? (
                   <div className="text-center py-16">
                     <div className="w-24 h-24 mx-auto bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl flex items-center justify-center mb-6">
@@ -551,8 +551,8 @@ export default function CartPage() {
                         </div>
                         <div className="bg-gradient-to-r from-orange-50/30 to-orange-100/20 rounded-xl border border-orange-200/50 overflow-hidden">
                           {checkOutItems.map((item, index) => (
-                            <div key={item.assetId} className={`flex items-center justify-between p-4 hover transition-all duration-200 ${index !== checkOutItems.length - 1 ? 'border-b border-orange-200/30' : ''}`}>
-                              <div className="flex items-center space-x-4 flex-1 min-w-0">
+                            <div key={item.assetId} className={`flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 hover transition-all duration-200 space-y-3 sm:space-y-0 ${index !== checkOutItems.length - 1 ? 'border-b border-orange-200/30' : ''}`}>
+                              <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
                                 {/* Asset Image/Icon */}
                                 <div className="flex-shrink-0">
                                   {item.asset.imageUrl ? (
@@ -620,13 +620,13 @@ export default function CartPage() {
                                 </div>
                                 
                                 {/* Action Buttons */}
-                                <div className="flex items-center space-x-2 flex-shrink-0">
+                                <div className="flex items-center justify-between sm:justify-end space-x-2 flex-shrink-0 w-full sm:w-auto">
                                   <span className="text-xs font-medium text-orange-700 bg-orange-900/30 px-2 py-1 rounded-full">
                                     Checking Out
                                   </span>
                                   <button
                                     onClick={() => removeItem(item.assetId)}
-                                    className="text-red-400 hover p-2 rounded-lg hover transition-all duration-200 transform hover:scale-110"
+                                    className="text-red-400 hover p-2 rounded-lg hover transition-all duration-200 transform hover:scale-110 active:scale-95 touch-manipulation"
                                     title="Remove from cart"
                                   >
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -656,8 +656,8 @@ export default function CartPage() {
                         </div>
                         <div className="bg-gradient-to-r from-green-50/30 to-green-100/20 rounded-xl border border-green-200/50 overflow-hidden">
                           {checkInItems.map((item, index) => (
-                            <div key={item.assetId} className={`flex items-center justify-between p-4 hover transition-all duration-200 ${index !== checkInItems.length - 1 ? 'border-b border-green-200/30' : ''}`}>
-                              <div className="flex items-center space-x-4 flex-1 min-w-0">
+                            <div key={item.assetId} className={`flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 hover transition-all duration-200 space-y-3 sm:space-y-0 ${index !== checkInItems.length - 1 ? 'border-b border-green-200/30' : ''}`}>
+                              <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
                                 {/* Asset Image/Icon */}
                                 <div className="flex-shrink-0">
                                   {item.asset.imageUrl ? (
@@ -725,13 +725,13 @@ export default function CartPage() {
                                 </div>
                                 
                                 {/* Action Buttons */}
-                                <div className="flex items-center space-x-2 flex-shrink-0">
+                                <div className="flex items-center justify-between sm:justify-end space-x-2 flex-shrink-0 w-full sm:w-auto">
                                   <span className="text-xs font-medium text-green-700 bg-green-100 px-2 py-1 rounded-full">
                                     Checking In
                                   </span>
                                   <button
                                     onClick={() => removeItem(item.assetId)}
-                                    className="text-red-400 hover p-2 rounded-lg hover transition-all duration-200 transform hover:scale-110"
+                                    className="text-red-400 hover p-2 rounded-lg hover transition-all duration-200 transform hover:scale-110 active:scale-95 touch-manipulation"
                                     title="Remove from cart"
                                   >
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -751,22 +751,22 @@ export default function CartPage() {
 
               {/* Footer */}
               {state.items.length > 0 && (
-                <div className="p-8 border-t border-gray-600/50 bg-gradient-to-r from-gray-50/50 to-gray-100/30 backdrop-blur-sm">
-                  <div className="flex items-center justify-between">
+                <div className="p-4 sm:p-6 lg:p-8 border-t border-gray-600/50 bg-gradient-to-r from-gray-50/50 to-gray-100/30 backdrop-blur-sm">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
                     <div className="text-sm text-brand-primary-text">
                       <div className="flex items-center space-x-2">
                         <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                         <span>
-                          <span className="font-semibold text-brand-primary-text text-lg">{state.items.length}</span>
-                          <span className="ml-1">total items ready to process</span>
+                          <span className="font-semibold text-brand-primary-text text-base sm:text-lg">{state.items.length}</span>
+                          <span className="ml-1 text-sm sm:text-base">total items ready to process</span>
                         </span>
                       </div>
                     </div>
                     <button
                       onClick={() => setShowConfirmation(true)}
-                      className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-semibold transition-all duration-200 flex items-center shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transform hover:scale-[1.02]"
+                      className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-semibold transition-all duration-200 flex items-center justify-center shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transform hover:scale-[1.02] active:scale-95 text-sm sm:text-base touch-manipulation"
                     >
-                      <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 sm:w-5 h-4 sm:h-5 mr-2 sm:mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       Process All Transactions

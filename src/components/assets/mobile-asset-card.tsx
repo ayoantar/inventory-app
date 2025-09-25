@@ -110,12 +110,6 @@ export default function MobileAssetCard({
             {categoryIcons[asset.category]} {asset.category}
           </span>
         </div>
-        <div>
-          <span className="text-gray-500 dark:text-gray-400">Condition:</span>
-          <span className={`ml-1 font-medium ${conditionColors[asset.condition]}`}>
-            {asset.condition.replace('_', ' ')}
-          </span>
-        </div>
         {asset.brand && (
           <div>
             <span className="text-gray-500 dark:text-gray-400">Brand:</span>
