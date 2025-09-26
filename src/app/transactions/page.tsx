@@ -80,19 +80,19 @@ export default function TransactionsPage() {
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      ACTIVE: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-700',
-      COMPLETED: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-700',
-      CANCELLED: 'bg-gray-50 text-gray-700 border-gray-300 dark:bg-white/5 dark:text-white/50 hover:text-white/80 transition-colors dark:border-gray-600'
+      ACTIVE: 'bg-amber-900/20 text-amber-400 border-amber-700',
+      COMPLETED: 'bg-emerald-900/20 text-emerald-400 border-emerald-700',
+      CANCELLED: 'bg-white/5 text-white/50 hover:text-white/80 transition-colors border-gray-600'
     }
-    return colors[status as keyof typeof colors] || 'bg-gray-50 text-gray-700 border-gray-300 dark:bg-white/5 dark:text-white/50 hover:text-white/80 transition-colors dark:border-gray-600'
+    return colors[status as keyof typeof colors] || 'bg-white/5 text-white/50 hover:text-white/80 transition-colors border-gray-600'
   }
 
   const getTypeBadge = (type: string) => {
     const colors = {
-      CHECK_OUT: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-700',
-      CHECK_IN: 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-700'
+      CHECK_OUT: 'bg-blue-900/20 text-blue-400 border-blue-700',
+      CHECK_IN: 'bg-green-900/20 text-green-400 border-green-700'
     }
-    return colors[type as keyof typeof colors] || 'bg-gray-50 text-gray-700 border-gray-300 dark:bg-white/5 dark:text-white/50 hover:text-white/80 transition-colors dark:border-gray-600'
+    return colors[type as keyof typeof colors] || 'bg-white/5 text-white/50 hover:text-white/80 transition-colors border-gray-600'
   }
 
   const handleQuickReturn = async (transaction: TransactionWithRelations) => {
@@ -124,7 +124,7 @@ export default function TransactionsPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
+      <div className="min-h-screen bg-gradient-to-br from-brand-dark-blue via-gray-925 to-brand-black">
         <Navbar />
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
@@ -138,7 +138,7 @@ export default function TransactionsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-brand-dark-blue via-gray-925 to-brand-black">
       <Navbar />
       
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -153,7 +153,7 @@ export default function TransactionsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
                 </div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                   Transactions
                 </h1>
               </div>
@@ -165,7 +165,7 @@ export default function TransactionsPage() {
             {/* Mobile Header */}
             <div className="md:hidden">
               <div className="flex items-center justify-between mb-2">
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                   Transactions
                 </h1>
                 <div className="flex items-center space-x-1 text-sm text-gray-600 dark:text-brand-secondary-text">

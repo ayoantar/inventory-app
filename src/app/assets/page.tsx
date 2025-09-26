@@ -252,7 +252,7 @@ export default function AssetsPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
+      <div className="min-h-screen bg-gradient-to-br from-brand-dark-blue via-gray-925 to-brand-black">
         <Navbar />
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
@@ -266,7 +266,7 @@ export default function AssetsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-brand-dark-blue via-gray-925 to-brand-black">
       <Navbar />
       
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -277,16 +277,16 @@ export default function AssetsPage() {
             <div className="hidden md:flex items-center justify-between">
               <div>
                 <div className="flex items-center space-x-3 mb-2">
-                  <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
-                    <svg className="w-6 h-6 text-brand-orange dark:text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
+                    <svg className="w-6 h-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
                   </div>
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-brand-primary-text dark:to-gray-200 bg-clip-text text-transparent">
+                  <h1 className="text-3xl font-bold bg-gradient-to-r from-brand-primary-text to-gray-200 bg-clip-text text-transparent">
                     Assets
                   </h1>
                 </div>
-                <p className="text-gray-800 dark:text-brand-secondary-text ml-11 max-w-2xl">
+                <p className="text-brand-secondary-text ml-11 max-w-2xl">
                   Manage your inventory assets ({pagination.total} total)
                 </p>
               </div>
@@ -305,7 +305,7 @@ export default function AssetsPage() {
                 className={`px-4 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors ${
                   bulkMode
                     ? 'bg-brand-orange hover:bg-primary-600 text-brand-primary-text'
-                    : 'bg-gray-100 hover:bg-white/10 text-gray-700 dark:bg-white/5 dark:hover:bg-white/10 dark:text-gray-200'
+                    : 'bg-white/5 hover:bg-white/10 text-gray-200'
                 }`}
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -359,16 +359,16 @@ export default function AssetsPage() {
             {/* Mobile Header */}
             <div className="md:hidden">
               <div className="flex items-center space-x-3 mb-4">
-                <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
-                  <svg className="w-5 h-5 text-brand-orange dark:text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
+                  <svg className="w-5 h-5 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-brand-primary-text dark:to-gray-200 bg-clip-text text-transparent">
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-brand-primary-text to-gray-200 bg-clip-text text-transparent">
                     Assets
                   </h1>
-                  <p className="text-sm text-gray-800 dark:text-brand-secondary-text">
+                  <p className="text-sm text-brand-secondary-text">
                     {pagination.total} total assets
                   </p>
                 </div>
@@ -390,7 +390,7 @@ export default function AssetsPage() {
                   className={`px-4 py-3 rounded-lg text-sm font-medium flex items-center justify-center transition-colors active:scale-95 touch-manipulation ${
                     bulkMode
                       ? 'bg-brand-orange hover:bg-primary-600 text-brand-primary-text'
-                      : 'bg-gray-100 hover:bg-white/10 text-gray-700 dark:bg-white/5 dark:hover:bg-white/10 dark:text-gray-200'
+                      : 'bg-white/5 hover:bg-white/10 text-gray-200'
                   }`}
                 >
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -465,7 +465,7 @@ export default function AssetsPage() {
           <div className="md:hidden mb-4">
             <button
               onClick={() => setFiltersExpanded(!filtersExpanded)}
-              className="w-full bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 border border-gray-600 rounded-lg px-4 py-3 text-sm font-medium text-gray-200 flex items-center justify-between transition-colors active:scale-95 touch-manipulation"
+              className="w-full bg-white/5 hover:bg-white/10 border border-gray-600 rounded-lg px-4 py-3 text-sm font-medium text-gray-200 flex items-center justify-between transition-colors active:scale-95 touch-manipulation"
             >
               <div className="flex items-center space-x-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -523,7 +523,7 @@ export default function AssetsPage() {
           {/* Pagination */}
           {assets.length > 0 && pagination.pages > 1 && (
             <div className="mt-6 flex items-center justify-between">
-              <div className="text-sm text-gray-700 dark:text-gray-300">
+              <div className="text-sm text-gray-300">
                 Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
                 {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
                 {pagination.total} results
@@ -533,19 +533,19 @@ export default function AssetsPage() {
                 <button
                   onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
                   disabled={pagination.page === 1}
-                  className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-white/10 dark:hover:bg-white/10 bg-gray-900/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-2 text-sm border border-gray-600 rounded-md hover:bg-white/10 bg-gray-900/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Previous
                 </button>
                 
-                <span className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-900/5 text-slate-700 dark:text-slate-300">
+                <span className="px-3 py-2 text-sm border border-gray-600 rounded-md bg-gray-900/5 text-slate-300">
                   {pagination.page} of {pagination.pages}
                 </span>
                 
                 <button
                   onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
                   disabled={pagination.page === pagination.pages}
-                  className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-white/10 dark:hover:bg-white/10 bg-gray-900/5 text-gray-900 dark:text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-2 text-sm border border-gray-600 rounded-md hover:bg-white/10 bg-gray-900/5 text-brand-primary-text disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Next
                 </button>
@@ -559,8 +559,8 @@ export default function AssetsPage() {
               <svg className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
-              <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-brand-primary-text">No assets found</h3>
-              <p className="mt-1 text-sm text-gray-700 dark:text-brand-secondary-text">
+              <h3 className="mt-2 text-sm font-medium text-brand-primary-text">No assets found</h3>
+              <p className="mt-1 text-sm text-brand-secondary-text">
                 {Object.values(filters).some(value => value !== '')
                   ? 'Try adjusting your filters'
                   : 'Get started by adding your first asset'
@@ -570,7 +570,7 @@ export default function AssetsPage() {
                 <div className="mt-6">
                   <Link
                     href="/assets/new"
-                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-slate-600 hover:bg-white/10 dark:bg-white/5 dark:hover:bg-white/10 transition-colors"
+                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-white/5 hover:bg-white/10 transition-colors"
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

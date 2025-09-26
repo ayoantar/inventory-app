@@ -146,7 +146,7 @@ export default function MaintenancePage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
+      <div className="min-h-screen bg-gradient-to-br from-brand-dark-blue via-gray-925 to-brand-black">
         <Navbar />
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
@@ -160,7 +160,7 @@ export default function MaintenancePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-brand-dark-blue via-gray-925 to-brand-black">
       <Navbar />
       
       <div className="max-w-7xl mx-auto py-3 sm:py-4 md:py-6 px-3 sm:px-4 md:px-6 lg:px-8">
@@ -171,16 +171,16 @@ export default function MaintenancePage() {
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center space-x-3 mb-2">
-                  <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
+                  <div className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
                     <svg className="w-6 h-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
                     </svg>
                   </div>
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                  <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                     Maintenance
                   </h1>
                 </div>
-                <p className="text-base text-gray-600 dark:text-brand-secondary-text">
+                <p className="text-base text-brand-secondary-text">
                   Manage maintenance schedules and track repairs
                 </p>
               </div>
@@ -199,11 +199,11 @@ export default function MaintenancePage() {
           {/* Mobile Header */}
           <div className="md:hidden">
             <div className="flex items-center justify-between mb-2">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 Maintenance
               </h1>
               <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-1 text-sm text-gray-600 dark:text-brand-secondary-text">
+                <div className="flex items-center space-x-1 text-sm text-brand-secondary-text">
                   <svg className="w-4 h-4 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
                   </svg>
@@ -217,7 +217,7 @@ export default function MaintenancePage() {
                 </Link>
               </div>
             </div>
-            <p className="text-sm text-gray-600 dark:text-brand-secondary-text mb-4">
+            <p className="text-sm text-brand-secondary-text mb-4">
               Manage maintenance schedules and track repairs
             </p>
           </div>
@@ -226,7 +226,7 @@ export default function MaintenancePage() {
           <div className="md:hidden mb-4">
             <button
               onClick={() => setFiltersExpanded(!filtersExpanded)}
-              className="w-full flex items-center justify-between px-4 py-3 bg-gray-900/5 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 text-left active:scale-95 touch-manipulation transition-all"
+              className="w-full flex items-center justify-between px-4 py-3 bg-gray-900/5 dark:bg-white/5 rounded-lg border border-gray-700 text-left active:scale-95 touch-manipulation transition-all"
             >
               <div className="flex items-center space-x-2">
                 <svg className="w-5 h-5 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -257,7 +257,7 @@ export default function MaintenancePage() {
           <div className={`bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6 ${!filtersExpanded ? 'hidden md:block' : ''}`}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               <div className="sm:col-span-2 lg:col-span-1">
-                <label htmlFor="search" className="block text-xs sm:text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
+                <label htmlFor="search" className="block text-xs sm:text-sm font-medium text-brand-secondary-text mb-1">
                   Search
                 </label>
                 <input
@@ -271,7 +271,7 @@ export default function MaintenancePage() {
               </div>
 
               <div>
-                <label htmlFor="status" className="block text-xs sm:text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
+                <label htmlFor="status" className="block text-xs sm:text-sm font-medium text-brand-secondary-text mb-1">
                   Status
                 </label>
                 <select
@@ -290,7 +290,7 @@ export default function MaintenancePage() {
               </div>
 
               <div>
-                <label htmlFor="type" className="block text-xs sm:text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">
+                <label htmlFor="type" className="block text-xs sm:text-sm font-medium text-brand-secondary-text mb-1">
                   Type
                 </label>
                 <select
@@ -349,7 +349,7 @@ export default function MaintenancePage() {
             <>
               {/* Desktop Pagination */}
               <div className="hidden md:flex items-center justify-between">
-                <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
+                <div className="text-sm text-brand-secondary-text">
                   Showing {((pagination.page - 1) * pagination.limit) + 1} to{' '}
                   {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
                   {pagination.total} results
@@ -380,7 +380,7 @@ export default function MaintenancePage() {
 
               {/* Mobile Pagination */}
               <div className="md:hidden space-y-3">
-                <div className="text-center text-sm text-gray-600 dark:text-brand-secondary-text">
+                <div className="text-center text-sm text-brand-secondary-text">
                   Page {pagination.page} of {pagination.pages} ({pagination.total} total)
                 </div>
 
@@ -412,7 +412,7 @@ export default function MaintenancePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
               </svg>
               <h3 className="mt-2 text-sm sm:text-base font-medium text-brand-primary-text">No maintenance records found</h3>
-              <p className="mt-1 text-xs sm:text-sm text-gray-600 dark:text-brand-secondary-text">
+              <p className="mt-1 text-xs sm:text-sm text-brand-secondary-text">
                 {Object.values(filters).some(value => value !== '')
                   ? 'Try adjusting your filters'
                   : 'No maintenance has been scheduled yet'

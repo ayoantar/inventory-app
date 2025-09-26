@@ -278,7 +278,7 @@ export default function CartPage() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
+      <div className="min-h-screen bg-gradient-to-br from-brand-dark-blue via-gray-925 to-brand-black">
         <Navbar />
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-orange"></div>
@@ -295,102 +295,103 @@ export default function CartPage() {
   const checkOutItems = getCheckOutItems()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
+    <div className="min-h-screen bg-gradient-to-br from-brand-dark-blue via-gray-925 to-brand-black">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="flex items-center space-x-3 mb-2">
-                <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
-                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="max-w-7xl mx-auto py-3 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-8">
+        {/* Mobile-optimized Header */}
+        <div className="mb-4 sm:mb-6 lg:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            {/* Mobile: Stack vertically */}
+            <div className="flex-1">
+              <div className="flex items-center space-x-2 mb-2">
+                <div className="p-1.5 sm:p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6H19M7 13v0a2 2 0 002 2h8.5m-10.5-2v-2a2 2 0 012-2h8.5" />
                   </svg>
                 </div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-brand-secondary-text bg-clip-text text-transparent">
-                  Asset Transaction Cart
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-white to-brand-secondary-text bg-clip-text text-transparent">
+                  Transaction Cart
                 </h1>
               </div>
-              <p className="text-brand-primary-text ml-11 max-w-2xl">
-                Streamline your asset management with bulk check-in and check-out operations
+              <p className="text-xs sm:text-sm lg:text-base text-brand-secondary-text ml-9 sm:ml-11 hidden sm:block">
+                Streamline your asset management with bulk operations
               </p>
             </div>
             <Link
               href="/assets"
-              className="inline-flex items-center px-4 py-2.5 bg-gray-900/5 border border-gray-600 rounded-lg text-gray-300 hover font-medium transition-all duration-200 shadow-sm hover:shadow-md"
+              className="inline-flex items-center justify-center px-3 py-2 sm:px-4 sm:py-2.5 bg-gray-900/5 border border-gray-600 rounded-lg text-gray-300 hover font-medium transition-all duration-200 shadow-sm hover:shadow-md text-sm sm:text-base w-full sm:w-auto"
             >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              Back to Assets
+              Back
             </Link>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-          {/* Scanning Interface - Left Column */}
-          <div className="lg:col-span-1">
-            <div className="bg-gray-900/5 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 p-4 sm:p-6 lg:p-8 lg:sticky lg:top-6 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-200/30:shadow-gray-900/60">
-              {/* Mode Toggle */}
-              <div className="mb-6 sm:mb-8">
-                <h2 className="text-lg sm:text-xl font-semibold text-brand-primary-text mb-4 sm:mb-6 flex items-center">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+        {/* Mobile-first responsive grid */}
+        <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          {/* Scanning Interface - Mobile optimized */}
+          <div className="order-1 lg:order-1 lg:col-span-1">
+            <div className="bg-gray-900/5 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-gray-600/50 shadow-lg p-3 sm:p-5 lg:p-8 lg:sticky lg:top-6 transition-all duration-300">
+              {/* Mode Toggle - Mobile optimized */}
+              <div className="mb-4 sm:mb-6">
+                <h2 className="text-base sm:text-lg font-semibold text-brand-primary-text mb-3 sm:mb-4 flex items-center">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-2 sm:mr-3"></div>
                   Transaction Mode
                 </h2>
-                <div className="bg-gray-900/5 rounded-xl p-1.5 border border-gray-600">
+                <div className="grid grid-cols-2 gap-2 bg-gray-900/5 rounded-xl p-1.5 border border-gray-600">
                   <button
                     onClick={() => setScanMode('CHECK_OUT')}
-                    className={`flex-1 px-4 sm:px-6 py-3 sm:py-4 text-sm font-semibold rounded-lg transition-all duration-200 flex items-center justify-center w-full touch-manipulation ${
+                    className={`px-3 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-200 flex flex-col sm:flex-row items-center justify-center touch-manipulation ${
                       scanMode === 'CHECK_OUT'
                         ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/25 transform scale-[1.02]'
-                        : 'text-brand-primary-text hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800'
+                        : 'text-gray-300 hover:bg-gray-800 bg-gray-800'
                     }`}
                   >
-                    <svg className="w-4 sm:w-5 h-4 sm:h-5 mr-2 sm:mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 mb-1 sm:mb-0 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
-                    <span className="text-xs sm:text-sm">Check Out Assets</span>
+                    <span className="text-xs sm:text-sm">Check Out</span>
                   </button>
                   <button
                     onClick={() => setScanMode('CHECK_IN')}
-                    className={`flex-1 px-4 sm:px-6 py-3 sm:py-4 text-sm font-semibold rounded-lg transition-all duration-200 flex items-center justify-center w-full mt-2 touch-manipulation ${
+                    className={`px-3 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-200 flex flex-col sm:flex-row items-center justify-center touch-manipulation ${
                       scanMode === 'CHECK_IN'
                         ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/25 transform scale-[1.02]'
-                        : 'text-brand-primary-text hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800'
+                        : 'text-gray-300 hover:bg-gray-800 bg-gray-800'
                     }`}
                   >
-                    <svg className="w-4 sm:w-5 h-4 sm:h-5 mr-2 sm:mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 mb-1 sm:mb-0 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span className="text-xs sm:text-sm">Return Assets</span>
+                    <span className="text-xs sm:text-sm">Check In</span>
                   </button>
                 </div>
               </div>
 
-              {/* Scanning Interface */}
-              <div className="space-y-4 sm:space-y-6">
-                <div className="flex items-center space-x-3">
+              {/* Scanning Interface - Mobile optimized */}
+              <div className="space-y-3 sm:space-y-4">
+                <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
-                  <h3 className="text-base sm:text-lg font-semibold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-brand-secondary-text bg-clip-text text-transparent">Add Items</h3>
+                  <h3 className="text-base font-semibold text-brand-primary-text">Add Items</h3>
                 </div>
 
-                <form onSubmit={handleManualSearch} className="space-y-4 sm:space-y-5">
-                  {/* Input Field */}
+                <form onSubmit={handleManualSearch} className="space-y-3">
+                  {/* Input Field - Mobile optimized */}
                   <div className="relative group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
                     <input
                       type="text"
                       value={searchValue}
                       onChange={(e) => setSearchValue(e.target.value)}
-                      placeholder="Scan barcode or enter ID"
-                      className="relative w-full pl-10 sm:pl-12 pr-12 sm:pr-14 py-3 sm:py-4 border-2 border-gray-600 rounded-xl bg-gray-900/5 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:border-blue-500/50:border-blue-400/50 focus transition-all duration-200 shadow-sm focus:shadow-lg text-sm sm:text-base font-medium text-center touch-manipulation"
+                      placeholder="Scan or enter ID"
+                      className="w-full pl-10 pr-10 py-3 sm:py-3.5 border-2 border-gray-600 rounded-xl bg-gray-900/5 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:border-blue-500/50 transition-all duration-200 text-sm font-medium text-center touch-manipulation"
                       autoFocus
                     />
-                    <div className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2">
+                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
                       <svg
-                        className="w-4 h-4 text-white/50 hover:text-white/80 transition-colors group-focus-within transition-colors duration-200"
+                        className="w-4 h-4 text-gray-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -398,26 +399,24 @@ export default function CartPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                       </svg>
                     </div>
-                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
-                      <button
-                        type="button"
-                        onClick={() => setShowScanner(true)}
-                        className="p-2 text-white/50 hover:text-white/80 transition-colors hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800 rounded-md transition-all duration-200 transform hover:scale-110 touch-manipulation"
-                        title="Open camera scanner"
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowScanner(true)}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1.5 text-gray-400 hover:text-gray-300 rounded-lg transition-colors touch-manipulation"
+                      title="Open camera scanner"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </button>
                   </div>
-                  
-                  {/* Submit Button */}
+
+                  {/* Submit Button - Mobile optimized */}
                   <button
                     type="submit"
                     disabled={searching || !searchValue.trim()}
-                    className={`w-full px-4 sm:px-6 py-3 sm:py-4 text-white rounded-xl font-semibold transition-all duration-200 flex items-center justify-center shadow-lg transform hover:scale-[1.02] active:scale-95 disabled:transform-none disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap text-sm sm:text-base touch-manipulation ${
+                    className={`w-full px-4 py-3 text-white rounded-xl font-semibold transition-all duration-200 flex items-center justify-center shadow-md active:scale-95 disabled:transform-none disabled:opacity-50 disabled:cursor-not-allowed text-sm touch-manipulation ${
                       scanMode === 'CHECK_OUT'
                         ? 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-orange-500/25 hover:shadow-orange-500/40'
                         : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 shadow-green-500/25 hover:shadow-green-500/40'
@@ -425,7 +424,7 @@ export default function CartPage() {
                   >
                     {searching ? (
                       <>
-                        <svg className="w-5 h-5 animate-spin mr-3" fill="none" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 animate-spin mr-2" fill="none" viewBox="0 0 24 24">
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l-3-2.647z"></path>
                         </svg>
@@ -443,7 +442,7 @@ export default function CartPage() {
                   
                   {/* Helper Text */}
                   <div className="text-center">
-                    <p className="text-xs text-gray-600 dark:text-brand-secondary-text leading-relaxed">
+                    <p className="text-xs text-brand-secondary-text leading-relaxed">
                       Scan with camera or manually enter asset identifiers
                     </p>
                   </div>
@@ -451,8 +450,8 @@ export default function CartPage() {
 
                 {/* Status Messages */}
                 {error && (
-                  <div className="p-4 bg-gradient-to-r from-red-50 to-red-100/50 border border-red-200 rounded-xl shadow-sm animate-in slide-in-from-top-2 duration-300">
-                    <p className="text-sm text-red-800 flex items-center font-medium">
+                  <div className="p-4 bg-gradient-to-r bg-red-900/20 border border-red-600/50 rounded-xl shadow-sm animate-in slide-in-from-top-2 duration-300">
+                    <p className="text-sm text-red-400 flex items-center font-medium">
                       <svg className="w-5 h-5 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
@@ -462,8 +461,8 @@ export default function CartPage() {
                 )}
 
                 {success && (
-                  <div className="p-4 bg-gradient-to-r from-green-50 to-green-100/50 border border-green-200 rounded-xl shadow-sm animate-in slide-in-from-top-2 duration-300">
-                    <p className="text-sm text-green-800 flex items-center font-medium">
+                  <div className="p-4 bg-green-900/20 border border-green-600/50 rounded-xl shadow-sm animate-in slide-in-from-top-2 duration-300">
+                    <p className="text-sm text-green-400 flex items-center font-medium">
                       <svg className="w-5 h-5 mr-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
@@ -475,8 +474,8 @@ export default function CartPage() {
             </div>
           </div>
 
-          {/* Items List - Right Column */}
-          <div className="lg:col-span-2">
+          {/* Items List - Mobile optimized */}
+          <div className="order-2 lg:order-2 lg:col-span-2">
             {/* Preset Detection Panel */}
             <PresetDetectionPanel 
               onPresetSelect={handlePresetSelect}
@@ -485,25 +484,25 @@ export default function CartPage() {
               isDetecting={detectingPresets}
             />
             
-            <div className="bg-gray-900/5 backdrop-blur-sm rounded-2xl border border-gray-600/50 shadow-xl shadow-gray-200/20 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-200/30:shadow-gray-900/60">
-              {/* Header */}
-              <div className="p-4 sm:p-6 lg:p-8 border-b border-gray-600/50">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+            <div className="bg-gray-900/5 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-gray-600/50 shadow-lg">
+              {/* Header - Mobile optimized */}
+              <div className="p-3 sm:p-5 lg:p-8 border-b border-gray-600/50">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div>
-                    <div className="flex items-center space-x-3 mb-2">
+                    <div className="flex items-center space-x-2 mb-1">
                       <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
-                      <h2 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-brand-secondary-text bg-clip-text text-transparent">
+                      <h2 className="text-base sm:text-lg font-bold text-brand-primary-text">
                         Cart Items ({state.items.length})
                       </h2>
                     </div>
                     <div className="text-sm text-brand-primary-text ml-5 flex flex-wrap gap-2">
                       {checkOutItems.length > 0 && (
-                        <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                        <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium bg-orange-900/30 text-orange-400">
                           {checkOutItems.length} to check out
                         </span>
                       )}
                       {checkInItems.length > 0 && (
-                        <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium bg-green-900/30 text-green-400">
                           {checkInItems.length} to check in
                         </span>
                       )}
@@ -512,7 +511,7 @@ export default function CartPage() {
                   {state.items.length > 0 && (
                     <button
                       onClick={clearCart}
-                      className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800 rounded-xl transition-all duration-200 text-sm font-semibold shadow-sm hover:shadow-md transform hover:scale-[1.02] active:scale-95 border border-red-200 touch-manipulation"
+                      className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 text-red-400 hover:bg-gray-800 bg-gray-800 rounded-xl transition-all duration-200 text-sm font-semibold shadow-sm hover:shadow-md transform hover:scale-[1.02] active:scale-95 border border-red-600/50 touch-manipulation"
                     >
                       Clear All
                     </button>
@@ -520,16 +519,16 @@ export default function CartPage() {
                 </div>
               </div>
 
-              {/* Items List */}
-              <div className="p-4 sm:p-6 lg:p-8">
+              {/* Items List - Mobile optimized */}
+              <div className="p-3 sm:p-5 lg:p-8">
                 {state.items.length === 0 ? (
                   <div className="text-center py-16">
-                    <div className="w-24 h-24 mx-auto bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl flex items-center justify-center mb-6">
-                      <svg className="w-12 h-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-24 h-24 mx-auto bg-gradient-to-br from-blue-900/30 to-purple-900/30 rounded-2xl flex items-center justify-center mb-6">
+                      <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-semibold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-brand-secondary-text bg-clip-text text-transparent mb-3">Ready to scan</h3>
+                    <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-brand-secondary-text bg-clip-text text-transparent mb-3">Ready to scan</h3>
                     <p className="text-brand-primary-text max-w-sm mx-auto leading-relaxed">
                       Use the scanner or enter asset codes to start building your cart
                     </p>
@@ -540,18 +539,18 @@ export default function CartPage() {
                     {checkOutItems.length > 0 && (
                       <div>
                         <div className="flex items-center space-x-3 mb-6">
-                          <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
+                          <div className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
                             <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg>
                           </div>
-                          <h3 className="text-xl font-bold text-orange-700">
+                          <h3 className="text-xl font-bold text-orange-400">
                             Check Out Queue ({checkOutItems.length})
                           </h3>
                         </div>
-                        <div className="bg-gradient-to-r from-orange-50/30 to-orange-100/20 rounded-xl border border-orange-200/50 overflow-hidden">
+                        <div className="bg-orange-900/20 rounded-xl border border-orange-600/50 overflow-hidden">
                           {checkOutItems.map((item, index) => (
-                            <div key={item.assetId} className={`flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 hover transition-all duration-200 space-y-3 sm:space-y-0 ${index !== checkOutItems.length - 1 ? 'border-b border-orange-200/30' : ''}`}>
+                            <div key={item.assetId} className={`flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 hover transition-all duration-200 space-y-3 sm:space-y-0 ${index !== checkOutItems.length - 1 ? 'border-b border-orange-600/30' : ''}`}>
                               <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
                                 {/* Asset Image/Icon */}
                                 <div className="flex-shrink-0">
@@ -559,10 +558,10 @@ export default function CartPage() {
                                     <img
                                       src={item.asset.imageUrl}
                                       alt={getAssetDisplayName(item.asset)}
-                                      className="w-12 h-12 object-cover rounded-lg border border-orange-200"
+                                      className="w-12 h-12 object-cover rounded-lg border border-orange-600/50"
                                     />
                                   ) : (
-                                    <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-200 rounded-lg flex items-center justify-center border border-orange-200">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-orange-900/30 to-orange-800/30 rounded-lg flex items-center justify-center border border-orange-600/50">
                                       <span className="text-lg">📦</span>
                                     </div>
                                   )}
@@ -575,7 +574,7 @@ export default function CartPage() {
                                       {item.asset.name}
                                     </h4>
                                     {item.asset.description && (
-                                      <p className="text-xs text-white/50 hover:text-white/80 transition-colors overflow-hidden leading-relaxed" style={{
+                                      <p className="text-xs text-gray-400 overflow-hidden leading-relaxed" style={{
                                         display: '-webkit-box',
                                         WebkitLineClamp: 2,
                                         WebkitBoxOrient: 'vertical'
@@ -586,14 +585,14 @@ export default function CartPage() {
                                   </div>
                                   <div className="grid grid-cols-2 gap-2 text-xs text-brand-primary-text">
                                     <span className="flex items-center">
-                                      <svg className="w-3 h-3 mr-1 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <svg className="w-3 h-3 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                                       </svg>
                                       {item.asset.category.replace('_', ' ')}
                                     </span>
                                     {item.asset.serialNumber && (
                                       <span className="flex items-center truncate">
-                                        <svg className="w-3 h-3 mr-1 text-white/50 hover:text-white/80 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg className="w-3 h-3 mr-1 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
                                         S/N: {item.asset.serialNumber}
@@ -601,7 +600,7 @@ export default function CartPage() {
                                     )}
                                     {item.asset.location && (
                                       <span className="flex items-center truncate">
-                                        <svg className="w-3 h-3 mr-1 text-white/50 hover:text-white/80 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg className="w-3 h-3 mr-1 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
@@ -609,8 +608,8 @@ export default function CartPage() {
                                       </span>
                                     )}
                                     {(item.asset.currentValue || item.asset.purchasePrice) && (
-                                      <span className="flex items-center font-medium text-orange-700 col-span-2">
-                                        <svg className="w-3 h-3 mr-1 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <span className="flex items-center font-medium text-orange-400 col-span-2">
+                                        <svg className="w-3 h-3 mr-1 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                                         </svg>
                                         Value: ${(item.asset.currentValue || item.asset.purchasePrice)?.toLocaleString()}
@@ -621,7 +620,7 @@ export default function CartPage() {
                                 
                                 {/* Action Buttons */}
                                 <div className="flex items-center justify-between sm:justify-end space-x-2 flex-shrink-0 w-full sm:w-auto">
-                                  <span className="text-xs font-medium text-orange-700 bg-orange-900/30 px-2 py-1 rounded-full">
+                                  <span className="text-xs font-medium text-orange-400 bg-orange-900/30 px-2 py-1 rounded-full">
                                     Checking Out
                                   </span>
                                   <button
@@ -645,18 +644,18 @@ export default function CartPage() {
                     {checkInItems.length > 0 && (
                       <div>
                         <div className="flex items-center space-x-3 mb-6">
-                          <div className="p-2 bg-white/5 dark:bg-white/5 hover:bg-white/10 dark:hover:bg-white/10 rounded-lg transition-colors">
+                          <div className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
                             <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                           </div>
-                          <h3 className="text-xl font-bold text-green-700">
+                          <h3 className="text-xl font-bold text-green-400">
                             Check In Queue ({checkInItems.length})
                           </h3>
                         </div>
-                        <div className="bg-gradient-to-r from-green-50/30 to-green-100/20 rounded-xl border border-green-200/50 overflow-hidden">
+                        <div className="bg-green-900/20 rounded-xl border border-green-600/50 overflow-hidden">
                           {checkInItems.map((item, index) => (
-                            <div key={item.assetId} className={`flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 hover transition-all duration-200 space-y-3 sm:space-y-0 ${index !== checkInItems.length - 1 ? 'border-b border-green-200/30' : ''}`}>
+                            <div key={item.assetId} className={`flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 hover transition-all duration-200 space-y-3 sm:space-y-0 ${index !== checkInItems.length - 1 ? 'border-b border-green-600/30' : ''}`}>
                               <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
                                 {/* Asset Image/Icon */}
                                 <div className="flex-shrink-0">
@@ -664,10 +663,10 @@ export default function CartPage() {
                                     <img
                                       src={item.asset.imageUrl}
                                       alt={getAssetDisplayName(item.asset)}
-                                      className="w-12 h-12 object-cover rounded-lg border border-green-200"
+                                      className="w-12 h-12 object-cover rounded-lg border border-green-600/50"
                                     />
                                   ) : (
-                                    <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center border border-green-200">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-green-900/30 to-green-800/30 rounded-lg flex items-center justify-center border border-green-600/50">
                                       <span className="text-lg">📦</span>
                                     </div>
                                   )}
@@ -680,7 +679,7 @@ export default function CartPage() {
                                       {item.asset.name}
                                     </h4>
                                     {item.asset.description && (
-                                      <p className="text-xs text-white/50 hover:text-white/80 transition-colors overflow-hidden leading-relaxed" style={{
+                                      <p className="text-xs text-gray-400 overflow-hidden leading-relaxed" style={{
                                         display: '-webkit-box',
                                         WebkitLineClamp: 2,
                                         WebkitBoxOrient: 'vertical'
@@ -691,14 +690,14 @@ export default function CartPage() {
                                   </div>
                                   <div className="grid grid-cols-2 gap-2 text-xs text-brand-primary-text">
                                     <span className="flex items-center">
-                                      <svg className="w-3 h-3 mr-1 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <svg className="w-3 h-3 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                                       </svg>
                                       {item.asset.category.replace('_', ' ')}
                                     </span>
                                     {item.asset.serialNumber && (
                                       <span className="flex items-center truncate">
-                                        <svg className="w-3 h-3 mr-1 text-white/50 hover:text-white/80 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg className="w-3 h-3 mr-1 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
                                         S/N: {item.asset.serialNumber}
@@ -706,7 +705,7 @@ export default function CartPage() {
                                     )}
                                     {item.asset.location && (
                                       <span className="flex items-center truncate">
-                                        <svg className="w-3 h-3 mr-1 text-white/50 hover:text-white/80 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg className="w-3 h-3 mr-1 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
@@ -714,8 +713,8 @@ export default function CartPage() {
                                       </span>
                                     )}
                                     {(item.asset.currentValue || item.asset.purchasePrice) && (
-                                      <span className="flex items-center font-medium text-green-700 col-span-2">
-                                        <svg className="w-3 h-3 mr-1 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <span className="flex items-center font-medium text-green-400 col-span-2">
+                                        <svg className="w-3 h-3 mr-1 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                                         </svg>
                                         Value: ${(item.asset.currentValue || item.asset.purchasePrice)?.toLocaleString()}
@@ -726,7 +725,7 @@ export default function CartPage() {
                                 
                                 {/* Action Buttons */}
                                 <div className="flex items-center justify-between sm:justify-end space-x-2 flex-shrink-0 w-full sm:w-auto">
-                                  <span className="text-xs font-medium text-green-700 bg-green-100 px-2 py-1 rounded-full">
+                                  <span className="text-xs font-medium text-green-400 bg-green-900/30 px-2 py-1 rounded-full">
                                     Checking In
                                   </span>
                                   <button
@@ -751,7 +750,7 @@ export default function CartPage() {
 
               {/* Footer */}
               {state.items.length > 0 && (
-                <div className="p-4 sm:p-6 lg:p-8 border-t border-gray-600/50 bg-gradient-to-r from-gray-50/50 to-gray-100/30 backdrop-blur-sm">
+                <div className="p-4 sm:p-6 lg:p-8 border-t border-gray-600/50 bg-gradient-to-r from-gray-900/50 to-gray-800/30 backdrop-blur-sm">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
                     <div className="text-sm text-brand-primary-text">
                       <div className="flex items-center space-x-2">

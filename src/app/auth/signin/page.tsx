@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { signIn, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function SignIn() {
   const [email, setEmail] = useState('')
@@ -54,23 +55,39 @@ export default function SignIn() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black bg-pattern flex items-center justify-center p-4">
+    <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/auth/background.png"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
+          quality={100}
+        />
+        {/* Dark overlay for better contrast */}
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+      </div>
+
       {/* Centered Login Form */}
-      <div className="w-full max-w-md">
-        {/* Simple Logo */}
+      <div className="relative z-10 w-full max-w-md">
+        {/* Logo */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-brand-orange to-primary-600 rounded-xl flex items-center justify-center">
-              <svg className="w-7 h-7 text-brand-primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
-            </div>
-            <span className="text-2xl font-bold text-brand-primary-text">LSVR Inventory</span>
+          <div className="flex items-center justify-center mb-4">
+            <Image
+              src="/images/auth/logo.png"
+              alt="LSVR Inventory Logo"
+              width={200}
+              height={80}
+              className="drop-shadow-2xl"
+              priority
+            />
           </div>
         </div>
 
-        {/* Login Card */}
-        <div className="glass-glow rounded-2xl p-8 shadow-2xl">
+        {/* Login Card with enhanced glass effect */}
+        <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 shadow-2xl border border-white/20">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-brand-primary-text mb-2">
               Welcome Back
@@ -91,7 +108,7 @@ export default function SignIn() {
                 type="email"
                 autoComplete="email"
                 required
-                className="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-brand-primary-text placeholder-brand-secondary-text focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 bg-black/40 backdrop-blur border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent transition-all duration-200"
                 placeholder="Enter your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -108,7 +125,7 @@ export default function SignIn() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-brand-primary-text placeholder-brand-secondary-text focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 bg-black/40 backdrop-blur border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent transition-all duration-200"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
