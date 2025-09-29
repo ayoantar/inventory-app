@@ -7,9 +7,11 @@ import * as os from 'os'
 import * as fs from 'fs'
 import * as path from 'path'
 
-// In a real application, these would be stored in a database
-// For now, we'll use environment variables and in-memory storage
-let systemSettings = {
+// Settings file path - stored in data directory
+const settingsFilePath = path.join(process.cwd(), 'data', 'system-settings.json')
+
+// Default settings
+const defaultSettings = {
   systemName: process.env.SYSTEM_NAME || 'LSVR Inventory',
   timezone: process.env.DEFAULT_TIMEZONE || 'UTC',
   maintenanceMode: false,
@@ -29,6 +31,59 @@ let systemSettings = {
     replyTo: process.env.EMAIL_REPLY_TO || 'support@lightsailvr.com',
   }
 }
+
+// Load settings from file or use defaults
+function loadSettings() {
+  try {
+    // Ensure data directory exists
+    const dataDir = path.dirname(settingsFilePath)
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true })
+    }
+
+    // Load settings from file if it exists
+    if (fs.existsSync(settingsFilePath)) {
+      const fileContent = fs.readFileSync(settingsFilePath, 'utf8')
+      const savedSettings = JSON.parse(fileContent)
+
+      // Merge with defaults to ensure all fields exist
+      return {
+        ...defaultSettings,
+        ...savedSettings,
+        smtp: {
+          ...defaultSettings.smtp,
+          ...(savedSettings.smtp || {})
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Failed to load settings from file:', error)
+  }
+
+  // Return defaults if file doesn't exist or can't be read
+  return defaultSettings
+}
+
+// Save settings to file
+function saveSettings(settings: any) {
+  try {
+    // Ensure data directory exists
+    const dataDir = path.dirname(settingsFilePath)
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true })
+    }
+
+    // Save settings to file
+    fs.writeFileSync(settingsFilePath, JSON.stringify(settings, null, 2))
+    return true
+  } catch (error) {
+    console.error('Failed to save settings to file:', error)
+    return false
+  }
+}
+
+// Load settings on startup
+let systemSettings = loadSettings()
 
 // Function to calculate server load
 function calculateServerLoad(): { load: string; details: any } {
@@ -181,6 +236,12 @@ export async function PUT(request: NextRequest) {
       ...(twoFactorAuth !== undefined && { twoFactorAuth })
     }
 
+    // Save settings to file for persistence
+    const saved = saveSettings(systemSettings)
+    if (!saved) {
+      console.warn('Settings updated but could not be persisted to file')
+    }
+
     console.log(`⚙️ System settings updated by admin ${session.user.email}:`, systemSettings)
 
     return NextResponse.json({
@@ -327,6 +388,12 @@ export async function POST(request: NextRequest) {
             ...smtp,
             password: smtp.password && smtp.password !== '••••••••' ? '••••••••' : systemSettings.smtp.password,
             enabled: !!smtp.user
+          }
+
+          // Save settings to file for persistence
+          const saved = saveSettings(systemSettings)
+          if (!saved) {
+            console.warn('SMTP settings updated but could not be persisted to file')
           }
 
           console.log(`📧 SMTP settings updated by admin ${session.user.email}`)
