@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '../../../../../generated/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { sendTransactionEmail } from '@/lib/email-utils'
 
 const prisma = new PrismaClient()
 
@@ -38,15 +39,26 @@ export async function POST(request: NextRequest) {
     const results = []
     const errors = []
     let processed = 0
+    const processedAssets = [] // Collect assets for email
 
     // Process each item individually to handle partial failures
     for (const item of items) {
       try {
         await prisma.$transaction(async (tx) => {
-          // Get current asset status
+          // Get current asset status with full details for email
           const asset = await tx.asset.findUnique({
             where: { id: item.assetId },
-            select: { id: true, name: true, status: true }
+            select: {
+              id: true,
+              name: true,
+              status: true,
+              assetNumber: true,
+              serialNumber: true,
+              category: true,
+              currentValue: true,
+              purchasePrice: true,
+              imageUrl: true
+            }
           })
 
           if (!asset) {
@@ -86,6 +98,13 @@ export async function POST(request: NextRequest) {
               transactionId: transaction.id,
               action: 'CHECK_OUT',
               status: 'success'
+            })
+
+            // Collect asset for email
+            processedAssets.push({
+              ...asset,
+              notes: item.notes,
+              returnDate: item.expectedReturnDate || null
             })
 
           } else if (action === 'CHECK_IN') {
@@ -134,6 +153,12 @@ export async function POST(request: NextRequest) {
               action: 'CHECK_IN',
               status: 'success'
             })
+
+            // Collect asset for email
+            processedAssets.push({
+              ...asset,
+              notes: item.notes || activeTransaction.notes || undefined
+            })
           }
 
           processed++
@@ -150,12 +175,34 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Send email if any transactions were successful
+    if (processedAssets.length > 0 && session.user?.email) {
+      try {
+        const emailResult = await sendTransactionEmail({
+          transactionType: action === 'CHECK_OUT' ? 'CHECKOUT' : 'CHECKIN',
+          userName: session.user.name || session.user.email,
+          userEmail: session.user.email,
+          assets: processedAssets
+        })
+
+        if (!emailResult.success) {
+          console.error('Failed to send transaction email:', emailResult.error)
+        } else {
+          console.log('Transaction email sent successfully')
+        }
+      } catch (emailError) {
+        console.error('Error sending transaction email:', emailError)
+        // Don't fail the transaction if email fails
+      }
+    }
+
     return NextResponse.json({
       processed,
       total: items.length,
       errors,
       results,
-      success: processed > 0
+      success: processed > 0,
+      emailSent: processedAssets.length > 0 && session.user?.email ? true : false
     })
 
   } catch (error) {

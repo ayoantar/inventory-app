@@ -4,7 +4,7 @@ const next = require('next')
 const fs = require('fs')
 
 const dev = process.env.NODE_ENV !== 'production'
-const hostname = 'localhost'
+const hostname = process.env.HOSTNAME || '0.0.0.0'
 const port = process.env.PORT || 8083
 
 // When using middleware `hostname` and `port` must be provided below
@@ -12,8 +12,8 @@ const app = next({ dev, hostname, port })
 const handle = app.getRequestHandler()
 
 const httpsOptions = {
-  key: fs.readFileSync('/etc/ssl/warehouse/key.pem'),
-  cert: fs.readFileSync('/etc/ssl/warehouse/cert.pem'),
+  key: fs.readFileSync('/etc/letsencrypt/live/warehouse.lightsailvr.com/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/warehouse.lightsailvr.com/fullchain.pem'),
 }
 
 app.prepare().then(() => {
@@ -35,7 +35,7 @@ app.prepare().then(() => {
       console.error(err)
       process.exit(1)
     })
-    .listen(port, () => {
+    .listen(port, hostname, () => {
       console.log(`> Ready on https://${hostname}:${port}`)
     })
 })

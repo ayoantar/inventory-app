@@ -46,10 +46,11 @@ npx next dev --port 3005 --hostname 0.0.0.0    # Development with external acces
 - **Environment**: `.env` or `.env.development`
 
 ### Production Server
-- **Port**: 8083
-- **URL**: https://localhost:8083 or https://warehouse.lightsailvr.com:8083
+- **Port**: 8443 (internal) / 443 (external via nginx)
+- **URL**: https://warehouse.lightsailvr.com
 - **Environment**: `.env.production`
-- **SSL**: Uses certificates from `/etc/ssl/warehouse/`
+- **SSL**: Let's Encrypt certificates via `/etc/letsencrypt/live/warehouse.lightsailvr.com/`
+- **Proxy**: Nginx reverse proxy handles SSL and routes from port 443 to internal port 8443
 
 ### Database Servers
 - **Prisma Studio**: http://localhost:5555
@@ -175,21 +176,26 @@ export async function GET/POST(request: NextRequest) {
 ### PM2 Process Management
 - **Configuration**: `ecosystem.config.js`
 - **Environment**: `.env.production`
-- **Port**: 8083
-- **SSL**: HTTPS with self-signed certificates
+- **Internal Port**: 8443 (application)
+- **External Port**: 443 (via nginx proxy)
+- **SSL**: Let's Encrypt certificates (auto-renewing)
 - **Process**: `lsvr-inventory-warehouse`
+- **Nginx Config**: `/etc/nginx/sites-available/warehouse.lightsailvr.com`
 
 ### Deployment Commands
 ```bash
 # Build and start
 npm run build               # Build the application
-pm2 start ecosystem.config.js --env production  # Start with PM2
-pm2 restart lsvr-inventory-warehouse --update-env  # Restart with new env vars
+sudo pm2 start ecosystem.config.js --env production  # Start with PM2
+sudo pm2 restart lsvr-inventory-warehouse --update-env  # Restart with new env vars
 
 # Monitoring
 pm2 list                    # List all processes
 pm2 logs lsvr-inventory-warehouse  # View logs
 pm2 env lsvr-inventory-warehouse   # Check environment variables
+
+# SSL Certificate Renewal (automatic via cron)
+sudo certbot renew         # Manual renewal if needed
 ```
 
 ## Authentication Credentials
@@ -199,34 +205,44 @@ pm2 env lsvr-inventory-warehouse   # Check environment variables
 - **User**: `john.doe@lsvr.com` / `password123`
 - **User**: `jane.smith@lsvr.com` / `password123`
 
-⚠️ **Remember to change these passwords in production!**
+**Production Admin Account**:
+- **Admin**: `warehouse@lightsailvr.com` (password reset functionality active)
+
+⚠️ **Remember to change default passwords in production!**
 
 ## Current System Status
 
-### Latest Updates (September 23, 2025)
-- ✅ **PRODUCTION SERVER RESTORED** - Server successfully rebuilt and running on port 8083
-- ✅ **PORT CONFIGURATION FIXED** - All configuration files updated to use correct ports
-- ✅ **PM2 PROCESS MANAGEMENT** - Fresh PM2 process running with correct environment variables
-- ✅ **DATABASE CONNECTIVITY VERIFIED** - API endpoints responding successfully with database operations
-- ✅ **HTTPS ACCESS CONFIRMED** - Server accessible on https://localhost:8083 with SSL certificates
-- ✅ **UNIVERSAL BACKGROUND PATTERN SYSTEM** - Implemented comprehensive visual enhancement framework
-- ✅ **ENHANCED CONTRAST SYSTEM** - Applied glass morphism and glowing effects across all components
-- ✅ **CLEAN LOGIN PAGE DESIGN** - Minimal, modern signin page with background patterns deployed
-- ✅ **PRODUCTION DEPLOYMENT COMPLETE** - All visual enhancements successfully deployed and operational
-- ✅ **CLAUDE.MD UPDATED** - Documentation updated with latest background pattern system information
+### Latest Updates (September 28, 2025)
+- ✅ **SYSTEM FULLY OPERATIONAL** - Both development (3005) and production (443) servers running
+- ✅ **SSL CERTIFICATES** - Valid Let's Encrypt certificates installed and auto-renewing
+- ✅ **NGINX PROXY CONFIGURED** - Reverse proxy handling HTTPS and routing on port 443
+- ✅ **AUTHENTICATION VERIFIED** - Multiple successful logins for warehouse@lightsailvr.com admin account
+- ✅ **PASSWORD RESET TESTED** - Admin password reset functionality working with temporary passwords
+- ✅ **MODAL UI COMPLETE** - All modals (Preset, Asset Group, Import) updated with solid dark backgrounds
+- ✅ **EMAIL SYSTEM ACTIVE** - SMTP configured with warehouse@lightsailvr.com sending alias
+- ✅ **PRODUCTION STABLE** - Accessible at https://warehouse.lightsailvr.com (standard port 443)
+
+### Recent UI Improvements
+- **Modal Backgrounds**: Changed from glass morphism to solid `bg-gray-900` with clean borders
+- **Form Inputs**: Solid `bg-gray-800` backgrounds for better contrast
+- **Status Indicators**: Updated color scheme with `/30` opacity for dark mode
+- **Scrollable Containers**: Proper spacing with `p-2` padding matching design patterns
+- **Hover Effects**: Added `hover:bg-blue-800/20` for interactive feedback
 
 ### Server Status
 - **Development**: localhost:3005 ✅ Operational
-- **Production**: localhost:8083 / warehouse.lightsailvr.com:8083 ✅ Operational
+- **Production**: https://warehouse.lightsailvr.com ✅ Operational
+- **Internal App Port**: localhost:8443 (proxied via nginx)
 - **Prisma Studio**: localhost:5555 ✅ Available
 - **Supabase Database**: aws-0-us-west-1.pooler.supabase.com:5432 ✅ Connected
 
 ### Database State
 - **Total Assets**: 874 (various categories)
-- **Active Users**: 6 (with different role levels)
+- **Active Users**: 5 (with different role levels)
 - **Active Transactions**: Multiple check-outs currently active
 - **Maintenance Records**: System tracking maintenance lifecycle
 - **Database Integrity**: Excellent - all relationships and constraints verified
+- **Recent Activity**: Password resets and user authentication events logged
 
 ## Development Workflow
 

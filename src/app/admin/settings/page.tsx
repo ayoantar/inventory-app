@@ -12,6 +12,16 @@ interface SystemSettings {
   maxLoginAttempts: number
   forcePasswordChange: boolean
   twoFactorAuth: boolean
+  smtp?: {
+    enabled: boolean
+    host: string
+    port: number
+    secure: boolean
+    user: string
+    password: string
+    from: string
+    replyTo: string
+  }
 }
 
 interface SystemInfo {
@@ -100,6 +110,7 @@ export default function SystemSettings() {
     setMessage('')
 
     try {
+      // First update general settings
       const response = await fetch('/api/admin/settings', {
         method: 'PUT',
         headers: {
@@ -111,6 +122,26 @@ export default function SystemSettings() {
       const data = await response.json()
 
       if (response.ok) {
+        // Then update SMTP settings if they've been changed
+        if (settings.smtp) {
+          const smtpResponse = await fetch('/api/admin/settings', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              action: 'update-smtp',
+              smtp: settings.smtp
+            })
+          })
+
+          const smtpData = await smtpResponse.json()
+          if (!smtpResponse.ok) {
+            setError(smtpData.error || 'Failed to save SMTP settings')
+            return
+          }
+        }
+
         setMessage('Settings saved successfully!')
         setSettings(data.settings)
         // Clear message after 3 seconds
@@ -123,6 +154,35 @@ export default function SystemSettings() {
       setError('Failed to save settings')
     } finally {
       setSaving(false)
+    }
+  }
+
+  const handleTestEmail = async () => {
+    setError('')
+    setMessage('')
+
+    try {
+      const response = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: 'test-email' })
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setMessage(data.message || 'Test email sent successfully!')
+        setTimeout(() => setMessage(''), 5000)
+      } else {
+        setError(data.error || 'Failed to send test email')
+        setTimeout(() => setError(''), 5000)
+      }
+    } catch (error) {
+      console.error('Failed to send test email:', error)
+      setError('Failed to send test email')
+      setTimeout(() => setError(''), 5000)
     }
   }
 
@@ -418,6 +478,180 @@ export default function SystemSettings() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
               </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Email (SMTP) Settings - Full Width */}
+        <div className="mt-8 bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg border border-gray-700 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center">
+              <div className="p-2 bg-purple-50 rounded-lg mr-3">
+                <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-brand-primary-text">Email (SMTP) Settings</h3>
+                <p className="text-sm text-gray-600 dark:text-brand-secondary-text">Configure email notifications for transaction confirmations</p>
+              </div>
+            </div>
+            {settings?.smtp?.enabled && (
+              <span className="px-3 py-1 bg-green-900/30 text-green-400 text-xs font-medium rounded-full">
+                Configured
+              </span>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Left Column */}
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  SMTP Host
+                </label>
+                <input
+                  type="text"
+                  value={settings?.smtp?.host || ''}
+                  onChange={(e) => setSettings(prev => prev ? {
+                    ...prev,
+                    smtp: { ...prev.smtp!, host: e.target.value }
+                  } : null)}
+                  placeholder="smtp.gmail.com"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Port
+                  </label>
+                  <input
+                    type="number"
+                    value={settings?.smtp?.port || 587}
+                    onChange={(e) => setSettings(prev => prev ? {
+                      ...prev,
+                      smtp: { ...prev.smtp!, port: parseInt(e.target.value) }
+                    } : null)}
+                    placeholder="587"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                </div>
+                <div className="flex items-end">
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="smtp-secure"
+                      checked={settings?.smtp?.secure || false}
+                      onChange={(e) => setSettings(prev => prev ? {
+                        ...prev,
+                        smtp: { ...prev.smtp!, secure: e.target.checked }
+                      } : null)}
+                      className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600 rounded"
+                    />
+                    <label htmlFor="smtp-secure" className="ml-2 block text-sm text-gray-300">
+                      Use SSL/TLS
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  SMTP Username
+                </label>
+                <input
+                  type="text"
+                  value={settings?.smtp?.user || ''}
+                  onChange={(e) => setSettings(prev => prev ? {
+                    ...prev,
+                    smtp: { ...prev.smtp!, user: e.target.value }
+                  } : null)}
+                  placeholder="your-email@gmail.com"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  SMTP Password
+                </label>
+                <input
+                  type="password"
+                  value={settings?.smtp?.password || ''}
+                  onChange={(e) => setSettings(prev => prev ? {
+                    ...prev,
+                    smtp: { ...prev.smtp!, password: e.target.value }
+                  } : null)}
+                  placeholder="App password (not your regular password)"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+                <p className="mt-1 text-xs text-gray-400">
+                  For Gmail/Outlook, use an app password, not your regular password
+                </p>
+              </div>
+            </div>
+
+            {/* Right Column */}
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  From Address
+                </label>
+                <input
+                  type="text"
+                  value={settings?.smtp?.from || ''}
+                  onChange={(e) => setSettings(prev => prev ? {
+                    ...prev,
+                    smtp: { ...prev.smtp!, from: e.target.value }
+                  } : null)}
+                  placeholder="LSVR Warehouse <warehouse@lightsailvr.com>"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Reply-To Address
+                </label>
+                <input
+                  type="text"
+                  value={settings?.smtp?.replyTo || ''}
+                  onChange={(e) => setSettings(prev => prev ? {
+                    ...prev,
+                    smtp: { ...prev.smtp!, replyTo: e.target.value }
+                  } : null)}
+                  placeholder="support@lightsailvr.com"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </div>
+
+              {/* Test Email Button */}
+              <div className="pt-4">
+                <button
+                  type="button"
+                  onClick={handleTestEmail}
+                  disabled={!settings?.smtp?.user || !settings?.smtp?.password}
+                  className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-700 disabled:opacity-50 text-white rounded-lg transition-colors flex items-center justify-center space-x-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  <span>Send Test Email</span>
+                </button>
+                {settings?.smtp?.user && settings?.smtp?.password && (
+                  <p className="mt-2 text-xs text-gray-400 text-center">
+                    Test email will be sent to your admin account email
+                  </p>
+                )}
+              </div>
+
+              {/* Common Providers Help */}
+              <div className="pt-4 border-t border-gray-700">
+                <p className="text-xs text-gray-400 mb-2">Common SMTP Settings:</p>
+                <div className="space-y-1 text-xs text-gray-500">
+                  <div><strong>Gmail:</strong> smtp.gmail.com, Port 587, TLS</div>
+                  <div><strong>Outlook:</strong> smtp-mail.outlook.com, Port 587, TLS</div>
+                  <div><strong>Yahoo:</strong> smtp.mail.yahoo.com, Port 587, TLS</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

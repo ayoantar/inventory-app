@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { sendEmail } from '@/lib/email'
+import { prisma } from '@/lib/prisma'
 import * as os from 'os'
+import * as fs from 'fs'
+import * as path from 'path'
 
 // In a real application, these would be stored in a database
 // For now, we'll use environment variables and in-memory storage
@@ -13,6 +17,17 @@ let systemSettings = {
   maxLoginAttempts: 5,
   forcePasswordChange: true,
   twoFactorAuth: false,
+  // Email settings
+  smtp: {
+    enabled: !!process.env.SMTP_USER,
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: process.env.SMTP_SECURE === 'true',
+    user: process.env.SMTP_USER || '',
+    password: process.env.SMTP_PASSWORD ? '••••••••' : '', // Masked for security
+    from: process.env.EMAIL_FROM || 'LSVR Inventory <inventory@lightsailvr.com>',
+    replyTo: process.env.EMAIL_REPLY_TO || 'support@lightsailvr.com',
+  }
 }
 
 // Function to calculate server load
@@ -202,6 +217,134 @@ export async function POST(request: NextRequest) {
     const { action } = body
 
     switch (action) {
+      case 'test-email':
+        // Test SMTP configuration
+        // Fetch current user from database to get updated email
+        let userEmail = session.user.email
+        try {
+          const currentUser = await prisma.user.findUnique({
+            where: { id: (session.user as any).id },
+            select: { email: true }
+          })
+          if (currentUser) {
+            userEmail = currentUser.email
+          }
+        } catch (error) {
+          console.log('Could not fetch user from database, using session email')
+        }
+
+        console.log(`📧 Email test initiated by admin ${userEmail}`)
+
+        try {
+          const testResult = await sendEmail({
+            to: userEmail || 'warehouse@lightsailvr.com',
+            subject: 'LSVR Warehouse - Email Test',
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background-color: #1A2332; padding: 20px; text-align: center;">
+                  <h1 style="color: #F54F29; margin: 0;">LSVR WAREHOUSE</h1>
+                  <p style="color: #C5CAD6; margin: 5px 0;">Email Configuration Test</p>
+                </div>
+                <div style="padding: 30px; background-color: #ffffff;">
+                  <h2 style="color: #1A2332;">✅ Email Test Successful!</h2>
+                  <p style="color: #484848;">Your SMTP configuration is working correctly.</p>
+                  <div style="background-color: #f6f9fc; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                    <h3 style="color: #1A2332; margin-top: 0;">Configuration Details:</h3>
+                    <ul style="color: #6b7280;">
+                      <li>SMTP Host: ${process.env.SMTP_HOST}</li>
+                      <li>SMTP Port: ${process.env.SMTP_PORT}</li>
+                      <li>From Address: ${process.env.EMAIL_FROM}</li>
+                      <li>Reply-To: ${process.env.EMAIL_REPLY_TO}</li>
+                    </ul>
+                  </div>
+                  <p style="color: #6b7280; font-size: 12px;">
+                    This is an automated test email from your LSVR Warehouse system.
+                  </p>
+                </div>
+              </div>
+            `,
+            text: 'Email Test Successful! Your SMTP configuration is working correctly.',
+          })
+
+          if (testResult.success) {
+            return NextResponse.json({
+              success: true,
+              message: `Test email sent successfully to ${userEmail}`,
+            })
+          } else {
+            return NextResponse.json({
+              success: false,
+              message: 'Failed to send test email',
+              error: typeof testResult.error === 'string' ? testResult.error : 'Email authentication failed. Please check your SMTP credentials.'
+            }, { status: 500 })
+          }
+        } catch (error) {
+          return NextResponse.json({
+            success: false,
+            message: 'Email test failed',
+            error: error instanceof Error ? error.message : 'Unknown error'
+          }, { status: 500 })
+        }
+
+      case 'update-smtp':
+        // Update SMTP configuration
+        const { smtp } = body
+        if (!smtp) {
+          return NextResponse.json({ error: 'SMTP configuration required' }, { status: 400 })
+        }
+
+        // Update environment variables in .env.production file
+        const envPath = path.join(process.cwd(), '.env.production')
+        try {
+          let envContent = fs.readFileSync(envPath, 'utf8')
+
+          // Update SMTP settings in env file
+          envContent = envContent.replace(/SMTP_HOST=".*"/, `SMTP_HOST="${smtp.host}"`)
+          envContent = envContent.replace(/SMTP_PORT=".*"/, `SMTP_PORT="${smtp.port}"`)
+          envContent = envContent.replace(/SMTP_SECURE=".*"/, `SMTP_SECURE="${smtp.secure}"`)
+          envContent = envContent.replace(/SMTP_USER=".*"/, `SMTP_USER="${smtp.user}"`)
+          if (smtp.password && smtp.password !== '••••••••') {
+            envContent = envContent.replace(/SMTP_PASSWORD=".*"/, `SMTP_PASSWORD="${smtp.password}"`)
+          }
+          envContent = envContent.replace(/EMAIL_FROM=".*"/, `EMAIL_FROM="${smtp.from}"`)
+          envContent = envContent.replace(/EMAIL_REPLY_TO=".*"/, `EMAIL_REPLY_TO="${smtp.replyTo}"`)
+
+          fs.writeFileSync(envPath, envContent)
+
+          // Update runtime environment
+          process.env.SMTP_HOST = smtp.host
+          process.env.SMTP_PORT = smtp.port
+          process.env.SMTP_SECURE = smtp.secure
+          process.env.SMTP_USER = smtp.user
+          if (smtp.password && smtp.password !== '••••••••') {
+            process.env.SMTP_PASSWORD = smtp.password
+          }
+          process.env.EMAIL_FROM = smtp.from
+          process.env.EMAIL_REPLY_TO = smtp.replyTo
+
+          // Update settings object
+          systemSettings.smtp = {
+            ...smtp,
+            password: smtp.password && smtp.password !== '••••••••' ? '••••••••' : systemSettings.smtp.password,
+            enabled: !!smtp.user
+          }
+
+          console.log(`📧 SMTP settings updated by admin ${session.user.email}`)
+
+          return NextResponse.json({
+            success: true,
+            message: 'SMTP settings updated successfully. Server restart may be required for full effect.',
+            settings: systemSettings.smtp
+          })
+        } catch (error) {
+          console.error('Failed to update SMTP settings:', error)
+          return NextResponse.json({
+            success: false,
+            message: 'Failed to update SMTP settings',
+            error: error instanceof Error ? error.message : 'Unknown error'
+          }, { status: 500 })
+        }
+
       case 'create-backup':
         // In a real app, this would trigger a backup process
         console.log(`💾 Backup initiated by admin ${session.user.email}`)

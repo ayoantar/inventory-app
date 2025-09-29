@@ -9,14 +9,14 @@ module.exports = {
     // Environment variables
     env: {
       NODE_ENV: 'production',
-      PORT: 8083,
+      PORT: 8443,
       HOSTNAME: '0.0.0.0'
     },
 
     // Production environment variables (loaded from .env.production)
     env_production: {
       NODE_ENV: 'production',
-      PORT: 8083,
+      PORT: 8443,
       HOSTNAME: '0.0.0.0'
     },
     

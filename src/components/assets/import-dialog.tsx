@@ -113,8 +113,8 @@ export default function ImportDialog({ isOpen, onClose, onSuccess }: ImportDialo
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-gray-900/5 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto">
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+      <div className="bg-gray-900 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-auto border border-gray-700">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold text-brand-primary-text">
@@ -133,11 +133,11 @@ export default function ImportDialog({ isOpen, onClose, onSuccess }: ImportDialo
           {!result ? (
             <div className="space-y-6">
               {/* Instructions */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h3 className="text-sm font-semibold text-blue-900 mb-2">
+              <div className="bg-blue-900/30 border border-blue-700 rounded-lg p-4">
+                <h3 className="text-sm font-semibold text-blue-300 mb-2">
                   Import Instructions
                 </h3>
-                <ul className="text-sm text-blue-800 space-y-1">
+                <ul className="text-sm text-blue-200 space-y-1">
                   <li>• Upload an Excel file (.xlsx or .xls) with asset data</li>
                   <li>• The file must have a header row with column names</li>
                   <li>• Required column: <strong>name</strong> (or variations like "asset name", "item name")</li>
@@ -161,7 +161,7 @@ export default function ImportDialog({ isOpen, onClose, onSuccess }: ImportDialo
                 </div>
                 <button
                   onClick={downloadTemplate}
-                  className="px-4 py-2 text-sm font-medium text-blue-600 hover border border-blue-300 rounded-md hover transition-colors"
+                  className="px-4 py-2 text-sm font-medium text-blue-300 bg-blue-600/20 border border-blue-500/30 rounded-lg hover:bg-blue-600/30 transition-colors"
                 >
                   Download Template
                 </button>
@@ -172,10 +172,10 @@ export default function ImportDialog({ isOpen, onClose, onSuccess }: ImportDialo
                 <label className="block text-sm font-medium text-gray-300">
                   Select Excel File
                 </label>
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-600 border-dashed rounded-md hover:border-gray-400:border-gray-500 transition-colors">
+                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-600 border-dashed rounded-lg hover:border-gray-500 bg-gray-800 transition-colors">
                   <div className="space-y-1 text-center">
                     <svg
-                      className="mx-auto h-12 w-12 text-white/50 hover:text-white/80 transition-colors"
+                      className="mx-auto h-12 w-12 text-gray-400"
                       stroke="currentColor"
                       fill="none"
                       viewBox="0 0 48 48"
@@ -190,7 +190,7 @@ export default function ImportDialog({ isOpen, onClose, onSuccess }: ImportDialo
                     <div className="flex text-sm text-brand-primary-text">
                       <label
                         htmlFor="file-upload"
-                        className="relative cursor-pointer bg-gray-900/5 rounded-md font-medium text-blue-600 hover focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
+                        className="relative cursor-pointer rounded-md font-medium text-blue-400 hover:text-blue-300 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
                       >
                         <span>Upload a file</span>
                         <input
@@ -205,23 +205,23 @@ export default function ImportDialog({ isOpen, onClose, onSuccess }: ImportDialo
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
-                    <p className="text-xs text-gray-600 dark:text-brand-secondary-text">
+                    <p className="text-xs text-gray-400">
                       Excel files (.xlsx, .xls) up to 10MB
                     </p>
                   </div>
                 </div>
 
                 {file && (
-                  <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-md">
+                  <div className="flex items-center justify-between p-3 bg-green-900/30 border border-green-700 rounded-lg">
                     <div className="flex items-center">
-                      <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
-                      <span className="text-sm text-green-800">{file.name}</span>
+                      <span className="text-sm text-green-300">{file.name}</span>
                     </div>
                     <button
                       onClick={() => setFile(null)}
-                      className="text-green-600 hover"
+                      className="text-green-400 hover:text-green-300 transition-colors"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -236,37 +236,37 @@ export default function ImportDialog({ isOpen, onClose, onSuccess }: ImportDialo
             <div className="space-y-6">
               <div className="text-center">
                 <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
-                  result.failed === 0 
-                    ? 'bg-green-100 text-green-800'
+                  result.failed === 0
+                    ? 'bg-green-500/20 text-green-300 border border-green-500/30'
                     : result.successful === 0
-                    ? 'bg-red-100 text-red-800'
-                    : 'bg-yellow-100 text-yellow-800'
+                    ? 'bg-red-500/20 text-red-300 border border-red-500/30'
+                    : 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
                 }`}>
                   {result.failed === 0 ? 'Import Successful' : result.successful === 0 ? 'Import Failed' : 'Partial Import'}
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-4 text-center">
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">{result.total}</div>
-                  <div className="text-sm text-blue-800">Total Rows</div>
+                <div className="bg-blue-900/30 border border-blue-700 p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-300">{result.total}</div>
+                  <div className="text-sm text-blue-400">Total Rows</div>
                 </div>
-                <div className="bg-green-50 p-4 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">{result.successful}</div>
-                  <div className="text-sm text-green-800">Successful</div>
+                <div className="bg-green-900/30 border border-green-700 p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-green-300">{result.successful}</div>
+                  <div className="text-sm text-green-400">Successful</div>
                 </div>
-                <div className="bg-red-50 p-4 rounded-lg">
-                  <div className="text-2xl font-bold text-red-600">{result.failed}</div>
-                  <div className="text-sm text-red-800">Failed</div>
+                <div className="bg-red-900/30 border border-red-700 p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-red-300">{result.failed}</div>
+                  <div className="text-sm text-red-400">Failed</div>
                 </div>
               </div>
 
               {result.errors.length > 0 && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <h4 className="text-sm font-semibold text-red-900 mb-2">Errors:</h4>
+                <div className="bg-red-900/30 border border-red-700 rounded-lg p-4">
+                  <h4 className="text-sm font-semibold text-red-300 mb-2">Errors:</h4>
                   <div className="max-h-40 overflow-y-auto">
                     {result.errors.map((error, index) => (
-                      <div key={index} className="text-sm text-red-800 py-1">
+                      <div key={index} className="text-sm text-red-200 py-1">
                         {error}
                       </div>
                     ))}
@@ -280,7 +280,7 @@ export default function ImportDialog({ isOpen, onClose, onSuccess }: ImportDialo
           <div className="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-700">
             <button
               onClick={handleClose}
-              className="px-4 py-2 text-sm font-medium text-gray-300 bg-gray-900 border border-gray-600 rounded-md hover transition-colors"
+              className="px-4 py-2 text-sm font-medium text-gray-300 bg-gray-800 border border-gray-600 rounded-lg hover:bg-gray-700 transition-colors"
             >
               {result ? 'Close' : 'Cancel'}
             </button>
@@ -288,7 +288,7 @@ export default function ImportDialog({ isOpen, onClose, onSuccess }: ImportDialo
               <button
                 onClick={handleImport}
                 disabled={importing}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-500/30 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
               >
                 {importing ? 'Importing...' : 'Import Assets'}
               </button>
