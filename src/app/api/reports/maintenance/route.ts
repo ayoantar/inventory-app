@@ -53,16 +53,14 @@ export async function GET(request: NextRequest) {
           select: {
             id: true,
             name: true,
-            email: true,
-            department: true
+            email: true
           }
         },
         performedBy: {
           select: {
             id: true,
             name: true,
-            email: true,
-            department: true
+            email: true
           }
         }
       },

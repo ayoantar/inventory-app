@@ -326,11 +326,11 @@ export default function SimpleAnalytics({ dateRange }: SimpleAnalyticsProps) {
                         <div className={`w-2 h-2 rounded-full ${
                           transaction.type === 'CHECK_OUT' ? 'bg-red-400' : 'bg-green-400'
                         }`}></div>
+                        <span className="text-brand-secondary-text text-sm">
+                          {transaction.type === 'CHECK_OUT' ? 'Checked out by' : 'Checked in by'}
+                        </span>
                         <span className="text-brand-primary-text font-medium">
                           {transaction.userName}
-                        </span>
-                        <span className="text-brand-secondary-text text-sm">
-                          {transaction.type === 'CHECK_OUT' ? 'checked out' : 'checked in'}
                         </span>
                       </div>
                       <div className="text-brand-secondary-text text-sm mt-1">

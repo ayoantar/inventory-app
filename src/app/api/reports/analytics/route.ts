@@ -160,7 +160,7 @@ export async function GET(request: NextRequest) {
       activity: {
         trends: activityTrends,
         recentTransactions: recentTransactionDetails.map(transaction => ({
-          userName: transaction.user.name,
+          userName: transaction.user?.name || 'Unknown User',
           assetName: transaction.asset.name,
           type: transaction.type,
           date: transaction.createdAt

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useScrollLock } from '@/hooks/useScrollLock'
 import { useCart } from '@/contexts/cart-context'
 import { useSession } from 'next-auth/react'
@@ -15,6 +15,14 @@ interface CartConfirmationModalProps {
   onConfirm: () => Promise<{ success: boolean; errors: string[] }>
 }
 
+interface Client {
+  id: string
+  name: string
+  code: string
+  contact?: string
+  email?: string
+}
+
 export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: CartConfirmationModalProps) {
   useScrollLock(isOpen)
 
@@ -23,6 +31,27 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
   const [isProcessing, setIsProcessing] = useState(false)
   const [returnDates, setReturnDates] = useState<{ [key: string]: string | null }>({})
   const [indefiniteCheckouts, setIndefiniteCheckouts] = useState<{ [key: string]: boolean }>({})
+  const [clients, setClients] = useState<Client[]>([])
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null)
+  const [loadingClients, setLoadingClients] = useState(false)
+
+  // Fetch clients when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setLoadingClients(true)
+      fetch('/api/clients?active=true&limit=100')
+        .then(res => res.json())
+        .then(data => {
+          setClients(data.clients || [])
+        })
+        .catch(err => {
+          console.error('Failed to load clients:', err)
+        })
+        .finally(() => {
+          setLoadingClients(false)
+        })
+    }
+  }, [isOpen])
 
   if (!isOpen) return null
 
@@ -93,6 +122,9 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
     data.push(['EQUIPMENT CHECKOUT LIST'])
     data.push([`Generated: ${timestamp.toLocaleString()}`])
     data.push([`User: ${session?.user?.name || 'Unknown'} (${session?.user?.email || 'N/A'})`])
+    if (selectedClient) {
+      data.push([`Client: ${selectedClient.name} (${selectedClient.code})`])
+    }
     data.push([]) // Empty row
 
     // Create main data table
@@ -202,15 +234,19 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
     pdf.text(`Quote #: ${Date.now().toString().slice(-8)}`, 20, 55)
 
     // Customer information
-    pdf.text(`Customer: ${session?.user?.name || 'Unknown'}`, 120, 45)
+    pdf.text(`User: ${session?.user?.name || 'Unknown'}`, 120, 45)
     pdf.text(`Email: ${session?.user?.email || 'N/A'}`, 120, 50)
+    if (selectedClient) {
+      pdf.text(`Client: ${selectedClient.name}`, 120, 55)
+    }
 
     // Add line separator
     pdf.setLineWidth(0.5)
-    pdf.line(20, 60, 190, 60)
+    const separatorY = selectedClient ? 65 : 60
+    pdf.line(20, separatorY, 190, separatorY)
 
     // Table headers
-    let yPos = 70
+    let yPos = selectedClient ? 75 : 70
     pdf.setFont('helvetica', 'bold')
     pdf.setFontSize(10)
     pdf.text('Item', 20, yPos)
@@ -319,6 +355,52 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
           {/* Content */}
           <div className="flex-1 overflow-y-auto p-6">
             <div className="space-y-6">
+              {/* Client Selection */}
+              <div className="bg-blue-900/20 rounded-lg border border-blue-600/50 p-4">
+                <div className="flex items-start space-x-3">
+                  <div className="bg-blue-900/30 p-2 rounded-lg flex-shrink-0">
+                    <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <label htmlFor="client-select" className="block text-sm font-semibold text-brand-primary-text mb-2">
+                      Client (Optional)
+                    </label>
+                    <p className="text-xs text-brand-secondary-text mb-3">
+                      Associate these transactions with a client. This will appear on all documents and reports.
+                    </p>
+                    <select
+                      id="client-select"
+                      value={selectedClient?.id || ''}
+                      onChange={(e) => {
+                        const client = clients.find(c => c.id === e.target.value)
+                        setSelectedClient(client || null)
+                      }}
+                      disabled={loadingClients || isProcessing}
+                      className="block w-full px-4 py-2.5 bg-gray-800 border border-blue-600/30 rounded-lg text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 hover:border-blue-500/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <option value="">
+                        {loadingClients ? 'Loading clients...' : 'No client (default)'}
+                      </option>
+                      {clients.map(client => (
+                        <option key={client.id} value={client.id}>
+                          {client.name} ({client.code})
+                        </option>
+                      ))}
+                    </select>
+                    {selectedClient && (
+                      <div className="mt-2 text-xs text-blue-400 flex items-center">
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        Selected: {selectedClient.name}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
               {/* Check-Out Items */}
               {checkOutItems.length > 0 && (
                 <div>

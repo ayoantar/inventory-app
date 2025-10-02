@@ -346,7 +346,7 @@ export default function LocationsPage() {
                     </div>
                     <div>
                       <span className="text-gray-500 dark:text-gray-400">Assets:</span>
-                      <span className="ml-1 font-semibold text-brand-primary-text">{location._count.assets}</span>
+                      <span className="ml-1 font-semibold text-brand-primary-text">{location._count?.assets || 0}</span>
                     </div>
                     {location.capacity && (
                       <div className="col-span-2">
@@ -442,11 +442,11 @@ export default function LocationsPage() {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center space-x-2">
                             <span className="text-sm font-medium text-brand-primary-text">
-                              {location._count.assets}
+                              {location._count?.assets || 0}
                             </span>
-                            {location._count.assetGroups > 0 && (
+                            {(location._count?.assetGroups || 0) > 0 && (
                               <span className="text-xs text-gray-600 dark:text-brand-secondary-text">
-                                (+{location._count.assetGroups} groups)
+                                (+{location._count?.assetGroups || 0} groups)
                               </span>
                             )}
                           </div>

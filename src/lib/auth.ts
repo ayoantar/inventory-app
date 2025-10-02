@@ -61,7 +61,6 @@ export const authOptions: NextAuthOptions = {
             name: user.name,
             image: user.image,
             role: user.role,
-            department: user.department,
           }
         } catch (error) {
           console.error('🚨 Auth error:', error)
@@ -77,7 +76,6 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.role = (user as any).role
-        token.department = (user as any).department
       }
       return token
     },
@@ -85,7 +83,6 @@ export const authOptions: NextAuthOptions = {
       if (token) {
         session.user.id = token.sub!
         ;(session.user as any).role = token.role
-        ;(session.user as any).department = token.department
       }
       return session
     },
@@ -104,7 +101,6 @@ declare module 'next-auth' {
       email?: string | null
       image?: string | null
       role?: UserRole
-      department?: string | null
     }
   }
 }

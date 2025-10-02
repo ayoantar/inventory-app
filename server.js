@@ -4,15 +4,19 @@ const next = require('next')
 const fs = require('fs')
 const path = require('path')
 
+// Ensure NODE_ENV is set before loading config
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'production'
+}
+
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = process.env.HOSTNAME || '0.0.0.0'
 const port = process.env.PORT || 8083
-const conf = require('./next.config.js')
 
-// Get the correct distDir from config
-const distDir = conf.distDir || '.next'
+// Determine distDir based on NODE_ENV
+const distDir = process.env.NODE_ENV === 'production' ? '.next-prod' : '.next'
 
-console.log(`Starting Next.js with distDir: ${distDir}`)
+console.log(`Starting Next.js in ${process.env.NODE_ENV} mode with distDir: ${distDir}`)
 
 // When using middleware `hostname` and `port` must be provided below
 const app = next({
@@ -20,7 +24,7 @@ const app = next({
   hostname,
   port,
   dir: '.',
-  conf
+  distDir
 })
 const handle = app.getRequestHandler()
 
@@ -32,10 +36,7 @@ const httpsOptions = {
 app.prepare().then(() => {
   createServer(httpsOptions, async (req, res) => {
     try {
-      // Be sure to pass `true` as the second argument to `url.parse`.
-      // This tells it to parse the query portion of the URL.
       const parsedUrl = parse(req.url, true)
-      const { pathname, query } = parsedUrl
 
       await handle(req, res, parsedUrl)
     } catch (err) {
