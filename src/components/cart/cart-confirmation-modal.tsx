@@ -250,8 +250,8 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
     pdf.setFont('helvetica', 'bold')
     pdf.setFontSize(10)
     pdf.text('Item', 20, yPos)
-    pdf.text('Category', 80, yPos)
-    pdf.text('Serial #', 120, yPos)
+    pdf.text('Category', 100, yPos)
+    pdf.text('Serial #', 135, yPos)
     pdf.text('Value', 170, yPos)
 
     // Add line under headers
@@ -265,14 +265,20 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
 
     state.items.forEach((item) => {
       const value = item.asset.currentValue || item.asset.purchasePrice || 0
-      const name = item.asset.name.length > 30 ? item.asset.name.substring(0, 27) + '...' : item.asset.name
 
-      pdf.text(name, 20, yPos)
-      pdf.text(formatCategory(item.asset.category), 80, yPos)
-      pdf.text(item.asset.serialNumber || 'N/A', 120, yPos)
+      // Use text wrapping for long item names
+      const nameLines = pdf.splitTextToSize(item.asset.name, 75) // Max width of 75 for item name
+
+      // Print item name (may be multiple lines)
+      pdf.text(nameLines, 20, yPos)
+
+      // Print other fields on the first line only
+      pdf.text(formatCategory(item.asset.category), 100, yPos)
+      pdf.text(item.asset.serialNumber || 'N/A', 135, yPos)
       pdf.text(`$${value.toLocaleString()}`, 170, yPos)
 
-      yPos += 6
+      // Advance yPos based on number of lines in name
+      yPos += Math.max(6, nameLines.length * 5)
 
       // Add new page if needed
       if (yPos > 260) {
