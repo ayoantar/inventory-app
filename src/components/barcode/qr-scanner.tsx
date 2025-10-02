@@ -113,19 +113,19 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
           {
             fps: 10,
             qrbox: function(viewfinderWidth, viewfinderHeight) {
-              // Make the scanning box take up most of the viewfinder
-              const minEdgePercentage = 0.7; // 70% of the smaller dimension
-              const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
-              const qrboxSize = Math.floor(minEdgeSize * minEdgePercentage);
+              // Smaller, more focused scanning box for precision
+              // Use a narrow horizontal rectangle to scan one barcode at a time
+              const boxWidth = Math.floor(viewfinderWidth * 0.8); // 80% width
+              const boxHeight = Math.floor(viewfinderHeight * 0.15); // 15% height - narrow horizontal strip
               return {
-                width: qrboxSize,
-                height: qrboxSize
+                width: boxWidth,
+                height: boxHeight
               };
             },
             aspectRatio: 1.0,
             videoConstraints: {
-              width: { ideal: 1280 },
-              height: { ideal: 720 },
+              width: { ideal: 1920 }, // Higher resolution for better barcode detection
+              height: { ideal: 1080 },
               facingMode: { exact: "environment" }
             }
           },
@@ -278,25 +278,21 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                     }}
                   />
 
-                  {/* Scanning line indicator */}
+                  {/* Scanning area indicator - narrow horizontal strip */}
                   {isScanning && !cameraError && (
                     <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-20">
-                      <div className="relative" style={{ width: '70%', height: '70%', maxWidth: '400px', maxHeight: '400px' }}>
-                        {/* Static horizontal scanning line */}
+                      {/* Narrow horizontal scanning box */}
+                      <div className="relative" style={{ width: '80%', height: '15%', maxWidth: '600px' }}>
+                        {/* Scanning box border */}
+                        <div className="absolute inset-0 border-2 border-red-500 rounded-sm shadow-[0_0_15px_rgba(239,68,68,0.6)]"></div>
+                        {/* Center horizontal line */}
                         <div
                           className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_10px_rgba(239,68,68,0.8)]"
                           style={{ top: '50%' }}
                         />
-                        {/* Corner indicators */}
-                        <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-red-500"></div>
-                        <div className="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 border-red-500"></div>
-                        <div className="absolute bottom-0 left-0 w-8 h-8 border-l-2 border-b-2 border-red-500"></div>
-                        <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-red-500"></div>
-                        {/* Center crosshair */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                          <div className="w-6 h-0.5 bg-red-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-                          <div className="w-0.5 h-6 bg-red-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-                        </div>
+                        {/* Side indicators */}
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 border-l-2 border-t-2 border-b-2 border-red-500"></div>
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 border-r-2 border-t-2 border-b-2 border-red-500"></div>
                       </div>
                     </div>
                   )}
@@ -345,10 +341,10 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                 {isScanning && (
                   <div className="text-sm text-gray-600 dark:text-brand-secondary-text text-center space-y-2 mt-4">
                     <p className="font-medium text-gray-900 dark:text-brand-primary-text">
-                      Position the barcode or QR code in front of the camera
+                      Align the barcode with the red horizontal box
                     </p>
                     <p className="text-xs opacity-80">
-                      You can also enter the code manually if scanning doesn't work
+                      Tip: When barcodes are stacked, position only ONE barcode inside the scanning box
                     </p>
                   </div>
                 )}
