@@ -432,62 +432,64 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           {/* Header */}
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-4">
-              <Link
-                href="/assets"
-                className="text-gray-600 dark:text-brand-secondary-text hover transition-colors"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </Link>
-              <div className="flex-1">
-                {editing ? (
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="text-3xl font-bold bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1 text-brand-primary-text w-full"
-                    placeholder="Asset name"
-                  />
-                ) : (
-                  <h1 className="text-3xl font-bold text-brand-primary-text">{asset.name}</h1>
-                )}
-                <p className="text-brand-primary-text">{asset.manufacturer} {asset.model}</p>
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center space-x-3 flex-1 min-w-0">
+                <Link
+                  href="/assets"
+                  className="text-gray-600 dark:text-brand-secondary-text hover transition-colors flex-shrink-0"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </Link>
+                <div className="flex-1 min-w-0">
+                  {editing ? (
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="text-2xl sm:text-3xl font-bold bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1 text-brand-primary-text w-full"
+                      placeholder="Asset name"
+                    />
+                  ) : (
+                    <h1 className="text-2xl sm:text-3xl font-bold text-brand-primary-text truncate">{asset.name}</h1>
+                  )}
+                  <p className="text-sm text-brand-primary-text truncate">{asset.manufacturer} {asset.model}</p>
+                </div>
               </div>
             </div>
-            
-            <div className="flex items-center space-x-3">
-              <button className="px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900/5 transition-colors">
+
+            <div className="flex items-center gap-2 flex-wrap">
+              <button className="px-3 sm:px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900/5 transition-colors hidden sm:block">
                 Print
               </button>
               {!editing ? (
                 <button
                   onClick={() => setEditing(true)}
-                  className="bg-blue-600 hover text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                  className="bg-blue-600 hover text-white px-3 sm:px-4 py-2 rounded-md text-sm font-medium transition-colors flex-1 sm:flex-none"
                 >
                   Edit Asset
                 </button>
               ) : (
-                <div className="flex space-x-2">
+                <div className="flex gap-2 w-full sm:w-auto">
                   <button
                     onClick={() => {
                       setEditing(false)
                       setError('')
                       fetchAsset()
                     }}
-                    className="px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900/5 transition-colors"
+                    className="px-3 sm:px-4 py-2 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900/5 transition-colors flex-1 sm:flex-none"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="bg-blue-600 hover text-white px-4 py-2 rounded-md text-sm font-medium disabled:opacity-50 transition-colors"
+                    className="bg-blue-600 hover text-white px-3 sm:px-4 py-2 rounded-md text-sm font-medium disabled:opacity-50 transition-colors flex-1 sm:flex-none"
                   >
-                    {saving ? 'Saving...' : 'Save Changes'}
+                    {saving ? 'Saving...' : 'Save'}
                   </button>
                 </div>
               )}
@@ -508,7 +510,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
           )}
 
           {/* Main Content - Balanced Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
             {/* Asset Image & Quick Actions */}
             <div className="lg:col-span-1">
               <div className="bg-gray-900/5 rounded-lg border border-gray-700 overflow-hidden">
@@ -516,42 +518,42 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                   <img
                     src={asset.imageUrl}
                     alt={asset.name}
-                    className="w-full h-64 object-cover"
+                    className="w-full h-48 sm:h-64 object-cover"
                   />
                 ) : (
-                  <div className="w-full h-64 bg-gray-900/5 flex items-center justify-center">
+                  <div className="w-full h-48 sm:h-64 bg-gray-900/5 flex items-center justify-center">
                     <svg className="w-12 h-12 text-white/50 hover:text-white/80 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
                 )}
-                
-                <div className="p-4 space-y-3">
+
+                <div className="p-3 sm:p-4 space-y-2 sm:space-y-3">
                   {asset.status === 'AVAILABLE' ? (
-                    <button 
+                    <button
                       onClick={() => setShowCheckoutDialog(true)}
-                      className="w-full bg-blue-600 hover text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                      className="w-full bg-blue-600 hover text-white px-4 py-2.5 rounded-md text-sm font-medium transition-colors active:scale-95 touch-manipulation"
                     >
                       Check Out Asset
                     </button>
                   ) : asset.status === 'CHECKED_OUT' ? (
-                    <button 
+                    <button
                       onClick={() => setShowCheckinDialog(true)}
-                      className="w-full bg-emerald-600 hover text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                      className="w-full bg-emerald-600 hover text-white px-4 py-2.5 rounded-md text-sm font-medium transition-colors active:scale-95 touch-manipulation"
                     >
                       Check In Asset
                     </button>
                   ) : (
-                    <button 
+                    <button
                       disabled
-                      className="w-full bg-gray-400 text-white px-4 py-2 rounded-md text-sm font-medium cursor-not-allowed"
+                      className="w-full bg-gray-400 text-white px-4 py-2.5 rounded-md text-sm font-medium cursor-not-allowed"
                     >
                       Asset Not Available
                     </button>
                   )}
-                  <button 
+                  <button
                     onClick={() => setShowQRGenerator(true)}
-                    className="w-full border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900/5 px-4 py-2 transition-colors"
+                    className="w-full border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover bg-gray-900/5 px-4 py-2.5 transition-colors active:scale-95 touch-manipulation"
                   >
                     Generate QR Code
                   </button>
@@ -561,8 +563,8 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
 
             {/* Asset Information */}
             <div className="lg:col-span-3">
-              <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-gray-900/5 rounded-lg border border-gray-700 p-4 sm:p-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {/* Key Details */}
                   <div className="space-y-4">
                     <h3 className="text-sm font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">Asset Details</h3>
@@ -857,7 +859,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                 </div>
 
                 {/* Description & Notes */}
-                <div className="mt-6 pt-6 border-t border-gray-700 space-y-4">
+                <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-700 space-y-3 sm:space-y-4">
                   <div>
                     <dt className="text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-2">Description</dt>
                     {editing ? (
@@ -866,14 +868,14 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                         value={formData.description}
                         onChange={handleChange}
                         rows={3}
-                        className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
                         placeholder="Asset description..."
                       />
                     ) : (
-                      <dd className="text-brand-primary-text">{asset.description || 'No description provided'}</dd>
+                      <dd className="text-brand-primary-text text-sm sm:text-base">{asset.description || 'No description provided'}</dd>
                     )}
                   </div>
-                  
+
                   <div>
                     <dt className="text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-2">Notes</dt>
                     {editing ? (
@@ -882,11 +884,11 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                         value={formData.notes}
                         onChange={handleChange}
                         rows={4}
-                        className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
                         placeholder="Additional notes, maintenance history, special instructions..."
                       />
                     ) : (
-                      <dd className="text-brand-primary-text whitespace-pre-wrap">{asset.notes || 'No notes available'}</dd>
+                      <dd className="text-brand-primary-text whitespace-pre-wrap text-sm sm:text-base">{asset.notes || 'No notes available'}</dd>
                     )}
                   </div>
                 </div>
@@ -901,17 +903,17 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
             onTabChange={setActiveTab}
             variant="default"
             size="md"
-            className="mb-6"
+            className="mb-4 sm:mb-6"
           />
 
           {/* Tab Content */}
           <TabContent>
             <TabPanel>
             {activeTab === 'details' && (
-              <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-brand-primary-text">Additional Asset Information</h3>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4 sm:space-y-6">
+                <h3 className="text-base sm:text-lg font-semibold text-brand-primary-text">Additional Asset Information</h3>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <dt className="text-sm font-medium text-gray-600 dark:text-brand-secondary-text">Created</dt>
                     <dd className="mt-1 text-sm text-brand-primary-text">
@@ -945,10 +947,10 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
             )}
 
             {activeTab === 'transactions' && (
-              <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-brand-primary-text">Transaction History</h3>
+              <div className="space-y-4 sm:space-y-6">
+                <h3 className="text-base sm:text-lg font-semibold text-brand-primary-text">Transaction History</h3>
                 {asset.transactions.length > 0 ? (
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4">
                     {asset.transactions.map((transaction) => (
                       <div key={transaction.id} className="border border-gray-700 rounded-lg p-4">
                         <div className="flex justify-between items-start">
@@ -981,12 +983,12 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
             )}
 
             {activeTab === 'maintenance' && (
-              <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold text-brand-primary-text">Maintenance Records</h3>
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                  <h3 className="text-base sm:text-lg font-semibold text-brand-primary-text">Maintenance Records</h3>
                   <button
                     onClick={() => setShowMaintenanceForm(true)}
-                    className="bg-blue-600 hover text-white px-4 py-2 rounded-md text-sm font-medium inline-flex items-center transition-colors"
+                    className="bg-blue-600 hover text-white px-4 py-2.5 rounded-md text-sm font-medium inline-flex items-center justify-center transition-colors active:scale-95 touch-manipulation"
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -1003,9 +1005,9 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
             )}
 
             {activeTab === 'history' && (
-              <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-brand-primary-text">Change History</h3>
-                <p className="text-gray-600 dark:text-brand-secondary-text">Audit trail will be available soon</p>
+              <div className="space-y-4 sm:space-y-6">
+                <h3 className="text-base sm:text-lg font-semibold text-brand-primary-text">Change History</h3>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-brand-secondary-text">Audit trail will be available soon</p>
               </div>
             )}
             </TabPanel>
