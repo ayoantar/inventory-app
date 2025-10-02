@@ -154,7 +154,9 @@ function NewAssetForm() {
         const response = await fetch('/api/categories')
         if (response.ok) {
           const data = await response.json()
-          setCategories(data.categories || [])
+          // Filter to only show system categories (not custom ones) since assets use enum
+          const systemCategories = (data.categories || []).filter((cat: Category) => !cat.isCustom)
+          setCategories(systemCategories)
         }
       } catch (error) {
         console.error('Error fetching categories:', error)
