@@ -189,4 +189,26 @@ body {
   input[type="date"] {
     color: #FED7AA; /* orange-200 */
   }
+
+  /* QR Scanner Scanning Line Animation */
+  @keyframes scan-line {
+    0% {
+      top: 0%;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    50% {
+      top: 50%;
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      top: 100%;
+      opacity: 0;
+    }
+  }
 }

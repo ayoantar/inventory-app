@@ -278,6 +278,32 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                     }}
                   />
 
+                  {/* Animated scanning line indicator */}
+                  {isScanning && !cameraError && (
+                    <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-20">
+                      <div className="relative" style={{ width: '70%', height: '70%', maxWidth: '400px', maxHeight: '400px' }}>
+                        {/* Horizontal scanning line */}
+                        <div
+                          className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_10px_rgba(239,68,68,0.8)]"
+                          style={{
+                            top: '50%',
+                            animation: 'scan-line 2s ease-in-out infinite'
+                          }}
+                        />
+                        {/* Corner indicators */}
+                        <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-red-500"></div>
+                        <div className="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 border-red-500"></div>
+                        <div className="absolute bottom-0 left-0 w-8 h-8 border-l-2 border-b-2 border-red-500"></div>
+                        <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-red-500"></div>
+                        {/* Center crosshair */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                          <div className="w-6 h-0.5 bg-red-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                          <div className="w-0.5 h-6 bg-red-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Camera Error Overlay */}
                   {cameraError && (
                     <div className="absolute inset-0 bg-black/80 flex items-center justify-center p-4 z-10">
