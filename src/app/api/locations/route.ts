@@ -79,8 +79,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if user has permission to create locations (admin/manager)
-    if (session.user.role !== 'ADMIN' && session.user.role !== 'MANAGER') {
+    // Check if user has permission to create locations (admin/manager/user)
+    if (session.user.role === 'VIEWER') {
       return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 })
     }
 

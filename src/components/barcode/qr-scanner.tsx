@@ -278,17 +278,14 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                     }}
                   />
 
-                  {/* Animated scanning line indicator */}
+                  {/* Scanning line indicator */}
                   {isScanning && !cameraError && (
                     <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-20">
                       <div className="relative" style={{ width: '70%', height: '70%', maxWidth: '400px', maxHeight: '400px' }}>
-                        {/* Horizontal scanning line */}
+                        {/* Static horizontal scanning line */}
                         <div
                           className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_10px_rgba(239,68,68,0.8)]"
-                          style={{
-                            top: '50%',
-                            animation: 'scan-line 2s ease-in-out infinite'
-                          }}
+                          style={{ top: '50%' }}
                         />
                         {/* Corner indicators */}
                         <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-red-500"></div>
