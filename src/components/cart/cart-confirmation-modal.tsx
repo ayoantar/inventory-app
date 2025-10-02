@@ -301,6 +301,15 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
       pdf.text(`Items Checking Out: ${checkOutItems.length}`, 20, yPos)
       const checkoutValue = checkOutItems.reduce((sum, item) => sum + (item.asset.currentValue || item.asset.purchasePrice || 0), 0)
       pdf.text(`Checkout Value: $${checkoutValue.toLocaleString()}`, 80, yPos)
+
+      // Total value on the same line
+      pdf.setFontSize(12)
+      pdf.text('TOTAL VALUE:', 120, yPos)
+      pdf.setTextColor(255, 102, 0) // Orange for total
+      pdf.text(`$${totalValue.toLocaleString()}`, 170, yPos)
+      pdf.setTextColor(0, 0, 0) // Reset to black
+      pdf.setFontSize(11)
+
       yPos += 6
     }
 
@@ -308,12 +317,6 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
       pdf.text(`Items Checking In: ${checkInItems.length}`, 20, yPos)
       yPos += 6
     }
-
-    // Total value
-    pdf.setFontSize(12)
-    pdf.text('TOTAL VALUE:', 120, yPos)
-    pdf.setTextColor(255, 102, 0) // Orange for total
-    pdf.text(`$${totalValue.toLocaleString()}`, 170, yPos)
 
     // Footer
     pdf.setTextColor(128, 128, 128)
