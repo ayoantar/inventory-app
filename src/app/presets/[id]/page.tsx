@@ -435,8 +435,8 @@ export default function PresetDetailsPage() {
                         {item.asset ? (
                           <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                             item.asset.status === 'AVAILABLE' ? 'bg-green-100 text-green-800' :
-                            item.asset.status === 'CHECKED_OUT' ? 'bg-yellow-100 text-yellow-800' :
-                            item.asset.status === 'IN_MAINTENANCE' ? 'bg-red-100 text-red-800' :
+                            item.asset.status === 'CHECKED_OUT' ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' :
+                            item.asset.status === 'IN_MAINTENANCE' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300' :
                             'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
                           }`}>
                             {item.asset.status}

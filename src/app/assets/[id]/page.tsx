@@ -361,8 +361,8 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
 
   const statusColors = {
     AVAILABLE: 'bg-emerald-100 text-emerald-800',
-    CHECKED_OUT: 'bg-amber-100 text-amber-800',
-    IN_MAINTENANCE: 'bg-red-100 text-red-800',
+    CHECKED_OUT: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
+    IN_MAINTENANCE: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300',
     RETIRED: 'bg-gray-100 dark:bg-gray-800 text-brand-primary-text',
     MISSING: 'bg-red-100 text-red-800',
     RESERVED: 'bg-blue-100 text-blue-800'

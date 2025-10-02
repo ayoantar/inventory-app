@@ -20,8 +20,8 @@ interface AssetPreviewModalProps {
 
 const statusColors = {
   AVAILABLE: 'bg-emerald-900/30 text-emerald-400 border-emerald-600',
-  CHECKED_OUT: 'bg-amber-900/30 text-amber-400 border-amber-600',
-  IN_MAINTENANCE: 'bg-red-900/30 text-red-400 border-red-600',
+  CHECKED_OUT: 'bg-red-900/30 text-red-400 border-red-600',
+  IN_MAINTENANCE: 'bg-orange-900/30 text-orange-400 border-orange-600',
   RETIRED: 'bg-gray-800 text-gray-400 border-gray-600',
   MISSING: 'bg-red-900/30 text-red-400 border-red-600',
   RESERVED: 'bg-blue-900/30 text-blue-400 border-blue-600'

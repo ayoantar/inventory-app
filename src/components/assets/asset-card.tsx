@@ -21,8 +21,8 @@ interface AssetCardProps {
 
 const statusColors = {
   AVAILABLE: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-  CHECKED_OUT: 'bg-amber-100 text-amber-800 border-amber-300',
-  IN_MAINTENANCE: 'bg-red-50 text-red-700 border-red-200',
+  CHECKED_OUT: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-300',
+  IN_MAINTENANCE: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300 border-orange-300',
   RETIRED: 'bg-gray-100 dark:bg-gray-800 text-gray-300 border-gray-300',
   MISSING: 'bg-red-50 text-red-700 border-red-200',
   RESERVED: 'bg-blue-50 text-blue-700 border-blue-200'
