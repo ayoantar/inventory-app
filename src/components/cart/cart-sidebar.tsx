@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useCart } from '@/contexts/cart-context'
 import { useSession } from 'next-auth/react'
 import CartConfirmationModal from './cart-confirmation-modal'
+import { formatCategory } from '@/lib/utils'
 
 interface CartSidebarProps {
   isOpen: boolean
@@ -154,7 +155,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                                   {item.asset.name}
                                 </p>
                                 <p className="text-xs text-gray-600 dark:text-brand-secondary-text">
-                                  {item.asset.category.replace('_', ' ')}
+                                  {formatCategory(item.asset.category)}
                                 </p>
                               </div>
                             </div>
@@ -217,7 +218,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                                   {item.asset.name}
                                 </p>
                                 <p className="text-xs text-gray-600 dark:text-brand-secondary-text">
-                                  {item.asset.category.replace('_', ' ')}
+                                  {formatCategory(item.asset.category)}
                                 </p>
                               </div>
                             </div>

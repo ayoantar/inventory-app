@@ -4,10 +4,13 @@ import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
 import { useTheme } from '../../hooks/useTheme'
+import { isAdminOrManager, getUserInitials, getUserRole } from '@/lib/utils'
 
 export default function Navbar() {
   const { data: session } = useSession()
   const { theme, toggleTheme } = useTheme()
+  const userRole = getUserRole(session)
+  const canManage = isAdminOrManager(session)
   const [showAdminDropdown, setShowAdminDropdown] = useState(false)
   const [showUserDropdown, setShowUserDropdown] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
@@ -136,7 +139,7 @@ export default function Navbar() {
             {session && (
               <>
                 {/* Admin/Manager Dropdown - Hidden on mobile */}
-                {((session.user as any)?.role === 'ADMIN' || (session.user as any)?.role === 'MANAGER') && (
+                {canManage && (
                   <div className="hidden md:block relative" ref={adminDropdownRef}>
                     <button
                       onClick={() => setShowAdminDropdown(!showAdminDropdown)}
@@ -146,7 +149,7 @@ export default function Navbar() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
-                      <span>{(session.user as any)?.role === 'ADMIN' ? 'Admin' : 'Manager'}</span>
+                      <span>{userRole === 'ADMIN' ? 'Admin' : 'Manager'}</span>
                       <svg className={`w-4 h-4 transition-transform ${showAdminDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
@@ -174,21 +177,6 @@ export default function Navbar() {
                               <div className="border-t border-gray-700 my-1"></div>
                             </>
                           )}
-
-                          {/* Department Management Section */}
-                          <div className="px-4 py-2 text-xs font-semibold text-brand-secondary-text uppercase tracking-wider border-b border-gray-700">
-                            Departments
-                          </div>
-                          <Link
-                            href="/admin/departments"
-                            onClick={() => setShowAdminDropdown(false)}
-                            className="flex items-center px-4 py-2 text-sm text-brand-secondary-text hover:bg-gray-800 transition-colors"
-                          >
-                            <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2M7 21h2m-2 0H3m2-8h12m-10 0v6m4-6v6m4-6v6" />
-                            </svg>
-                            Manage Departments
-                          </Link>
 
                           {/* Asset Management Section */}
                           <div className="border-t border-gray-700 my-1"></div>
@@ -293,7 +281,7 @@ export default function Navbar() {
 
 
                 {/* User dropdown for regular users - Hidden on mobile */}
-                {((session.user as any)?.role === 'USER' || (session.user as any)?.role === 'VIEWER') && (
+                {!canManage && (
                   <div className="hidden md:block relative" ref={userDropdownRef}>
                     <button
                       onClick={() => setShowUserDropdown(!showUserDropdown)}
@@ -302,7 +290,7 @@ export default function Navbar() {
                       <div className="flex-shrink-0">
                         <div className="w-8 h-8 bg-gradient-to-br from-brand-orange to-primary-600 rounded-full flex items-center justify-center">
                           <span className="text-white font-medium text-xs">
-                            {session.user?.name ? session.user.name.charAt(0).toUpperCase() : session.user?.email?.charAt(0).toUpperCase()}
+                            {getUserInitials(session)}
                           </span>
                         </div>
                       </div>
@@ -349,7 +337,7 @@ export default function Navbar() {
                 )}
 
                 {/* Static user info for admins/managers (they use the admin dropdown) */}
-                {((session.user as any)?.role === 'ADMIN' || (session.user as any)?.role === 'MANAGER') && (
+                {canManage && (
                   <div className="hidden md:flex items-center space-x-2 text-sm text-brand-secondary-text">
                     <div className="flex-shrink-0">
                       <div className="w-8 h-8 bg-gradient-to-br from-brand-orange to-primary-600 rounded-full flex items-center justify-center">
@@ -448,15 +436,15 @@ export default function Navbar() {
             </Link>
 
             {/* Mobile Admin Menu */}
-            {session && ((session.user as any)?.role === 'ADMIN' || (session.user as any)?.role === 'MANAGER') && (
+            {session && canManage && (
               <>
                 <div className="border-t border-gray-700 mt-3 pt-3">
                   <div className="px-3 py-2 text-xs font-semibold text-brand-secondary-text uppercase tracking-wider">
-                    {(session.user as any)?.role === 'ADMIN' ? 'Admin' : 'Manager'} Menu
+                    {userRole === 'ADMIN' ? 'Admin' : 'Manager'} Menu
                   </div>
 
                   {/* User Management - Admin Only */}
-                  {(session.user as any)?.role === 'ADMIN' && (
+                  {userRole === 'ADMIN' && (
                     <Link
                       href="/admin/users"
                       onClick={() => {
@@ -469,16 +457,6 @@ export default function Navbar() {
                     </Link>
                   )}
 
-                  <Link
-                    href="/admin/departments"
-                    onClick={() => {
-                setShowMobileMenu(false)
-                document.body.classList.remove('overflow-hidden')
-              }}
-                    className="block text-brand-secondary-text hover:bg-gray-800 px-3 py-2 rounded-md text-base font-medium transition-colors"
-                  >
-                    Manage Departments
-                  </Link>
                   <Link
                     href="/clients"
                     onClick={() => {

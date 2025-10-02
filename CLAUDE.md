@@ -113,6 +113,15 @@ export async function GET/POST(request: NextRequest) {
 - **Date tracking**: Scheduled date and actual performed date recording
 - **User assignment**: Track who created and performed maintenance
 
+### Preset System
+- **Asset preset templates** for quick asset creation with predefined configurations
+- **Category-based presets**: Create presets for specific asset categories
+- **Asset substitutions**: Allow flexible asset selection within presets
+- **Barcode/QR code scanning**: Search assets by barcode, QR code, serial number, or asset number
+- **Preset completion tracking**: Mark presets as complete when all assets are assigned
+- **Active/inactive presets**: Toggle preset availability without deletion
+- **Preset notes**: Additional documentation for preset usage and requirements
+
 ### Analytics & Reporting
 - Dashboard with KPI widgets using Recharts
 - Asset utilization and cost trend analysis
@@ -212,7 +221,14 @@ sudo certbot renew         # Manual renewal if needed
 
 ## Current System Status
 
-### Latest Updates (September 28, 2025)
+### Latest Updates (October 1, 2025)
+- ✅ **PRESET SYSTEM ENHANCED** - Added barcode/QR code scanning support to preset form modal
+- ✅ **DEPARTMENT FIELDS REMOVED** - Cleaned up preset system by removing unused department fields
+- ✅ **DATABASE SCHEMA CLEANED** - Dropped obsolete columns (department, priority, estimatedDuration) from presets table
+- ✅ **API ROUTES FIXED** - Updated preset API routes to remove department filtering and fix orderBy clauses
+- ✅ **PRODUCTION DEPLOYED** - All preset fixes deployed to https://warehouse.lightsailvr.com
+
+### Previous Updates (September 28, 2025)
 - ✅ **SYSTEM FULLY OPERATIONAL** - Both development (3005) and production (443) servers running
 - ✅ **SSL CERTIFICATES** - Valid Let's Encrypt certificates installed and auto-renewing
 - ✅ **NGINX PROXY CONFIGURED** - Reverse proxy handling HTTPS and routing on port 443
