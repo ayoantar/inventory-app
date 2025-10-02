@@ -25,14 +25,14 @@ interface SubstitutionModalProps {
 }
 
 export default function SubstitutionModal({
-  useScrollLock(isOpen)
-
   isOpen,
   onClose,
   onConfirm,
   availableSubstitutions,
   presetName
 }: SubstitutionModalProps) {
+  useScrollLock(isOpen)
+
   const [selections, setSelections] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
 

@@ -32,13 +32,13 @@ interface UserTransferModalProps {
 }
 
 export default function UserTransferModal({
-  useScrollLock(isOpen)
-
   isOpen,
   onClose,
   userToDelete,
   onTransferComplete
 }: UserTransferModalProps) {
+  useScrollLock(isOpen)
+
   const [users, setUsers] = useState<User[]>([])
   const [selectedUserId, setSelectedUserId] = useState('')
   const [activeTransactions, setActiveTransactions] = useState<Transaction[]>([])
