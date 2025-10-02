@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
     }
 
     const userRole = (session.user as any).role
-    if (userRole !== 'ADMIN' && userRole !== 'MANAGER') {
+    if (userRole === 'VIEWER') {
       return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 })
     }
 
