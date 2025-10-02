@@ -19,25 +19,6 @@ interface PresetFormModalProps {
   onSuccess: () => void
 }
 
-const categories = [
-  'Camera Kit',
-  'Audio Setup', 
-  'Lighting Kit',
-  'Conference Setup',
-  'Video Production',
-  'Photography',
-  'Live Streaming',
-  'Event Setup'
-]
-
-const departments = [
-  'Media Production',
-  'IT',
-  'Marketing',
-  'Events',
-  'Education',
-  'Operations'
-]
 
 interface Asset {
   id: string
@@ -57,20 +38,20 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
   const [assetSearch, setAssetSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [error, setError] = useState('')
+  const [categories, setCategories] = useState<Array<{id: string, name: string}>>([])
+  const [departments, setDepartments] = useState<Array<{id: string, name: string}>>([])
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     category: '',
-    department: '',
     isTemplate: false,
-    priority: 0,
-    estimatedDuration: '',
     notes: ''
   })
 
   useEffect(() => {
     if (isOpen) {
       fetchAssets()
+      fetchCategories()
     }
   }, [isOpen])
 
@@ -80,12 +61,12 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
       const response = await fetch('/api/assets?limit=500')
       if (response.ok) {
         const data = await response.json()
-        
+
         // Remove duplicates by ID
-        const uniqueAssets = data.assets?.filter((asset, index, self) => 
+        const uniqueAssets = data.assets?.filter((asset, index, self) =>
           index === self.findIndex(a => a.id === asset.id)
         ) || []
-        
+
         setAvailableAssets(uniqueAssets)
       }
     } catch (error) {
@@ -95,15 +76,25 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
     }
   }
 
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/preset-categories?active=true')
+      if (response.ok) {
+        const data = await response.json()
+        setCategories(data.categories || [])
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error)
+    }
+  }
+
+
   const resetForm = () => {
     setFormData({
       name: '',
       description: '',
       category: '',
-      department: '',
       isTemplate: false,
-      priority: 0,
-      estimatedDuration: '',
       notes: ''
     })
     setSelectedAssets([])
@@ -181,7 +172,6 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
 
       const submitData = {
         ...formData,
-        estimatedDuration: formData.estimatedDuration ? parseInt(formData.estimatedDuration) : null,
         items
       }
       
@@ -279,56 +269,9 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                   >
                     <option value="">Select Category</option>
                     {categories.map(category => (
-                      <option key={category} value={category}>{category}</option>
+                      <option key={category.id} value={category.name}>{category.name}</option>
                     ))}
                   </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Department
-                  </label>
-                  <select
-                    name="department"
-                    value={formData.department}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400"
-                  >
-                    <option value="">Select Department</option>
-                    {departments.map(department => (
-                      <option key={department} value={department}>{department}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Duration (hours)
-                  </label>
-                  <input
-                    type="number"
-                    name="estimatedDuration"
-                    value={formData.estimatedDuration}
-                    onChange={handleInputChange}
-                    min="1"
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400"
-                    placeholder="24"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Priority (0-10)
-                  </label>
-                  <input
-                    type="number"
-                    name="priority"
-                    value={formData.priority}
-                    onChange={handleInputChange}
-                    min="0"
-                    max="10"
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400"
-                  />
                 </div>
 
                 <div>

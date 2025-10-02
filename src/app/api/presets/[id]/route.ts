@@ -96,11 +96,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       name,
       description,
       category,
-      department,
       isTemplate,
       isActive,
-      priority,
-      estimatedDuration,
       notes,
       items
     } = body
@@ -140,11 +137,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
           name,
           description,
           category,
-          department,
           isTemplate: isTemplate || false,
           isActive: isActive !== false, // Default to true unless explicitly false
-          priority: priority || 0,
-          estimatedDuration,
           notes,
         }
       })

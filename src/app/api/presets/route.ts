@@ -17,7 +17,6 @@ export async function GET(request: Request) {
     const limit = parseInt(searchParams.get('limit') || '10')
     const search = searchParams.get('search') || ''
     const category = searchParams.get('category') || ''
-    const department = searchParams.get('department') || ''
     const isActive = searchParams.get('isActive')
 
     const skip = (page - 1) * limit
@@ -31,7 +30,6 @@ export async function GET(request: Request) {
           ]
         } : {},
         category ? { category: { contains: category, mode: 'insensitive' as const } } : {},
-        department ? { department: { contains: department, mode: 'insensitive' as const } } : {},
         isActive !== null ? { isActive: isActive === 'true' } : {},
       ]
     }
@@ -42,7 +40,7 @@ export async function GET(request: Request) {
         skip,
         take: limit,
         orderBy: [
-          { priority: 'desc' },
+          { createdAt: 'desc' },
           { name: 'asc' }
         ],
         include: {
@@ -78,7 +76,14 @@ export async function GET(request: Request) {
     })
   } catch (error) {
     console.error('Failed to fetch presets:', error)
-    return NextResponse.json({ error: 'Failed to fetch presets' }, { status: 500 })
+    if (error instanceof Error) {
+      console.error('Error message:', error.message)
+      console.error('Error stack:', error.stack)
+    }
+    return NextResponse.json({
+      error: 'Failed to fetch presets',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 })
   }
 }
 
@@ -95,10 +100,7 @@ export async function POST(request: Request) {
       name,
       description,
       category,
-      department,
       isTemplate,
-      priority,
-      estimatedDuration,
       notes,
       items
     } = body
@@ -117,10 +119,7 @@ export async function POST(request: Request) {
           name,
           description,
           category,
-          department,
           isTemplate: isTemplate || false,
-          priority: priority || 0,
-          estimatedDuration,
           notes,
           createdById: session.user.id,
         }

@@ -30,11 +30,8 @@ interface Preset {
   name: string
   description?: string
   category?: string
-  department?: string
   isActive: boolean
   isTemplate: boolean
-  priority: number
-  estimatedDuration?: number
   notes?: string
   createdAt?: string
   updatedAt?: string
@@ -80,7 +77,7 @@ interface PresetEditModalProps {
 
 const categories = [
   'Camera Kit',
-  'Audio Setup', 
+  'Audio Setup',
   'Lighting Kit',
   'Conference Setup',
   'Video Production',
@@ -89,14 +86,6 @@ const categories = [
   'Event Setup'
 ]
 
-const departments = [
-  'Media Production',
-  'IT',
-  'Marketing',
-  'Events',
-  'Education',
-  'Operations'
-]
 
 const generateUniqueId = () => {
   return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
@@ -109,7 +98,6 @@ export default function PresetEditModal({ preset, isOpen, onClose, onSave }: Pre
     name: '',
     description: '',
     category: '',
-    department: '',
     isActive: true,
     notes: ''
   })
@@ -121,7 +109,6 @@ export default function PresetEditModal({ preset, isOpen, onClose, onSave }: Pre
         name: preset.name,
         description: preset.description || '',
         category: preset.category || '',
-        department: preset.department || '',
         isActive: preset.isActive,
         notes: preset.notes || ''
       })
@@ -243,8 +230,8 @@ export default function PresetEditModal({ preset, isOpen, onClose, onSave }: Pre
     >
       <div className="fixed inset-0 bg-black bg-opacity-50" onClick={handleClose}></div>
       <div className="relative min-h-full flex items-center justify-center p-4">
-        <div 
-          className="relative bg-gray-900/5 rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+        <div
+          className="relative bg-gray-900 rounded-lg shadow-xl border border-gray-700 w-full max-w-4xl max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
         <div className="p-4">
@@ -286,45 +273,26 @@ export default function PresetEditModal({ preset, isOpen, onClose, onSave }: Pre
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter preset name"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Category
-                  </label>
-                  <select
-                    name="category"
-                    value={formData.category}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    <option value="">Select Category</option>
-                    {categories.map(category => (
-                      <option key={category} value={category}>{category}</option>
-                    ))}
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Department
-                  </label>
-                  <select
-                    name="department"
-                    value={formData.department}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    <option value="">Select Department</option>
-                    {departments.map(department => (
-                      <option key={department} value={department}>{department}</option>
-                    ))}
-                  </select>
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Category
+                </label>
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">Select Category</option>
+                  {categories.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
               </div>
               
               <div>
@@ -371,13 +339,13 @@ export default function PresetEditModal({ preset, isOpen, onClose, onSave }: Pre
 
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {items.map((item, index) => (
-                  <div key={item.tempId} className="flex items-center space-x-2 p-2 bg-gray-900/5 rounded">
+                  <div key={item.tempId} className="flex items-center space-x-2 p-2 bg-gray-800/50 rounded">
                     <input
                       type="text"
                       value={item.name}
                       onChange={(e) => handleItemChange(index, 'name', e.target.value)}
                       required
-                      className="flex-1 px-2 py-1 border border-gray-600 rounded text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="flex-1 px-2 py-1 bg-gray-800 border border-gray-600 rounded text-xs text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
                       placeholder="Item name"
                     />
                     <input
@@ -385,7 +353,7 @@ export default function PresetEditModal({ preset, isOpen, onClose, onSave }: Pre
                       value={item.quantity}
                       onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value) || 1)}
                       min="1"
-                      className="w-12 px-1 py-1 border border-gray-600 rounded text-xs text-center focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="w-12 px-1 py-1 bg-gray-800 border border-gray-600 rounded text-xs text-white text-center focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                     <label className="flex items-center text-xs">
                       <input
