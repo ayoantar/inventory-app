@@ -28,6 +28,10 @@ interface Asset {
   description?: string
   manufacturer?: string
   imageUrl?: string | null
+  assetNumber?: string
+  serialNumber?: string
+  barcode?: string
+  qrCode?: string
 }
 
 export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFormModalProps) {
@@ -128,18 +132,26 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
       const assetCategory = (asset.category || '').toLowerCase()
       const assetManufacturer = (asset.manufacturer || '').toLowerCase()
       const assetId = asset.id.toString()
-      
+      const assetNumber = (asset.assetNumber || '').toLowerCase()
+      const serialNumber = (asset.serialNumber || '').toLowerCase()
+      const barcode = (asset.barcode || '').toLowerCase()
+      const qrCode = (asset.qrCode || '').toLowerCase()
+
       const matchesSearch = assetName.includes(searchTerm) ||
                            assetCategory.includes(searchTerm) ||
                            assetManufacturer.includes(searchTerm) ||
-                           assetId.includes(searchTerm)
-      
+                           assetId.includes(searchTerm) ||
+                           assetNumber.includes(searchTerm) ||
+                           serialNumber.includes(searchTerm) ||
+                           barcode.includes(searchTerm) ||
+                           qrCode.includes(searchTerm)
+
       const matchesStatus = !statusFilter || asset.status === statusFilter
-      
+
       return matchesSearch && matchesStatus
     })
     // Additional deduplication to prevent React key conflicts
-    .filter((asset, index, self) => 
+    .filter((asset, index, self) =>
       index === self.findIndex(a => a.id === asset.id)
     )
 
