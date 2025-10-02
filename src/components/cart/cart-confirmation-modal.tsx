@@ -302,9 +302,14 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
       const checkoutValue = checkOutItems.reduce((sum, item) => sum + (item.asset.currentValue || item.asset.purchasePrice || 0), 0)
       pdf.text(`Checkout Value: $${checkoutValue.toLocaleString()}`, 80, yPos)
 
+      // Add separator
+      pdf.setTextColor(128, 128, 128)
+      pdf.text('|', 115, yPos)
+      pdf.setTextColor(0, 0, 0)
+
       // Total value on the same line
       pdf.setFontSize(12)
-      pdf.text('TOTAL VALUE:', 120, yPos)
+      pdf.text('TOTAL VALUE:', 125, yPos)
       pdf.setTextColor(255, 102, 0) // Orange for total
       pdf.text(`$${totalValue.toLocaleString()}`, 170, yPos)
       pdf.setTextColor(0, 0, 0) // Reset to black
