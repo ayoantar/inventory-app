@@ -9,7 +9,6 @@ interface PresetMatch {
     name: string
     description?: string
     category?: string
-    priority: number
     _count: { items: number }
   }
   matchedItems: number
@@ -70,7 +69,7 @@ export async function POST(request: Request) {
         }
       },
       orderBy: [
-        { priority: 'desc' },
+        { createdAt: 'desc' },
         { name: 'asc' }
       ]
     })
@@ -156,7 +155,6 @@ export async function POST(request: Request) {
             name: preset.name,
             description: preset.description,
             category: preset.category,
-            priority: preset.priority,
             _count: preset._count
           },
           matchedItems,
@@ -168,12 +166,12 @@ export async function POST(request: Request) {
       }
     }
 
-    // Sort matches by percentage (highest first), then by priority
+    // Sort matches by percentage (highest first), then by name
     matches.sort((a, b) => {
       if (a.matchPercentage !== b.matchPercentage) {
         return b.matchPercentage - a.matchPercentage
       }
-      return b.preset.priority - a.preset.priority
+      return a.preset.name.localeCompare(b.preset.name)
     })
 
     return NextResponse.json({ matches })
