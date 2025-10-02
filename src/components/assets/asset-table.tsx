@@ -253,7 +253,7 @@ export default function AssetTable({
           </thead>
           <tbody className="bg-gray-900/5 divide-y divide-gray-300">
             {assets.map((asset) => (
-              <tr key={asset.id} className={`hover transition-colors ${selectedAssets.includes(asset.id) ? 'bg-blue-50' : ''} ${asset.status === 'CHECKED_OUT' ? 'border-l-4 border-orange-500 bg-orange-100/40' : ''}`}>
+              <tr key={asset.id} className={`hover transition-colors ${selectedAssets.includes(asset.id) ? 'bg-blue-50' : ''} ${asset.status === 'CHECKED_OUT' ? 'border-l-4 border-red-500 bg-red-900/20' : ''}`}>
                 {bulkMode && (
                   <td className="px-3 py-3 whitespace-nowrap border-r border-gray-600 text-center" style={getColumnStyle('checkbox')}>
                     <input
