@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Asset, AssetStatus, AssetCategory, AssetCondition } from '../../../generated/prisma'
+import { formatStatus } from '@/lib/utils'
 
 interface AssetWithRelations extends Asset {
   client?: { name: string; code: string; isActive: boolean } | null
@@ -122,7 +123,7 @@ export default function AssetPreviewModal({ assetId, isOpen, onClose }: AssetPre
                   <p className="text-brand-primary-text">{asset.manufacturer} {asset.model}</p>
                   <div className="mt-2 flex items-center space-x-4">
                     <span className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border ${statusColors[asset.status as AssetStatus]}`}>
-                      {asset.status.replace('_', ' ')}
+                      {formatStatus(asset.status)}
                     </span>
                     <span className={`text-sm font-medium ${conditionColors[asset.condition as AssetCondition]}`}>
                       {asset.condition}

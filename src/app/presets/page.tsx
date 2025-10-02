@@ -14,11 +14,8 @@ interface Preset {
   name: string
   description?: string
   category?: string
-  department?: string
   isActive: boolean
   isTemplate: boolean
-  priority: number
-  estimatedDuration?: number
   notes?: string
   createdAt?: string
   updatedAt?: string
@@ -74,7 +71,6 @@ export default function PresetsPage() {
   const [filters, setFilters] = useState({
     search: '',
     category: '',
-    department: '',
     isActive: ''
   })
   const [pagination, setPagination] = useState({
@@ -101,7 +97,6 @@ export default function PresetsPage() {
         limit: pagination.limit.toString(),
         ...(filters.search && { search: filters.search }),
         ...(filters.category && { category: filters.category }),
-        ...(filters.department && { department: filters.department }),
         ...(filters.isActive && { isActive: filters.isActive })
       })
       
@@ -342,12 +337,12 @@ export default function PresetsPage() {
               No presets found
             </h3>
             <p className="text-gray-600 dark:text-brand-secondary-text max-w-sm mx-auto leading-relaxed mb-6">
-              {filters.search || filters.category || filters.department || filters.isActive 
+              {filters.search || filters.category || filters.isActive
                 ? 'Try adjusting your filters to see more results.'
                 : 'Create your first equipment preset to streamline checkout workflows.'
               }
             </p>
-            {!filters.search && !filters.category && !filters.department && !filters.isActive && (
+            {!filters.search && !filters.category && !filters.isActive && (
               <button
                 onClick={() => setShowFormModal(true)}
                 className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transform hover:scale-[1.02]"

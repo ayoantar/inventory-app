@@ -10,6 +10,7 @@ import QRScanner from '@/components/barcode/qr-scanner'
 import CartConfirmationModal from '@/components/cart/cart-confirmation-modal'
 import PresetDetectionPanel from '@/components/presets/preset-detection-panel'
 import SubstitutionModal from '@/components/presets/substitution-modal'
+import { formatCategory } from '@/lib/utils'
 
 export default function CartPage() {
   const { data: session, status } = useSession()
@@ -566,7 +567,7 @@ export default function CartPage() {
                                     </div>
                                   )}
                                 </div>
-                                
+
                                 {/* Asset Details */}
                                 <div className="flex-1 min-w-0">
                                   <div className="mb-2">
@@ -588,7 +589,7 @@ export default function CartPage() {
                                       <svg className="w-3 h-3 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                                       </svg>
-                                      {item.asset.category.replace('_', ' ')}
+                                      {formatCategory(item.asset.category)}
                                     </span>
                                     {item.asset.serialNumber && (
                                       <span className="flex items-center truncate">
@@ -617,7 +618,7 @@ export default function CartPage() {
                                     )}
                                   </div>
                                 </div>
-                                
+
                                 {/* Action Buttons */}
                                 <div className="flex items-center justify-between sm:justify-end space-x-2 flex-shrink-0 w-full sm:w-auto">
                                   <span className="text-xs font-medium text-orange-400 bg-orange-900/30 px-2 py-1 rounded-full">
@@ -693,7 +694,7 @@ export default function CartPage() {
                                       <svg className="w-3 h-3 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                                       </svg>
-                                      {item.asset.category.replace('_', ' ')}
+                                      {formatCategory(item.asset.category)}
                                     </span>
                                     {item.asset.serialNumber && (
                                       <span className="flex items-center truncate">

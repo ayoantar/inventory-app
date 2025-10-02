@@ -2,13 +2,26 @@ const { createServer } = require('https')
 const { parse } = require('url')
 const next = require('next')
 const fs = require('fs')
+const path = require('path')
 
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = process.env.HOSTNAME || '0.0.0.0'
 const port = process.env.PORT || 8083
+const conf = require('./next.config.js')
+
+// Get the correct distDir from config
+const distDir = conf.distDir || '.next'
+
+console.log(`Starting Next.js with distDir: ${distDir}`)
 
 // When using middleware `hostname` and `port` must be provided below
-const app = next({ dev, hostname, port })
+const app = next({
+  dev,
+  hostname,
+  port,
+  dir: '.',
+  conf
+})
 const handle = app.getRequestHandler()
 
 const httpsOptions = {

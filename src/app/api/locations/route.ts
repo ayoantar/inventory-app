@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '../../../../generated/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-
-const prisma = new PrismaClient()
+import { prisma } from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
   try {
@@ -43,27 +41,19 @@ export async function GET(request: NextRequest) {
       where.isActive = active === 'true'
     }
 
-    const [locations, total] = await Promise.all([
-      prisma.location.findMany({
-        where,
-        include: {
-          _count: {
-            select: {
-              assets: true,
-              assetGroups: true
-            }
-          }
-        },
-        orderBy: [
-          { building: 'asc' },
-          { floor: 'asc' },
-          { name: 'asc' }
-        ],
-        skip: (page - 1) * limit,
-        take: limit
-      }),
-      prisma.location.count({ where })
-    ])
+    // Simplified query without counts for better performance
+    const locations = await prisma.location.findMany({
+      where,
+      orderBy: [
+        { building: 'asc' },
+        { floor: 'asc' },
+        { name: 'asc' }
+      ],
+      skip: (page - 1) * limit,
+      take: limit
+    })
+
+    const total = locations.length
 
     const pages = Math.ceil(total / limit)
 

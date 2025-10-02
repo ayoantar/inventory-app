@@ -12,6 +12,7 @@ import MaintenanceTable from '@/components/maintenance/maintenance-table'
 import QRGenerator from '@/components/barcode/qr-generator'
 import Tabs, { TabContent, TabPanel } from '@/components/ui/tabs'
 import { Asset, AssetStatus, AssetCategory, AssetCondition, AssetTransaction, MaintenanceRecord, MaintenanceStatus, User } from '../../../../generated/prisma'
+import { formatStatus } from '@/lib/utils'
 
 interface AssetWithRelations extends Asset {
   client?: { name: string; code: string; isActive: boolean } | null
@@ -35,6 +36,8 @@ interface AssetFormData {
   qrCode: string
   status: AssetStatus
   location: string
+  locationId: string
+  clientId: string
   purchaseDate: string
   purchasePrice: string
   currentValue: string
@@ -43,6 +46,15 @@ interface AssetFormData {
   model: string
   notes: string
   imageUrl: string
+}
+
+interface Location {
+  id: string
+  name: string
+  building?: string | null
+  floor?: string | null
+  room?: string | null
+  description?: string | null
 }
 
 interface Category {
@@ -68,6 +80,26 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
   const [showMaintenanceForm, setShowMaintenanceForm] = useState(false)
   const [showQRGenerator, setShowQRGenerator] = useState(false)
   const [activeTab, setActiveTab] = useState('details')
+  const [locations, setLocations] = useState<Location[]>([])
+  const [locationsLoading, setLocationsLoading] = useState(true)
+  const [showNewLocationModal, setShowNewLocationModal] = useState(false)
+  const [newLocationData, setNewLocationData] = useState({
+    name: '',
+    building: '',
+    floor: '',
+    room: '',
+    description: ''
+  })
+  const [clients, setClients] = useState<any[]>([])
+  const [clientsLoading, setClientsLoading] = useState(true)
+  const [showNewClientModal, setShowNewClientModal] = useState(false)
+  const [newClientData, setNewClientData] = useState({
+    name: '',
+    code: '',
+    contactPerson: '',
+    email: '',
+    phone: ''
+  })
   const [formData, setFormData] = useState<AssetFormData>({
     name: '',
     description: '',
@@ -78,6 +110,8 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
     qrCode: '',
     status: 'AVAILABLE' as AssetStatus,
     location: '',
+    locationId: '',
+    clientId: '',
     purchaseDate: '',
     purchasePrice: '',
     currentValue: '',
@@ -101,6 +135,36 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
     }
   }
 
+  // Fetch locations
+  const fetchLocations = async () => {
+    try {
+      const response = await fetch('/api/locations?limit=1000')
+      if (response.ok) {
+        const data = await response.json()
+        setLocations(data.locations || [])
+      }
+    } catch (error) {
+      console.error('Error fetching locations:', error)
+    } finally {
+      setLocationsLoading(false)
+    }
+  }
+
+  // Fetch clients
+  const fetchClients = async () => {
+    try {
+      const response = await fetch('/api/clients?limit=1000')
+      if (response.ok) {
+        const data = await response.json()
+        setClients(data.clients || [])
+      }
+    } catch (error) {
+      console.error('Error fetching clients:', error)
+    } finally {
+      setClientsLoading(false)
+    }
+  }
+
   useEffect(() => {
     if (status === 'loading') return
     if (status === 'unauthenticated') {
@@ -110,6 +174,8 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
 
     fetchAsset()
     fetchCategories()
+    fetchLocations()
+    fetchClients()
   }, [status, router, resolvedParams.id])
 
   const fetchAsset = async () => {
@@ -130,6 +196,8 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
           qrCode: assetData.qrCode || '',
           status: assetData.status,
           location: assetData.location || '',
+          locationId: assetData.locationId || '',
+          clientId: assetData.clientId || '',
           purchaseDate: assetData.purchaseDate ? assetData.purchaseDate.split('T')[0] : '',
           purchasePrice: assetData.purchasePrice?.toString() || '',
           currentValue: assetData.currentValue?.toString() || '',
@@ -182,6 +250,92 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleCreateLocation = async () => {
+    try {
+      if (!newLocationData.name.trim()) {
+        alert('Location name is required')
+        return
+      }
+
+      const response = await fetch('/api/locations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newLocationData.name,
+          building: newLocationData.building || undefined,
+          floor: newLocationData.floor || undefined,
+          room: newLocationData.room || undefined,
+          description: newLocationData.description || undefined
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to create location')
+      }
+
+      const newLocation = await response.json()
+
+      // Add to locations list and select it
+      setLocations(prev => [...prev, newLocation])
+      setFormData(prev => ({ ...prev, locationId: newLocation.id }))
+
+      // Reset modal
+      setShowNewLocationModal(false)
+      setNewLocationData({
+        name: '',
+        building: '',
+        floor: '',
+        room: '',
+        description: ''
+      })
+    } catch (error) {
+      alert('Failed to create location. Please try again.')
+    }
+  }
+
+  const handleCreateClient = async () => {
+    try {
+      if (!newClientData.name.trim()) {
+        alert('Client name is required')
+        return
+      }
+
+      const response = await fetch('/api/clients', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newClientData.name,
+          code: newClientData.code || undefined,
+          contactPerson: newClientData.contactPerson || undefined,
+          email: newClientData.email || undefined,
+          phone: newClientData.phone || undefined
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to create client')
+      }
+
+      const newClient = await response.json()
+
+      // Add to clients list and select it
+      setClients(prev => [...prev, newClient])
+      setFormData(prev => ({ ...prev, clientId: newClient.id }))
+
+      // Reset modal
+      setShowNewClientModal(false)
+      setNewClientData({
+        name: '',
+        code: '',
+        contactPerson: '',
+        email: '',
+        phone: ''
+      })
+    } catch (error) {
+      alert('Failed to create client. Please try again.')
+    }
   }
 
   const handleMaintenanceStatusUpdate = async (maintenanceId: string, status: MaintenanceStatus) => {
@@ -420,7 +574,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             name="category"
                             value={formData.category}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
                             {categories.map(category => (
                               <option key={category.id} value={category.id}>
@@ -439,11 +593,39 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       </div>
                       <div>
                         <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Client</dt>
-                        <dd className="text-lg font-medium text-brand-primary-text">
-                          {asset.client?.name || (
-                            <span className="text-white/50 hover:text-white/80 transition-colors">No Client</span>
-                          )}
-                        </dd>
+                        {editing ? (
+                          <select
+                            name="clientId"
+                            value={formData.clientId}
+                            onChange={(e) => {
+                              if (e.target.value === '__new__') {
+                                setShowNewClientModal(true)
+                              } else {
+                                handleChange(e)
+                              }
+                            }}
+                            disabled={clientsLoading}
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <option value="">
+                              {clientsLoading ? 'Loading clients...' : 'Select a client'}
+                            </option>
+                            <option value="__new__" className="text-blue-400 font-medium">
+                              + Add New Client
+                            </option>
+                            {clients.map((client) => (
+                              <option key={client.id} value={client.id}>
+                                {client.name}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <dd className="text-lg font-medium text-brand-primary-text">
+                            {asset.client?.name || (
+                              <span className="text-white/50 hover:text-white/80 transition-colors">No Client</span>
+                            )}
+                          </dd>
+                        )}
                       </div>
                       <div>
                         <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Status</dt>
@@ -452,7 +634,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             name="status"
                             value={formData.status}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
                             <option value="AVAILABLE">Available</option>
                             <option value="CHECKED_OUT">Checked Out</option>
@@ -464,7 +646,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                         ) : (
                           <dd>
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium ${statusColors[asset.status as AssetStatus]}`}>
-                              {asset.status.replace('_', ' ')}
+                              {formatStatus(asset.status)}
                             </span>
                           </dd>
                         )}
@@ -476,7 +658,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             name="condition"
                             value={formData.condition}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
                             <option value="EXCELLENT">Excellent</option>
                             <option value="GOOD">Good</option>
@@ -491,16 +673,44 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       <div>
                         <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Location</dt>
                         {editing ? (
-                          <input
-                            type="text"
-                            name="location"
-                            value={formData.location}
-                            onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Building, Room, Shelf..."
-                          />
+                          <select
+                            name="locationId"
+                            value={formData.locationId}
+                            onChange={(e) => {
+                              if (e.target.value === '__new__') {
+                                setShowNewLocationModal(true)
+                              } else {
+                                handleChange(e)
+                              }
+                            }}
+                            disabled={locationsLoading}
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <option value="">
+                              {locationsLoading ? 'Loading locations...' : 'Select a location'}
+                            </option>
+                            <option value="__new__" className="text-blue-400 font-medium">
+                              + Add New Location
+                            </option>
+                            {locations.map((location) => (
+                              <option key={location.id} value={location.id}>
+                                {location.building && location.floor ?
+                                  `${location.name} (${location.building} - Floor ${location.floor})` :
+                                  location.building ?
+                                    `${location.name} (${location.building})` :
+                                    location.name
+                                }
+                              </option>
+                            ))}
+                          </select>
                         ) : (
-                          <dd className="text-lg font-medium text-brand-primary-text">{asset.location || '-'}</dd>
+                          <dd className="text-lg font-medium text-brand-primary-text">
+                            {asset.locationRef?.name ||
+                              asset.location ||
+                              (locations.find(l => l.id === asset.locationId)?.name) ||
+                              '-'
+                            }
+                          </dd>
                         )}
                       </div>
                     </div>
@@ -518,7 +728,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             name="manufacturer"
                             value={formData.manufacturer}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           />
                         ) : (
                           <dd className="text-lg font-medium text-brand-primary-text">{asset.manufacturer || '-'}</dd>
@@ -532,7 +742,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             name="model"
                             value={formData.model}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           />
                         ) : (
                           <dd className="text-lg font-medium text-brand-primary-text">{asset.model || '-'}</dd>
@@ -546,7 +756,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             name="serialNumber"
                             value={formData.serialNumber}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                           />
                         ) : (
                           <dd className="text-lg font-medium text-brand-primary-text font-mono">{asset.serialNumber || '-'}</dd>
@@ -560,7 +770,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             name="barcode"
                             value={formData.barcode}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                           />
                         ) : (
                           <dd className="text-lg font-medium text-brand-primary-text font-mono">{asset.barcode || '-'}</dd>
@@ -581,7 +791,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             name="purchaseDate"
                             value={formData.purchaseDate}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           />
                         ) : (
                           <dd className="text-lg font-medium text-brand-primary-text">
@@ -599,7 +809,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             onChange={handleChange}
                             min="0"
                             step="0.01"
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="0.00"
                           />
                         ) : (
@@ -618,7 +828,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             onChange={handleChange}
                             min="0"
                             step="0.01"
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="0.00"
                           />
                         ) : (
@@ -635,7 +845,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                             name="assetNumber"
                             value={formData.assetNumber || ''}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
                             placeholder="Asset number/ID"
                           />
                         ) : (
@@ -656,7 +866,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                         value={formData.description}
                         onChange={handleChange}
                         rows={3}
-                        className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Asset description..."
                       />
                     ) : (
@@ -672,7 +882,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                         value={formData.notes}
                         onChange={handleChange}
                         rows={4}
-                        className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Additional notes, maintenance history, special instructions..."
                       />
                     ) : (
@@ -839,6 +1049,242 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
         isOpen={showQRGenerator}
         onClose={() => setShowQRGenerator(false)}
       />
+
+      {/* New Location Modal */}
+      {showNewLocationModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
+          <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl max-w-md w-full mx-4">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold text-brand-primary-text">
+                  Add New Location
+                </h3>
+                <button
+                  onClick={() => {
+                    setShowNewLocationModal(false)
+                    setNewLocationData({ name: '', building: '', floor: '', room: '', description: '' })
+                  }}
+                  className="text-gray-400 hover:text-gray-200 transition-colors p-1 rounded-lg hover:bg-gray-700/50 active:scale-95 touch-manipulation"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="new-location-name" className="block text-sm font-medium text-brand-primary-text mb-2">
+                    Location Name *
+                  </label>
+                  <input
+                    id="new-location-name"
+                    type="text"
+                    value={newLocationData.name}
+                    onChange={(e) => setNewLocationData(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="e.g., Main Storage"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    autoFocus
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label htmlFor="new-location-building" className="block text-sm font-medium text-brand-primary-text mb-2">
+                      Building
+                    </label>
+                    <input
+                      id="new-location-building"
+                      type="text"
+                      value={newLocationData.building}
+                      onChange={(e) => setNewLocationData(prev => ({ ...prev, building: e.target.value }))}
+                      placeholder="e.g., Building A"
+                      className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="new-location-floor" className="block text-sm font-medium text-brand-primary-text mb-2">
+                      Floor
+                    </label>
+                    <input
+                      id="new-location-floor"
+                      type="text"
+                      value={newLocationData.floor}
+                      onChange={(e) => setNewLocationData(prev => ({ ...prev, floor: e.target.value }))}
+                      placeholder="e.g., 2"
+                      className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="new-location-room" className="block text-sm font-medium text-brand-primary-text mb-2">
+                    Room
+                  </label>
+                  <input
+                    id="new-location-room"
+                    type="text"
+                    value={newLocationData.room}
+                    onChange={(e) => setNewLocationData(prev => ({ ...prev, room: e.target.value }))}
+                    placeholder="e.g., Room 201"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="new-location-description" className="block text-sm font-medium text-brand-primary-text mb-2">
+                    Description
+                  </label>
+                  <textarea
+                    id="new-location-description"
+                    value={newLocationData.description}
+                    onChange={(e) => setNewLocationData(prev => ({ ...prev, description: e.target.value }))}
+                    placeholder="Additional details..."
+                    rows={2}
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3 mt-6">
+                <button
+                  onClick={() => {
+                    setShowNewLocationModal(false)
+                    setNewLocationData({ name: '', building: '', floor: '', room: '', description: '' })
+                  }}
+                  className="px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-700/50 transition-colors active:scale-95 touch-manipulation"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleCreateLocation}
+                  disabled={!newLocationData.name.trim()}
+                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium active:scale-95 touch-manipulation transition-all"
+                >
+                  Add Location
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* New Client Modal */}
+      {showNewClientModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 border border-gray-700 rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-brand-primary-text">Add New Client</h3>
+                <button
+                  onClick={() => {
+                    setShowNewClientModal(false)
+                    setNewClientData({ name: '', code: '', contactPerson: '', email: '', phone: '' })
+                  }}
+                  className="text-gray-400 hover:text-gray-300 transition-colors"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="new-client-name" className="block text-sm font-medium text-brand-primary-text mb-2">
+                    Client Name *
+                  </label>
+                  <input
+                    id="new-client-name"
+                    type="text"
+                    value={newClientData.name}
+                    onChange={(e) => setNewClientData(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="e.g., Acme Corporation"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    autoFocus
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="new-client-code" className="block text-sm font-medium text-brand-primary-text mb-2">
+                    Client Code
+                  </label>
+                  <input
+                    id="new-client-code"
+                    type="text"
+                    value={newClientData.code}
+                    onChange={(e) => setNewClientData(prev => ({ ...prev, code: e.target.value }))}
+                    placeholder="e.g., ACME"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="new-client-contact" className="block text-sm font-medium text-brand-primary-text mb-2">
+                    Contact Person
+                  </label>
+                  <input
+                    id="new-client-contact"
+                    type="text"
+                    value={newClientData.contactPerson}
+                    onChange={(e) => setNewClientData(prev => ({ ...prev, contactPerson: e.target.value }))}
+                    placeholder="Contact person name"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="new-client-email" className="block text-sm font-medium text-brand-primary-text mb-2">
+                    Email
+                  </label>
+                  <input
+                    id="new-client-email"
+                    type="email"
+                    value={newClientData.email}
+                    onChange={(e) => setNewClientData(prev => ({ ...prev, email: e.target.value }))}
+                    placeholder="contact@example.com"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="new-client-phone" className="block text-sm font-medium text-brand-primary-text mb-2">
+                    Phone
+                  </label>
+                  <input
+                    id="new-client-phone"
+                    type="tel"
+                    value={newClientData.phone}
+                    onChange={(e) => setNewClientData(prev => ({ ...prev, phone: e.target.value }))}
+                    placeholder="(555) 123-4567"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3 mt-6">
+                <button
+                  onClick={() => {
+                    setShowNewClientModal(false)
+                    setNewClientData({ name: '', code: '', contactPerson: '', email: '', phone: '' })
+                  }}
+                  className="px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-700/50 transition-colors active:scale-95 touch-manipulation"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleCreateClient}
+                  disabled={!newClientData.name.trim()}
+                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium active:scale-95 touch-manipulation transition-all"
+                >
+                  Add Client
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

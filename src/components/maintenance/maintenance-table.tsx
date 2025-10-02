@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { MaintenanceRecord, MaintenanceStatus, MaintenanceType } from '../../../generated/prisma'
 import MaintenanceDetailsModal from './maintenance-details-modal'
+import { formatStatus } from '@/lib/utils'
 
 interface MaintenanceRecordWithRelations extends MaintenanceRecord {
   asset: { id: string; name: string; serialNumber: string | null }
@@ -207,7 +208,7 @@ export default function MaintenanceTable({
                     </select>
                   ) : (
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${statusColors[record.status as MaintenanceStatus]}`}>
-                      {record.status.replace('_', ' ')}
+                      {formatStatus(record.status)}
                     </span>
                   )}
                 </td>

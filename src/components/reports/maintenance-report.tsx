@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { formatStatus } from '@/lib/utils'
 
 interface DateRange {
   startDate: string
@@ -272,7 +273,7 @@ export default function MaintenanceReport({ dateRange }: MaintenanceReportProps)
                         ? 'bg-green-50 text-green-700 border border-green-200'
                         : 'bg-gray-800 text-gray-300 border border-gray-200'
                     }`}>
-                      {record.status.replace('_', ' ')}
+                      {formatStatus(record.status)}
                     </span>
                   </td>
                   

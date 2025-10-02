@@ -18,26 +18,6 @@ interface PresetItem {
   notes?: string
 }
 
-const categories = [
-  'Camera Kit',
-  'Audio Setup', 
-  'Lighting Kit',
-  'Conference Setup',
-  'Video Production',
-  'Photography',
-  'Live Streaming',
-  'Event Setup'
-]
-
-const departments = [
-  'Media Production',
-  'IT',
-  'Marketing',
-  'Events',
-  'Education',
-  'Operations'
-]
-
 // Generate a more reliable unique ID
 const generateUniqueId = () => {
   return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
@@ -47,14 +27,13 @@ export default function NewPresetPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [categories, setCategories] = useState<Array<{id: string, name: string}>>([])
+  const [departments, setDepartments] = useState<Array<{id: string, name: string}>>([])
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     category: '',
-    department: '',
     isTemplate: false,
-    priority: 0,
-    estimatedDuration: '',
     notes: ''
   })
   const [items, setItems] = useState<PresetItem[]>([
@@ -74,7 +53,23 @@ export default function NewPresetPage() {
       router.push('/auth/signin')
       return
     }
+
+    // Fetch categories
+    fetchCategories()
   }, [status, router])
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/preset-categories?active=true')
+      if (response.ok) {
+        const data = await response.json()
+        setCategories(data.categories || [])
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error)
+    }
+  }
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target
@@ -137,7 +132,6 @@ export default function NewPresetPage() {
         },
         body: JSON.stringify({
           ...formData,
-          estimatedDuration: formData.estimatedDuration ? parseInt(formData.estimatedDuration) : null,
           items: itemsForAPI
         })
       })
@@ -243,41 +237,9 @@ export default function NewPresetPage() {
                 >
                   <option value="">Select Category</option>
                   {categories.map(category => (
-                    <option key={category} value={category}>{category}</option>
+                    <option key={category.id} value={category.name}>{category.name}</option>
                   ))}
                 </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Department
-                </label>
-                <select
-                  name="department"
-                  value={formData.department}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all duration-200"
-                >
-                  <option value="">Select Department</option>
-                  {departments.map(department => (
-                    <option key={department} value={department}>{department}</option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Estimated Duration (hours)
-                </label>
-                <input
-                  type="number"
-                  name="estimatedDuration"
-                  value={formData.estimatedDuration}
-                  onChange={handleInputChange}
-                  min="1"
-                  className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all duration-200"
-                  placeholder="24"
-                />
               </div>
             </div>
             
@@ -306,21 +268,6 @@ export default function NewPresetPage() {
                 />
                 <span className="ml-2 text-sm text-gray-300">Use as template</span>
               </label>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">
-                  Priority (0-10)
-                </label>
-                <input
-                  type="number"
-                  name="priority"
-                  value={formData.priority}
-                  onChange={handleInputChange}
-                  min="0"
-                  max="10"
-                  className="w-20 px-3 py-1 border border-gray-600 rounded-lg bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all duration-200"
-                />
-              </div>
             </div>
           </div>
 

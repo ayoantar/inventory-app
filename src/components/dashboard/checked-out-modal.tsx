@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { formatCategory } from '@/lib/utils'
 
 interface CheckedOutAsset {
   id: string
@@ -166,7 +167,7 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
                                 {asset.name}
                               </h3>
                               <div className="flex items-center space-x-3 text-sm text-gray-300 mt-1">
-                                <span>{asset.category.replace('_', ' ')}</span>
+                                <span>{formatCategory(asset.category)}</span>
                                 {asset.serialNumber && (
                                   <>
                                     <span>•</span>

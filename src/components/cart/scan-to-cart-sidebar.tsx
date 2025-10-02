@@ -5,6 +5,7 @@ import { useCart } from '@/contexts/cart-context'
 import { useSession } from 'next-auth/react'
 import QRScanner from '@/components/barcode/qr-scanner'
 import CartConfirmationModal from './cart-confirmation-modal'
+import { formatCategory } from '@/lib/utils'
 
 interface ScanToCartSidebarProps {
   isOpen: boolean
@@ -359,7 +360,7 @@ export default function ScanToCartSidebar({ isOpen, onClose }: ScanToCartSidebar
                           {getAssetDisplayName(item.asset)}
                         </p>
                         <p className="text-xs text-gray-600 dark:text-brand-secondary-text mt-0.5 leading-tight">
-                          {item.asset.category.replace('_', ' ')} • {item.asset.serialNumber || item.asset.name || 'No S/N'}
+                          {formatCategory(item.asset.category)} • {item.asset.serialNumber || item.asset.name || 'No S/N'}
                         </p>
                       </div>
                     </div>

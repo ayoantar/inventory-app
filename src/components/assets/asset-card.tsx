@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Asset, AssetStatus, AssetCategory, AssetCondition } from '../../../generated/prisma'
+import { formatStatus } from '@/lib/utils'
 
 interface Category {
   id: string
@@ -79,9 +80,9 @@ export default function AssetCard({ asset }: AssetCardProps) {
               </p>
             </div>
           </div>
-          
+
           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border ${statusColors[asset.status as AssetStatus]}`}>
-            {asset.status.replace('_', ' ')}
+            {formatStatus(asset.status)}
           </span>
         </div>
 

@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import * as XLSX from 'xlsx'
+import { formatCategory, formatStatus } from '@/lib/utils'
 
 export async function GET(request: NextRequest) {
   try {
@@ -104,8 +105,8 @@ export async function GET(request: NextRequest) {
     // Transform data for Excel export
     const excelData = assets.map(asset => ({
       'Asset Name': asset.name,
-      'Category': asset.category.replace('_', ' '),
-      'Status': asset.status.replace('_', ' '),
+      'Category': formatCategory(asset.category),
+      'Status': formatStatus(asset.status),
       'Condition': asset.condition,
       'Manufacturer': asset.manufacturer || '',
       'Model': asset.model || '',

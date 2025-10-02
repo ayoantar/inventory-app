@@ -3,6 +3,7 @@
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { MaintenanceRecord, MaintenanceStatus, MaintenanceType } from '../../../generated/prisma'
+import { formatStatus } from '@/lib/utils'
 
 interface MaintenanceRecordWithRelations extends MaintenanceRecord {
   asset: { id: string; name: string; serialNumber: string | null }
@@ -234,7 +235,7 @@ export default function MaintenanceDetailsModal({
                         </select>
                       ) : (
                         <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${statusColors[record.status as MaintenanceStatus]}`}>
-                          {record.status.replace('_', ' ')}
+                          {formatStatus(record.status)}
                         </span>
                       )}
                     </div>

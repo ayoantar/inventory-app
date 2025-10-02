@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Asset, AssetStatus, AssetCategory, AssetCondition } from '../../../generated/prisma'
 import { useState } from 'react'
 import { useCart } from '@/contexts/cart-context'
+import { formatStatus } from '@/lib/utils'
 
 interface MobileAssetCardProps {
   asset: Asset & {
@@ -98,7 +99,7 @@ export default function MobileAssetCard({
           </div>
         </div>
         <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusColors[asset.status]}`}>
-          {asset.status.replace('_', ' ')}
+          {formatStatus(asset.status)}
         </span>
       </div>
 

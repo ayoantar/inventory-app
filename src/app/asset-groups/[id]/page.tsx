@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Navbar from '@/components/ui/navbar'
 import AssetGroupFormDialog from '@/components/asset-groups/asset-group-form-dialog'
+import { formatCategory, formatStatus } from '@/lib/utils'
 
 interface AssetGroup {
   id: string
@@ -268,7 +269,7 @@ export default function AssetGroupDetailPage() {
                               {member.asset.name && member.asset.name !== member.asset.description && (
                                 <span>ID: {member.asset.name}</span>
                               )}
-                              <span>{member.asset.category.replace('_', ' ')}</span>
+                              <span>{formatCategory(member.asset.category)}</span>
                               <span className={`px-1.5 py-0.5 rounded-full text-xs font-medium ${
                                 member.asset.status === 'AVAILABLE'
                                   ? 'bg-green-100 text-green-800'
@@ -276,7 +277,7 @@ export default function AssetGroupDetailPage() {
                                   ? 'bg-yellow-100 text-yellow-800'
                                   : 'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
                               }`}>
-                                {member.asset.status.replace('_', ' ')}
+                                {formatStatus(member.asset.status)}
                               </span>
                               {member.asset.location && <span>• {member.asset.location}</span>}
                               {(member.asset.manufacturer || member.asset.model) && (

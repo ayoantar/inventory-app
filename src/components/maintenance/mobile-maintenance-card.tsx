@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { MaintenanceRecord, MaintenanceStatus, MaintenanceType } from '../../../generated/prisma'
+import { formatStatus } from '@/lib/utils'
 
 interface MaintenanceRecordWithRelations extends MaintenanceRecord {
   asset: { id: string; name: string; serialNumber: string | null }
@@ -98,7 +99,7 @@ export default function MobileMaintenanceCard({ maintenance, onStatusUpdate, onP
           )}
         </div>
         <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusColors[maintenance.status]}`}>
-          {maintenance.status.replace('_', ' ')}
+          {formatStatus(maintenance.status)}
         </span>
       </div>
 

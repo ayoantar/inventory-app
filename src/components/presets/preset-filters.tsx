@@ -6,7 +6,6 @@ interface PresetFiltersProps {
   filters: {
     search: string
     category: string
-    department: string
     isActive: string
   }
   onFilterChange: (filters: any) => void
@@ -23,14 +22,6 @@ const categories = [
   'Event Setup'
 ]
 
-const departments = [
-  'Media Production',
-  'IT',
-  'Marketing',
-  'Events',
-  'Education',
-  'Operations'
-]
 
 export default function PresetFilters({
   filters,
@@ -49,7 +40,6 @@ export default function PresetFilters({
     onFilterChange({
       search: '',
       category: '',
-      department: '',
       isActive: ''
     })
   }
@@ -90,7 +80,7 @@ export default function PresetFilters({
       </div>
 
       <div className={`bg-gray-900/5 dark:bg-white/5 rounded-lg border border-gray-300 dark:border-gray-700 p-4 mb-6 md:mb-8 ${!isExpanded ? 'hidden md:block' : ''}`}>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search */}
           <div className="md:col-span-1">
             <label className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-2">
@@ -128,23 +118,6 @@ export default function PresetFilters({
               <option value="">All Categories</option>
               {categories.map(category => (
                 <option key={category} value={category}>{category}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Department Filter */}
-          <div>
-            <label className="block text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-2">
-              Department
-            </label>
-            <select
-              value={filters.department}
-              onChange={(e) => updateFilter('department', e.target.value)}
-              className="w-full px-3 py-3 md:py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white/80 dark:bg-white/5 text-gray-900 dark:text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent touch-manipulation"
-            >
-              <option value="">All Departments</option>
-              {departments.map(department => (
-                <option key={department} value={department}>{department}</option>
               ))}
             </select>
           </div>

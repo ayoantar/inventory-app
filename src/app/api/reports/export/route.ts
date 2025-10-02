@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import * as XLSX from 'xlsx'
+import { formatCategory, formatStatus } from '@/lib/utils'
 
 export async function GET(request: NextRequest) {
   try {
@@ -148,10 +149,10 @@ function generateExcelReport(data: any) {
     ['Maintenance Records (Period):', data.maintenanceRecords.length],
     [''],
     ['ASSETS BY CATEGORY'],
-    ...data.assetStats[0].map((cat: any) => [cat.category.replace('_', ' '), cat._count.category]),
+    ...data.assetStats[0].map((cat: any) => [formatCategory(cat.category), cat._count.category]),
     [''],
     ['ASSETS BY STATUS'],
-    ...data.assetStats[1].map((status: any) => [status.status.replace('_', ' '), status._count.status]),
+    ...data.assetStats[1].map((status: any) => [formatStatus(status.status), status._count.status]),
     [''],
     ['ASSETS BY CONDITION'],
     ...data.assetStats[2].map((cond: any) => [cond.condition.replace('_', ' '), cond._count.condition])
@@ -164,8 +165,8 @@ function generateExcelReport(data: any) {
   const assetsData = data.assets.map((asset: any) => ({
     'Asset ID': asset.id,
     'Name': asset.name,
-    'Category': asset.category.replace('_', ' '),
-    'Status': asset.status.replace('_', ' '),
+    'Category': formatCategory(asset.category),
+    'Status': formatStatus(asset.status),
     'Condition': asset.condition,
     'Manufacturer': asset.manufacturer || '',
     'Model': asset.model || '',
@@ -210,7 +211,7 @@ function generateExcelReport(data: any) {
     'Asset Serial': record.asset.serialNumber || '',
     'Type': record.type.replace('_', ' '),
     'Description': record.description,
-    'Status': record.status.replace('_', ' '),
+    'Status': formatStatus(record.status),
     'Priority': record.priority,
     'Scheduled Date': record.scheduledDate ? new Date(record.scheduledDate).toLocaleDateString() : '',
     'Performed Date': record.performedDate ? new Date(record.performedDate).toLocaleDateString() : '',

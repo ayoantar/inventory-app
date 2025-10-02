@@ -7,6 +7,7 @@ import Link from 'next/link'
 import Navbar from '@/components/ui/navbar'
 import MobileTransactionCard from '@/components/transactions/mobile-transaction-card'
 import { AssetTransaction } from '../../../generated/prisma'
+import { getTransactionStatusColor, getTransactionTypeColor } from '@/lib/utils'
 
 interface TransactionWithRelations extends AssetTransaction {
   asset: {
@@ -78,22 +79,6 @@ export default function TransactionsPage() {
     }
   }
 
-  const getStatusBadge = (status: string) => {
-    const colors = {
-      ACTIVE: 'bg-amber-900/20 text-amber-400 border-amber-700',
-      COMPLETED: 'bg-emerald-900/20 text-emerald-400 border-emerald-700',
-      CANCELLED: 'bg-white/5 text-white/50 hover:text-white/80 transition-colors border-gray-600'
-    }
-    return colors[status as keyof typeof colors] || 'bg-white/5 text-white/50 hover:text-white/80 transition-colors border-gray-600'
-  }
-
-  const getTypeBadge = (type: string) => {
-    const colors = {
-      CHECK_OUT: 'bg-blue-900/20 text-blue-400 border-blue-700',
-      CHECK_IN: 'bg-green-900/20 text-green-400 border-green-700'
-    }
-    return colors[type as keyof typeof colors] || 'bg-white/5 text-white/50 hover:text-white/80 transition-colors border-gray-600'
-  }
 
   const handleQuickReturn = async (transaction: TransactionWithRelations) => {
     if (confirm(`Return ${transaction.asset.name}?`)) {
@@ -338,13 +323,13 @@ export default function TransactionsPage() {
                       </td>
                       
                       <td className="px-3 py-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium border ${getTypeBadge(transaction.type)}`}>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium border ${getTransactionTypeColor(transaction.type)}`}>
                           {transaction.type.replace('_', ' ')}
                         </span>
                       </td>
-                      
+
                       <td className="px-3 py-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium border ${getStatusBadge(transaction.status)}`}>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium border ${getTransactionStatusColor(transaction.status)}`}>
                           {transaction.status}
                         </span>
                       </td>

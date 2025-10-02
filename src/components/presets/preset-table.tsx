@@ -8,11 +8,8 @@ interface Preset {
   name: string
   description?: string
   category?: string
-  department?: string
   isActive: boolean
   isTemplate: boolean
-  priority: number
-  estimatedDuration?: number
   notes?: string
   createdAt?: string
   updatedAt?: string
@@ -133,16 +130,8 @@ export default function PresetTable({ presets, onDelete, onToggleActive, onUpdat
                 <span className="ml-1 text-brand-primary-text">{preset.category || 'N/A'}</span>
               </div>
               <div>
-                <span className="text-gray-500 dark:text-gray-400">Department:</span>
-                <span className="ml-1 text-brand-primary-text">{preset.department || 'N/A'}</span>
-              </div>
-              <div>
                 <span className="text-gray-500 dark:text-gray-400">Items:</span>
                 <span className="ml-1 font-semibold text-brand-primary-text">{preset._count?.items || 0}</span>
-              </div>
-              <div>
-                <span className="text-gray-500 dark:text-gray-400">Priority:</span>
-                <span className="ml-1 text-brand-primary-text">{preset.priority}</span>
               </div>
             </div>
 
@@ -183,9 +172,6 @@ export default function PresetTable({ presets, onDelete, onToggleActive, onUpdat
                 <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                   Category
                 </th>
-                <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
-                  Department
-                </th>
                 <th className="px-4 py-4 text-center text-xs font-semibold text-gray-600 dark:text-brand-secondary-text uppercase tracking-wider">
                   Status
                 </th>
@@ -213,13 +199,6 @@ export default function PresetTable({ presets, onDelete, onToggleActive, onUpdat
                   <td className="px-4 py-4 whitespace-nowrap">
                     <div className="text-sm text-brand-primary-text">
                       {preset.category || '-'}
-                    </div>
-                  </td>
-
-                  {/* Department */}
-                  <td className="px-4 py-4 whitespace-nowrap">
-                    <div className="text-sm text-brand-primary-text">
-                      {preset.department || '-'}
                     </div>
                   </td>
 

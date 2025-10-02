@@ -47,10 +47,10 @@ export default function Tabs({
 
     if (variant === 'pills') {
       return `
-        flex items-center px-4 py-2.5 font-medium rounded-lg transition-all duration-200 
-        ${isActive 
-          ? 'bg-gray-900 text-brand-primary-text shadow-sm' 
-          : 'text-brand-primary-text hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800'
+        flex items-center px-4 py-2.5 font-medium rounded-lg transition-all duration-200
+        ${isActive
+          ? 'bg-blue-900/30 text-blue-400 shadow-sm'
+          : 'text-brand-primary-text hover:bg-gray-800/50'
         }
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
         ${size === 'sm' ? 'px-3 py-2 text-xs' : size === 'lg' ? 'px-5 py-3 text-base' : ''}
@@ -60,9 +60,9 @@ export default function Tabs({
     if (variant === 'cards') {
       return `
         flex items-center px-4 py-2.5 font-medium rounded-md transition-all duration-200
-        ${isActive 
-          ? 'bg-blue-50 text-blue-700 border border-blue-200' 
-          : 'text-brand-primary-text hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800'
+        ${isActive
+          ? 'bg-blue-900/20 text-blue-400 border border-blue-700'
+          : 'text-brand-primary-text hover:bg-gray-800/50'
         }
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
         ${size === 'sm' ? 'px-3 py-2 text-xs' : size === 'lg' ? 'px-5 py-3 text-base' : ''}
@@ -72,9 +72,9 @@ export default function Tabs({
     if (variant === 'underline') {
       return `
         flex items-center px-1 py-3 font-medium border-b-2 transition-all duration-200
-        ${isActive 
-          ? 'border-blue-500 text-blue-600' 
-          : 'border-transparent text-gray-600 dark:text-brand-secondary-text hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800:border-gray-600:border-gray-600'
+        ${isActive
+          ? 'border-blue-500 text-blue-400'
+          : 'border-transparent text-brand-secondary-text hover:bg-gray-800/50 hover:border-gray-600'
         }
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
         ${size === 'sm' ? 'py-2 text-xs' : size === 'lg' ? 'py-4 text-base' : ''}
@@ -84,9 +84,9 @@ export default function Tabs({
     // Default variant
     return `
       flex items-center px-6 py-3 font-semibold border-b-3 transition-all duration-200 relative
-      ${isActive 
-        ? 'border-blue-500 text-blue-600 bg-blue-50/50' 
-        : 'border-transparent text-brand-primary-text hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800:border-gray-600:border-gray-600 hover'
+      ${isActive
+        ? 'border-blue-500 text-blue-400 bg-blue-900/20'
+        : 'border-transparent text-brand-primary-text hover:bg-gray-800/50'
       }
       ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
       ${size === 'sm' ? 'px-4 py-2 text-xs' : size === 'lg' ? 'px-8 py-4 text-base' : ''}
@@ -119,9 +119,9 @@ export default function Tabs({
             {tab.count !== undefined && (
               <span className={`
                 ml-2 px-2 py-0.5 text-xs font-medium rounded-full
-                ${isActive 
-                  ? 'bg-blue-100 text-blue-700' 
-                  : 'bg-gray-200 text-brand-primary-text'
+                ${isActive
+                  ? 'bg-blue-900/40 text-blue-300'
+                  : 'bg-gray-700 text-gray-300'
                 }
               `}>
                 {tab.count}

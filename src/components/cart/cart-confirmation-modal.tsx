@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import jsPDF from 'jspdf'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
+import { formatCategory, formatStatus } from '@/lib/utils'
 
 interface CartConfirmationModalProps {
   isOpen: boolean
@@ -103,7 +104,7 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
         'CHECK OUT',
         item.asset.name,
         item.asset.serialNumber || 'N/A',
-        item.asset.category.replace('_', ' '),
+        formatCategory(item.asset.category),
         item.assignedUserName || session?.user?.name || 'N/A',
         returnDate ? new Date(returnDate).toLocaleDateString() : 'No return date',
         value,
@@ -118,7 +119,7 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
         'CHECK IN',
         item.asset.name,
         item.asset.serialNumber || 'N/A',
-        item.asset.category.replace('_', ' '),
+        formatCategory(item.asset.category),
         session?.user?.name || 'Current User',
         new Date().toLocaleDateString(), // Today as return date for check-ins
         value,
@@ -152,13 +153,13 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
     checkOutItems.forEach(item => {
       const value = item.asset.currentValue || item.asset.purchasePrice || 0
       const returnDate = getReturnDateForItem(item.assetId)
-      csvContent += `"CHECK OUT","${item.asset.name}","${item.asset.serialNumber || 'N/A'}","${item.asset.category.replace('_', ' ')}","${item.assignedUserName || session?.user?.name || 'N/A'}","${returnDate ? new Date(returnDate).toLocaleDateString() : 'No return date'}","${value}","${item.notes || ''}"\n`
+      csvContent += `"CHECK OUT","${item.asset.name}","${item.asset.serialNumber || 'N/A'}","${formatCategory(item.asset.category)}","${item.assignedUserName || session?.user?.name || 'N/A'}","${returnDate ? new Date(returnDate).toLocaleDateString() : 'No return date'}","${value}","${item.notes || ''}"\n`
     })
 
     // Add checkin items
     checkInItems.forEach(item => {
       const value = item.asset.currentValue || item.asset.purchasePrice || 0
-      csvContent += `"CHECK IN","${item.asset.name}","${item.asset.serialNumber || 'N/A'}","${item.asset.category.replace('_', ' ')}","${session?.user?.name || 'Current User'}","${new Date().toLocaleDateString()}","${value}","${item.notes || ''}"\n`
+      csvContent += `"CHECK IN","${item.asset.name}","${item.asset.serialNumber || 'N/A'}","${formatCategory(item.asset.category)}","${session?.user?.name || 'Current User'}","${new Date().toLocaleDateString()}","${value}","${item.notes || ''}"\n`
     })
 
     // Create and download CSV
@@ -228,7 +229,7 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
       const name = item.asset.name.length > 30 ? item.asset.name.substring(0, 27) + '...' : item.asset.name
 
       pdf.text(name, 20, yPos)
-      pdf.text(item.asset.category.replace('_', ' '), 80, yPos)
+      pdf.text(formatCategory(item.asset.category), 80, yPos)
       pdf.text(item.asset.serialNumber || 'N/A', 120, yPos)
       pdf.text(`$${value.toLocaleString()}`, 170, yPos)
 
@@ -376,7 +377,7 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
                                       {item.asset.name}
                                     </p>
                                     <p className="text-xs text-brand-secondary-text truncate">
-                                      {item.asset.category.replace('_', ' ')} • {item.asset.serialNumber || 'No S/N'}
+                                      {formatCategory(item.asset.category)} • {item.asset.serialNumber || 'No S/N'}
                                     </p>
                                     {item.notes && (
                                       <p className="text-xs text-gray-300 mt-1 italic">
@@ -490,14 +491,14 @@ export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: Ca
                                       {item.asset.name}
                                     </p>
                                     <p className="text-xs text-brand-secondary-text truncate">
-                                      {item.asset.category.replace('_', ' ')} • {item.asset.serialNumber || 'No S/N'}
+                                      {formatCategory(item.asset.category)} • {item.asset.serialNumber || 'No S/N'}
                                     </p>
                                   </div>
                                 </div>
                               </td>
                               <td className="px-4 py-3">
                                 <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-900/30 text-yellow-400">
-                                  {item.asset.status.replace('_', ' ')}
+                                  {formatStatus(item.asset.status)}
                                 </span>
                               </td>
                               <td className="px-4 py-3">

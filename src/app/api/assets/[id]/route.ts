@@ -21,6 +21,9 @@ export async function GET(
         client: {
           select: { name: true, code: true, isActive: true }
         },
+        locationRef: {
+          select: { id: true, name: true, building: true, floor: true, room: true }
+        },
         createdBy: {
           select: { name: true, email: true }
         },
@@ -88,6 +91,9 @@ export async function PUT(
       qrCode,
       status,
       location,
+      locationId,
+      clientId,
+      assetNumber,
       purchaseDate,
       purchasePrice,
       currentValue,
@@ -145,6 +151,9 @@ export async function PUT(
       category,
       status,
       location,
+      locationId: locationId || null,
+      clientId: clientId || null,
+      assetNumber: assetNumber || null,
       purchaseDate: purchaseDate ? new Date(purchaseDate) : null,
       purchasePrice: purchasePrice ? parseFloat(purchasePrice) : null,
       currentValue: currentValue ? parseFloat(currentValue) : null,
@@ -184,6 +193,12 @@ export async function PUT(
       where: { id },
       data: updateData,
       include: {
+        client: {
+          select: { name: true, code: true, isActive: true }
+        },
+        locationRef: {
+          select: { id: true, name: true, building: true, floor: true, room: true }
+        },
         createdBy: {
           select: { name: true, email: true }
         },
@@ -192,6 +207,25 @@ export async function PUT(
         }
       }
     })
+
+    // Update the location string field based on locationRef
+    if (updatedAsset.locationRef) {
+      const locationString = updatedAsset.locationRef.building && updatedAsset.locationRef.floor
+        ? `${updatedAsset.locationRef.name} (${updatedAsset.locationRef.building} - Floor ${updatedAsset.locationRef.floor})`
+        : updatedAsset.locationRef.building
+          ? `${updatedAsset.locationRef.name} (${updatedAsset.locationRef.building})`
+          : updatedAsset.locationRef.name
+
+      await prisma.asset.update({
+        where: { id },
+        data: { location: locationString }
+      })
+    } else if (locationId === null || locationId === '') {
+      await prisma.asset.update({
+        where: { id },
+        data: { location: null }
+      })
+    }
 
     return NextResponse.json(updatedAsset)
 

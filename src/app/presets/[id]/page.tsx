@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import Navbar from '@/components/ui/navbar'
 import PresetEditModal from '@/components/presets/preset-edit-modal'
+import { formatStatus } from '@/lib/utils'
 
 interface PresetItem {
   id: string
@@ -531,7 +532,7 @@ export default function PresetDetailsPage() {
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
                           <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(checkout.status)}`}>
-                            {checkout.status.replace('_', ' ')}
+                            {formatStatus(checkout.status)}
                           </span>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">

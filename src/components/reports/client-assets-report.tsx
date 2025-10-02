@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { formatCategory, formatStatus } from '@/lib/utils'
 
 interface ClientData {
   id: string
@@ -293,10 +294,10 @@ export default function ClientAssetsReport() {
                             
                             <td className="px-4 py-4 whitespace-nowrap">
                               <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-gray-800 text-gray-300 border border-gray-200">
-                                {asset.category.replace('_', ' ')}
+                                {formatCategory(asset.category)}
                               </span>
                             </td>
-                            
+
                             <td className="px-4 py-4 whitespace-nowrap">
                               <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
                                 asset.status === 'AVAILABLE'
@@ -307,7 +308,7 @@ export default function ClientAssetsReport() {
                                   ? 'bg-red-50 text-red-700 border border-red-200'
                                   : 'bg-gray-800 text-gray-300 border border-gray-200'
                               }`}>
-                                {asset.status.replace('_', ' ')}
+                                {formatStatus(asset.status)}
                               </span>
                             </td>
                             

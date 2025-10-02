@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState, Suspense } from 'react'
 import Navbar from '@/components/ui/navbar'
+import QRScanner from '@/components/barcode/qr-scanner'
 import { AssetCategory, AssetCondition } from '../../../../generated/prisma'
 
 interface Location {
@@ -62,6 +63,16 @@ function NewAssetForm() {
   const [clientsLoading, setClientsLoading] = useState(true)
   const [categories, setCategories] = useState<Category[]>([])
   const [categoriesLoading, setCategoriesLoading] = useState(true)
+  const [showSerialScanner, setShowSerialScanner] = useState(false)
+  const [showBarcodeScanner, setShowBarcodeScanner] = useState(false)
+  const [showNewLocationModal, setShowNewLocationModal] = useState(false)
+  const [newLocationData, setNewLocationData] = useState({
+    name: '',
+    building: '',
+    floor: '',
+    room: '',
+    description: ''
+  })
   const [formData, setFormData] = useState<AssetFormData>({
     name: '',
     description: '',
@@ -94,10 +105,12 @@ function NewAssetForm() {
     const fetchLocations = async () => {
       try {
         setLocationsLoading(true)
-        const response = await fetch('/api/locations?active=true&limit=100')
+        const response = await fetch('/api/locations?limit=500')
         if (response.ok) {
           const data = await response.json()
-          setLocations(data.locations)
+          setLocations(data.locations || [])
+        } else {
+          console.error('Failed to fetch locations:', response.status)
         }
       } catch (error) {
         console.error('Error fetching locations:', error)
@@ -228,6 +241,49 @@ function NewAssetForm() {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
+  const handleCreateLocation = async () => {
+    try {
+      if (!newLocationData.name.trim()) {
+        alert('Location name is required')
+        return
+      }
+
+      const response = await fetch('/api/locations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newLocationData.name,
+          building: newLocationData.building || undefined,
+          floor: newLocationData.floor || undefined,
+          room: newLocationData.room || undefined,
+          description: newLocationData.description || undefined
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to create location')
+      }
+
+      const newLocation = await response.json()
+
+      // Add to locations list and select it
+      setLocations(prev => [...prev, newLocation])
+      setFormData(prev => ({ ...prev, locationId: newLocation.id }))
+
+      // Reset modal
+      setShowNewLocationModal(false)
+      setNewLocationData({
+        name: '',
+        building: '',
+        floor: '',
+        room: '',
+        description: ''
+      })
+    } catch (error) {
+      alert('Failed to create location. Please try again.')
+    }
+  }
+
   if (status === 'loading') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-slate-50 to-indigo-50/20 dark:from-brand-dark-blue dark:via-gray-925 dark:to-brand-black">
@@ -290,28 +346,28 @@ function NewAssetForm() {
               </ol>
             </nav>
             
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold text-brand-primary-text">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex-1">
+                <h1 className="text-2xl sm:text-3xl font-bold text-brand-primary-text">
                   {isDuplicate ? 'Duplicate Asset' : 'Add New Asset'}
                 </h1>
-                <p className="mt-2 text-brand-primary-text">
-                  {isDuplicate 
+                <p className="mt-2 text-sm sm:text-base text-brand-primary-text">
+                  {isDuplicate
                     ? 'Create a new asset based on an existing one with pre-filled information'
                     : 'Register a new asset in your inventory system with detailed information'
                   }
                 </p>
               </div>
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 sm:flex-shrink-0">
                 <button
                   type="button"
                   onClick={() => router.back()}
-                  className="inline-flex items-center px-4 py-2 border border-gray-600 rounded-md shadow-sm bg-gray-900/5 text-sm font-medium text-gray-300 hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
+                  className="inline-flex items-center px-4 py-2 border border-gray-600 rounded-md shadow-sm bg-gray-900/5 text-sm font-medium text-gray-300 hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 active:scale-95 touch-manipulation transition-all"
                 >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                  Cancel
+                  <span className="hidden sm:inline">Cancel</span>
                 </button>
               </div>
             </div>
@@ -445,6 +501,44 @@ function NewAssetForm() {
                       </div>
                     </div>
 
+                    <div className="space-y-1">
+                      <label htmlFor="locationId" className="block text-sm font-semibold text-brand-primary-text">
+                        Current Location
+                      </label>
+                      <select
+                        id="locationId"
+                        name="locationId"
+                        value={formData.locationId}
+                        onChange={(e) => {
+                          if (e.target.value === '__new__') {
+                            setShowNewLocationModal(true)
+                          } else {
+                            handleChange(e)
+                          }
+                        }}
+                        disabled={locationsLoading}
+                        className="w-full border border-gray-600 rounded-lg px-4 py-3 bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <option value="">
+                          {locationsLoading ? 'Loading locations...' : 'Select a location'}
+                        </option>
+                        <option value="__new__" className="text-blue-400 font-medium">
+                          + Add New Location
+                        </option>
+                        {locations.map((location) => (
+                          <option key={location.id} value={location.id}>
+                            {location.building && location.floor ?
+                              `${location.name} (${location.building} - Floor ${location.floor})` :
+                              location.building ?
+                                `${location.name} (${location.building})` :
+                                location.name
+                            }
+                          </option>
+                        ))}
+                      </select>
+                      <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Select the physical location of the asset</p>
+                    </div>
+
                     <div className="md:col-span-2 space-y-1">
                       <label htmlFor="description" className="block text-sm font-semibold text-brand-primary-text">
                         Description
@@ -534,15 +628,28 @@ function NewAssetForm() {
                       <label htmlFor="serialNumber" className="block text-sm font-semibold text-brand-primary-text">
                         Serial Number
                       </label>
-                      <input
-                        type="text"
-                        id="serialNumber"
-                        name="serialNumber"
-                        value={formData.serialNumber}
-                        onChange={handleChange}
-                        className="w-full border border-gray-600 rounded-lg px-4 py-3 bg-gray-900 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                        placeholder="Unique identifier from manufacturer"
-                      />
+                      <div className="relative">
+                        <input
+                          type="text"
+                          id="serialNumber"
+                          name="serialNumber"
+                          value={formData.serialNumber}
+                          onChange={handleChange}
+                          className="w-full border border-gray-600 rounded-lg px-4 py-3 pr-12 bg-gray-900 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                          placeholder="Unique identifier from manufacturer"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowSerialScanner(true)}
+                          className="absolute inset-y-0 right-0 flex items-center px-3 text-white/50 hover:text-white/80 transition-colors active:scale-95 touch-manipulation"
+                          title="Scan serial number"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                        </button>
+                      </div>
                       <p className="text-xs text-gray-600 dark:text-brand-secondary-text">For warranty and tracking purposes</p>
                     </div>
 
@@ -562,7 +669,8 @@ function NewAssetForm() {
                         />
                         <button
                           type="button"
-                          className="absolute inset-y-0 right-0 flex items-center px-3 text-white/50 hover:text-white/80 transition-colors hover"
+                          onClick={() => setShowBarcodeScanner(true)}
+                          className="absolute inset-y-0 right-0 flex items-center px-3 text-white/50 hover:text-white/80 transition-colors active:scale-95 touch-manipulation"
                           title="Scan barcode"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -603,46 +711,6 @@ function NewAssetForm() {
                         className="w-full border border-gray-600 rounded-lg px-4 py-3 bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                       />
                       <p className="text-xs text-gray-600 dark:text-brand-secondary-text">When the asset was acquired</p>
-                    </div>
-
-                    <div className="space-y-1">
-                      <label htmlFor="locationId" className="block text-sm font-semibold text-brand-primary-text">
-                        Current Location
-                      </label>
-                      <select
-                        id="locationId"
-                        name="locationId"
-                        value={formData.locationId}
-                        onChange={handleChange}
-                        disabled={locationsLoading}
-                        className="w-full border border-gray-600 rounded-lg px-4 py-3 bg-gray-900 text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        <option value="">
-                          {locationsLoading ? 'Loading locations...' : 'Select a location'}
-                        </option>
-                        {locations.map((location) => (
-                          <option key={location.id} value={location.id}>
-                            {location.building && location.floor ? 
-                              `${location.name} (${location.building} - Floor ${location.floor})` :
-                              location.building ? 
-                                `${location.name} (${location.building})` :
-                                location.name
-                            }
-                          </option>
-                        ))}
-                      </select>
-                      <div className="flex items-center justify-between">
-                        <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Select the physical location of the asset</p>
-                        {(session?.user?.role === 'ADMIN' || session?.user?.role === 'MANAGER') && (
-                          <button
-                            type="button"
-                            onClick={() => window.open('/locations', '_blank')}
-                            className="text-xs text-blue-600 hover font-medium"
-                          >
-                            Manage Locations
-                          </button>
-                        )}
-                      </div>
                     </div>
 
                     <div className="space-y-1">
@@ -798,22 +866,22 @@ function NewAssetForm() {
             </div>
 
             {/* Form Actions */}
-            <div className="flex items-center justify-between pt-8 border-t border-gray-700">
-              <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-8 border-t border-gray-700">
+              <div className="text-sm text-gray-600 dark:text-brand-secondary-text text-center sm:text-left">
                 Fields marked with * are required
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:space-x-4">
                 <button
                   type="button"
                   onClick={() => router.back()}
-                  className="inline-flex items-center px-6 py-3 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 bg-gray-900/5 hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
+                  className="inline-flex items-center justify-center px-6 py-3 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 bg-gray-900/5 hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 active:scale-95 touch-manipulation transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="inline-flex items-center px-8 py-3 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+                  className="inline-flex items-center justify-center px-8 py-3 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 touch-manipulation transition-all shadow-sm"
                 >
                   {loading ? (
                     <>
@@ -837,6 +905,145 @@ function NewAssetForm() {
           </form>
         </div>
       </div>
+
+      {/* QR Scanner Modals */}
+      <QRScanner
+        isOpen={showSerialScanner}
+        onClose={() => setShowSerialScanner(false)}
+        onScanSuccess={(code) => {
+          setFormData(prev => ({ ...prev, serialNumber: code }))
+          setShowSerialScanner(false)
+        }}
+      />
+
+      <QRScanner
+        isOpen={showBarcodeScanner}
+        onClose={() => setShowBarcodeScanner(false)}
+        onScanSuccess={(code) => {
+          setFormData(prev => ({ ...prev, barcode: code }))
+          setShowBarcodeScanner(false)
+        }}
+      />
+
+      {/* New Location Modal */}
+      {showNewLocationModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
+          <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl max-w-md w-full mx-4">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold text-brand-primary-text">
+                  Add New Location
+                </h3>
+                <button
+                  onClick={() => {
+                    setShowNewLocationModal(false)
+                    setNewLocationData({ name: '', building: '', floor: '', room: '', description: '' })
+                  }}
+                  className="text-gray-400 hover:text-gray-200 transition-colors p-1 rounded-lg hover:bg-gray-700/50 active:scale-95 touch-manipulation"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="new-location-name" className="block text-sm font-medium text-brand-primary-text mb-2">
+                    Location Name *
+                  </label>
+                  <input
+                    id="new-location-name"
+                    type="text"
+                    value={newLocationData.name}
+                    onChange={(e) => setNewLocationData(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="e.g., Main Storage"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    autoFocus
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label htmlFor="new-location-building" className="block text-sm font-medium text-brand-primary-text mb-2">
+                      Building
+                    </label>
+                    <input
+                      id="new-location-building"
+                      type="text"
+                      value={newLocationData.building}
+                      onChange={(e) => setNewLocationData(prev => ({ ...prev, building: e.target.value }))}
+                      placeholder="e.g., Building A"
+                      className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="new-location-floor" className="block text-sm font-medium text-brand-primary-text mb-2">
+                      Floor
+                    </label>
+                    <input
+                      id="new-location-floor"
+                      type="text"
+                      value={newLocationData.floor}
+                      onChange={(e) => setNewLocationData(prev => ({ ...prev, floor: e.target.value }))}
+                      placeholder="e.g., 2"
+                      className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="new-location-room" className="block text-sm font-medium text-brand-primary-text mb-2">
+                    Room
+                  </label>
+                  <input
+                    id="new-location-room"
+                    type="text"
+                    value={newLocationData.room}
+                    onChange={(e) => setNewLocationData(prev => ({ ...prev, room: e.target.value }))}
+                    placeholder="e.g., Room 201"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="new-location-description" className="block text-sm font-medium text-brand-primary-text mb-2">
+                    Description
+                  </label>
+                  <textarea
+                    id="new-location-description"
+                    value={newLocationData.description}
+                    onChange={(e) => setNewLocationData(prev => ({ ...prev, description: e.target.value }))}
+                    placeholder="Additional details..."
+                    rows={2}
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3 mt-6">
+                <button
+                  onClick={() => {
+                    setShowNewLocationModal(false)
+                    setNewLocationData({ name: '', building: '', floor: '', room: '', description: '' })
+                  }}
+                  className="px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-700/50 transition-colors active:scale-95 touch-manipulation"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleCreateLocation}
+                  disabled={!newLocationData.name.trim()}
+                  className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium active:scale-95 touch-manipulation transition-all"
+                >
+                  Add Location
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
