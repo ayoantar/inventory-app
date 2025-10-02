@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useScrollLock } from '@/hooks/useScrollLock'
 
 interface SubstituteOption {
   id: string
@@ -24,6 +25,8 @@ interface SubstitutionModalProps {
 }
 
 export default function SubstitutionModal({
+  useScrollLock(isOpen)
+
   isOpen,
   onClose,
   onConfirm,

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useScrollLock } from '@/hooks/useScrollLock'
 import { useCart } from '@/contexts/cart-context'
 import { useSession } from 'next-auth/react'
 import jsPDF from 'jspdf'
@@ -15,6 +16,8 @@ interface CartConfirmationModalProps {
 }
 
 export default function CartConfirmationModal({ isOpen, onClose, onConfirm }: CartConfirmationModalProps) {
+  useScrollLock(isOpen)
+
   const { state, getCheckInItems, getCheckOutItems } = useCart()
   const { data: session } = useSession()
   const [isProcessing, setIsProcessing] = useState(false)

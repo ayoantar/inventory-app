@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import { useScrollLock } from '@/hooks/useScrollLock'
 
 interface PresetItem {
   id?: string
@@ -92,6 +93,8 @@ const generateUniqueId = () => {
 }
 
 export default function PresetEditModal({ preset, isOpen, onClose, onSave }: PresetEditModalProps) {
+  useScrollLock(isOpen)
+
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [formData, setFormData] = useState({

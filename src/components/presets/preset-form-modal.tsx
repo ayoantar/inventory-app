@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useScrollLock } from '@/hooks/useScrollLock'
 
 interface PresetItem {
   id?: string
@@ -35,6 +36,8 @@ interface Asset {
 }
 
 export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFormModalProps) {
+  useScrollLock(isOpen)
+
   const [loading, setLoading] = useState(false)
   const [assetsLoading, setAssetsLoading] = useState(false)
   const [availableAssets, setAvailableAssets] = useState<Asset[]>([])
@@ -58,6 +61,7 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
       fetchCategories()
     }
   }, [isOpen])
+
 
   const fetchAssets = async () => {
     setAssetsLoading(true)
@@ -117,11 +121,13 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
 
   const handleAssetToggle = (asset: Asset) => {
     const isSelected = selectedAssets.some(a => a.id === asset.id)
-    
+
     if (isSelected) {
       setSelectedAssets(prev => prev.filter(a => a.id !== asset.id))
     } else {
       setSelectedAssets(prev => [...prev, asset])
+      // Clear search field after selecting an asset (for barcode scanning workflow)
+      setAssetSearch('')
     }
   }
 
@@ -340,7 +346,35 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                     <input
                       type="text"
                       value={assetSearch}
-                      onChange={(e) => setAssetSearch(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value
+                        setAssetSearch(value)
+
+                        // Auto-select when exactly one match (barcode scan workflow)
+                        setTimeout(() => {
+                          const matches = availableAssets.filter(a => {
+                            const searchLower = value.toLowerCase()
+                            const statusMatch = !statusFilter || a.status === statusFilter
+                            return statusMatch && (
+                              a.name?.toLowerCase().includes(searchLower) ||
+                              a.category?.toLowerCase().includes(searchLower) ||
+                              a.manufacturer?.toLowerCase().includes(searchLower) ||
+                              a.model?.toLowerCase().includes(searchLower) ||
+                              a.serialNumber?.toLowerCase().includes(searchLower) ||
+                              a.id.toLowerCase().includes(searchLower)
+                            )
+                          })
+
+                          if (matches.length === 1) {
+                            const asset = matches[0]
+                            const alreadySelected = selectedAssets.some(a => a.id === asset.id)
+                            if (!alreadySelected) {
+                              setSelectedAssets(prev => [...prev, asset])
+                              setAssetSearch('')
+                            }
+                          }
+                        }, 150)
+                      }}
                       className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400"
                       placeholder="Search by name, category, manufacturer, or ID..."
                     />

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useScrollLock } from '@/hooks/useScrollLock'
 import Link from 'next/link'
 import { Asset, AssetStatus, AssetCategory, AssetCondition } from '../../../generated/prisma'
 import { formatStatus } from '@/lib/utils'
@@ -36,6 +37,8 @@ const conditionColors = {
 }
 
 export default function AssetPreviewModal({ assetId, isOpen, onClose }: AssetPreviewModalProps) {
+  useScrollLock(isOpen)
+
   const [asset, setAsset] = useState<AssetWithRelations | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')

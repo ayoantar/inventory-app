@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useScrollLock } from '@/hooks/useScrollLock'
 
 interface User {
   id: string
@@ -16,6 +17,8 @@ interface PasswordResetModalProps {
 }
 
 export default function PasswordResetModal({ isOpen, onClose, user, onSuccess }: PasswordResetModalProps) {
+  useScrollLock(isOpen)
+
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [tempPassword, setTempPassword] = useState('')

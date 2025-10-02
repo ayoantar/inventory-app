@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useScrollLock } from '@/hooks/useScrollLock'
 import Link from 'next/link'
 import { formatCategory } from '@/lib/utils'
 
@@ -32,6 +33,8 @@ interface CheckedOutModalProps {
 }
 
 export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProps) {
+  useScrollLock(isOpen)
+
   const [assets, setAssets] = useState<CheckedOutAsset[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')

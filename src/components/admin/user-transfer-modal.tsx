@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useScrollLock } from '@/hooks/useScrollLock'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 
 interface User {
@@ -31,6 +32,8 @@ interface UserTransferModalProps {
 }
 
 export default function UserTransferModal({
+  useScrollLock(isOpen)
+
   isOpen,
   onClose,
   userToDelete,

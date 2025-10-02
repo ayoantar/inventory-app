@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useScrollLock } from '@/hooks/useScrollLock'
 
 interface Department {
   id: string
@@ -16,6 +17,8 @@ interface AddUserModalProps {
 }
 
 export default function AddUserModal({ isOpen, onClose, onSuccess }: AddUserModalProps) {
+  useScrollLock(isOpen)
+
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [departments, setDepartments] = useState<Department[]>([])
