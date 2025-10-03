@@ -115,8 +115,8 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose,
             fps: 10,
             qrbox: function(viewfinderWidth, viewfinderHeight) {
               if (scanMode === 'qrcode') {
-                // Full square box for QR codes (100% of viewfinder)
-                const size = Math.floor(Math.min(viewfinderWidth, viewfinderHeight));
+                // Square box for QR codes (90% of viewfinder)
+                const size = Math.floor(Math.min(viewfinderWidth, viewfinderHeight) * 0.9);
                 return {
                   width: size,
                   height: size
@@ -131,7 +131,7 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose,
                 };
               }
             },
-            aspectRatio: 1.0,
+            aspectRatio: scanMode === 'qrcode' ? 1.0 : 1.777777,
             videoConstraints: {
               width: { ideal: 1920 }, // Higher resolution for better barcode detection
               height: { ideal: 1080 },
