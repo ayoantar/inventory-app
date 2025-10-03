@@ -9,17 +9,12 @@ export async function GET(request: NextRequest) {
   try {
     // Check authentication
     const session = await getServerSession(authOptions)
-    
+
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if user is admin
-    if ((session.user as any).role !== 'ADMIN') {
-      return NextResponse.json({ error: 'Access denied' }, { status: 403 })
-    }
-
-    console.log('👥 Users GET API called by admin:', session.user.id)
+    console.log('👥 Users GET API called by user:', session.user.id)
 
     const { searchParams } = new URL(request.url)
     const search = searchParams.get('search') || ''
@@ -47,6 +42,9 @@ export async function GET(request: NextRequest) {
       where.isActive = active === 'true'
     }
 
+    // Check if user is admin - admins get full details, others get basic info only
+    const isAdmin = (session.user as any).role === 'ADMIN'
+
     const [users, total] = await Promise.all([
       prisma.user.findMany({
         where,
@@ -55,18 +53,20 @@ export async function GET(request: NextRequest) {
           name: true,
           email: true,
           role: true,
-          department: true,
+          department: isAdmin,
           isActive: true,
-          lastLoginAt: true,
-          createdAt: true,
-          updatedAt: true,
-          _count: {
-            select: {
-              createdAssets: true,
-              transactions: true,
-              maintenanceRecords: true
+          lastLoginAt: isAdmin,
+          createdAt: isAdmin,
+          updatedAt: isAdmin,
+          ...(isAdmin && {
+            _count: {
+              select: {
+                createdAssets: true,
+                transactions: true,
+                maintenanceRecords: true
+              }
             }
-          }
+          })
         },
         orderBy: { createdAt: 'desc' },
         skip,
@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
       prisma.user.count({ where })
     ])
 
-    console.log('✅ Users fetched successfully:', { total, returned: users.length })
+    console.log('✅ Users fetched successfully:', { total, returned: users.length, isAdmin })
 
     return NextResponse.json({
       users,
@@ -99,14 +99,14 @@ export async function POST(request: NextRequest) {
   try {
     // Check authentication
     const session = await getServerSession(authOptions)
-    
+
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if user is admin
+    // Check if user is admin - only admins can create users
     if ((session.user as any).role !== 'ADMIN') {
-      return NextResponse.json({ error: 'Access denied' }, { status: 403 })
+      return NextResponse.json({ error: 'Access denied. Only admins can create users.' }, { status: 403 })
     }
 
     console.log('👥 User creation API called by admin:', session.user.id)
