@@ -115,8 +115,8 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose,
             fps: 10,
             qrbox: function(viewfinderWidth, viewfinderHeight) {
               if (scanMode === 'qrcode') {
-                // Large square box for QR codes
-                const size = Math.floor(Math.min(viewfinderWidth, viewfinderHeight) * 0.7);
+                // Full square box for QR codes (100% of viewfinder)
+                const size = Math.floor(Math.min(viewfinderWidth, viewfinderHeight));
                 return {
                   width: size,
                   height: size
