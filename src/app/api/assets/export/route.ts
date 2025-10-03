@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (category && category !== '') {
-      where.category = category
+      where.categoryId = category
     }
 
     if (status && status !== '') {
@@ -89,6 +89,9 @@ export async function GET(request: NextRequest) {
     const assets = await prisma.asset.findMany({
       where,
       include: {
+        category: {
+          select: { id: true, name: true }
+        },
         createdBy: {
           select: { name: true, email: true }
         },

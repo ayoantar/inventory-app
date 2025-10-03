@@ -139,7 +139,7 @@ export default function UserTransferModal({
           </DialogTitle>
 
           <div className="space-y-4">
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <div className="bg-amber-500/20 border border-amber-500/30 rounded-lg p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
                   <svg className="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
@@ -147,10 +147,10 @@ export default function UserTransferModal({
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-sm font-medium text-amber-800">
+                  <h3 className="text-sm font-medium text-amber-300">
                     Cannot delete user with checked-out items
                   </h3>
-                  <div className="mt-2 text-sm text-amber-700">
+                  <div className="mt-2 text-sm text-amber-200">
                     <p>
                       <strong>{userToDelete.name || userToDelete.email}</strong> has {activeTransactions.length} checked-out item{activeTransactions.length !== 1 ? 's' : ''} that must be transferred to another user before deletion.
                     </p>
@@ -170,7 +170,7 @@ export default function UserTransferModal({
                     <h4 className="text-sm font-medium text-brand-primary-text mb-2">
                       Checked-out items ({activeTransactions.length}):
                     </h4>
-                    <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg p-3 max-h-32 overflow-y-auto">
+                    <div className="bg-gray-800/50 rounded-lg p-3 max-h-32 overflow-y-auto">
                       <div className="space-y-1">
                         {activeTransactions.map((transaction) => (
                           <div key={transaction.id} className="text-sm text-gray-300">
@@ -202,8 +202,8 @@ export default function UserTransferModal({
                 </div>
 
                 {selectedUser && (
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                    <div className="text-sm text-blue-800">
+                  <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-3">
+                    <div className="text-sm text-blue-300">
                       <strong>Selected:</strong> {selectedUser.name || selectedUser.email} ({selectedUser.role})
                     </div>
                   </div>

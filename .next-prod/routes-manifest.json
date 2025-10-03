@@ -31,14 +31,6 @@
   },
   "dynamicRoutes": [
     {
-      "page": "/admin/departments/[id]/edit",
-      "regex": "^/admin/departments/([^/]+?)/edit(?:/)?$",
-      "routeKeys": {
-        "nxtPid": "nxtPid"
-      },
-      "namedRegex": "^/admin/departments/(?<nxtPid>[^/]+?)/edit(?:/)?$"
-    },
-    {
       "page": "/api/asset-groups/[id]",
       "regex": "^/api/asset\\-groups/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -79,14 +71,6 @@
       "namedRegex": "^/api/clients/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
-      "page": "/api/departments/[id]",
-      "regex": "^/api/departments/([^/]+?)(?:/)?$",
-      "routeKeys": {
-        "nxtPid": "nxtPid"
-      },
-      "namedRegex": "^/api/departments/(?<nxtPid>[^/]+?)(?:/)?$"
-    },
-    {
       "page": "/api/locations/[id]",
       "regex": "^/api/locations/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -101,6 +85,22 @@
         "nxtPid": "nxtPid"
       },
       "namedRegex": "^/api/maintenance/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/preset-categories/[id]",
+      "regex": "^/api/preset\\-categories/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/preset\\-categories/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/preset-departments/[id]",
+      "regex": "^/api/preset\\-departments/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/preset\\-departments/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
       "page": "/api/presets/[id]",
@@ -209,12 +209,6 @@
       "namedRegex": "^/admin/bulk\\-assign\\-numbers(?:/)?$"
     },
     {
-      "page": "/admin/departments",
-      "regex": "^/admin/departments(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/admin/departments(?:/)?$"
-    },
-    {
       "page": "/admin/settings",
       "regex": "^/admin/settings(?:/)?$",
       "routeKeys": {},
@@ -315,6 +309,12 @@
       "regex": "^/reports(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/reports(?:/)?$"
+    },
+    {
+      "page": "/settings/preset-config",
+      "regex": "^/settings/preset\\-config(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/settings/preset\\-config(?:/)?$"
     },
     {
       "page": "/transactions",

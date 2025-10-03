@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Asset, AssetStatus, AssetCategory, AssetCondition } from '../../../generated/prisma'
 import { useState } from 'react'
 import { useCart } from '@/contexts/cart-context'
-import { formatStatus } from '@/lib/utils'
+import { formatStatus, getCategoryIcon } from '@/lib/utils'
 
 interface MobileAssetCardProps {
   asset: Asset & {
@@ -19,35 +19,22 @@ interface MobileAssetCardProps {
 }
 
 const statusColors = {
-  AVAILABLE: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-  CHECKED_OUT: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
-  IN_MAINTENANCE: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300',
-  RETIRED: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300',
-  MISSING: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
-  RESERVED: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+  AVAILABLE: 'bg-green-500/20 text-green-400',
+  CHECKED_OUT: 'bg-red-500/20 text-red-400',
+  IN_MAINTENANCE: 'bg-orange-500/20 text-orange-400',
+  RETIRED: 'bg-gray-700/50 text-gray-300',
+  MISSING: 'bg-red-500/20 text-red-400',
+  RESERVED: 'bg-blue-500/20 text-blue-400'
 }
 
 const conditionColors = {
-  EXCELLENT: 'text-green-600 dark:text-green-400',
-  GOOD: 'text-blue-600 dark:text-blue-400',
-  FAIR: 'text-yellow-600 dark:text-yellow-400',
-  POOR: 'text-red-600 dark:text-red-400',
-  NEEDS_REPAIR: 'text-red-700 dark:text-red-300'
+  EXCELLENT: 'text-green-400',
+  GOOD: 'text-blue-400',
+  FAIR: 'text-yellow-400',
+  POOR: 'text-red-400',
+  NEEDS_REPAIR: 'text-red-300'
 }
 
-const categoryIcons = {
-  CAMERA: '📷',
-  LENS: '🔍',
-  LIGHTING: '💡',
-  AUDIO: '🎵',
-  COMPUTER: '💻',
-  STORAGE: '💾',
-  ACCESSORY: '🔧',
-  FURNITURE: '🪑',
-  SOFTWARE: '💿',
-  INFORMATION_TECHNOLOGY: '🖥️',
-  OTHER: '📦'
-}
 
 export default function MobileAssetCard({
   asset,
@@ -72,7 +59,7 @@ export default function MobileAssetCard({
   }
 
   return (
-    <div className="bg-white dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 space-y-3">
+    <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-sm border border-gray-700 p-4 space-y-3">
       {/* Header with checkbox and status */}
       <div className="flex items-start justify-between">
         <div className="flex items-start space-x-3">
@@ -87,12 +74,12 @@ export default function MobileAssetCard({
           <div className="flex-1">
             <Link
               href={`/assets/${asset.id}`}
-              className="text-sm font-semibold text-brand-primary-text hover:text-blue-600 dark:hover:text-blue-400"
+              className="text-sm font-semibold text-brand-primary-text hover:text-blue-400"
             >
               {asset.name}
             </Link>
             {asset.assetNumber && (
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              <div className="text-xs text-gray-400 mt-0.5">
                 #{asset.assetNumber}
               </div>
             )}
@@ -106,39 +93,39 @@ export default function MobileAssetCard({
       {/* Asset Details */}
       <div className="grid grid-cols-2 gap-2 text-xs">
         <div>
-          <span className="text-gray-500 dark:text-gray-400">Category:</span>
+          <span className="text-gray-400">Category:</span>
           <span className="ml-1 text-brand-primary-text">
-            {categoryIcons[asset.category]} {asset.category}
+            {getCategoryIcon(asset.category)} {asset.category?.name || 'No Category'}
           </span>
         </div>
         {asset.brand && (
           <div>
-            <span className="text-gray-500 dark:text-gray-400">Brand:</span>
+            <span className="text-gray-400">Brand:</span>
             <span className="ml-1 text-brand-primary-text">{asset.brand}</span>
           </div>
         )}
         {asset.model && (
           <div>
-            <span className="text-gray-500 dark:text-gray-400">Model:</span>
+            <span className="text-gray-400">Model:</span>
             <span className="ml-1 text-brand-primary-text">{asset.model}</span>
           </div>
         )}
         {asset.serialNumber && (
           <div className="col-span-2">
-            <span className="text-gray-500 dark:text-gray-400">Serial:</span>
+            <span className="text-gray-400">Serial:</span>
             <span className="ml-1 text-brand-primary-text font-mono text-xs">{asset.serialNumber}</span>
           </div>
         )}
         {asset.client && (
           <div className="col-span-2">
-            <span className="text-gray-500 dark:text-gray-400">Client:</span>
+            <span className="text-gray-400">Client:</span>
             <span className="ml-1 text-brand-primary-text">{asset.client.name}</span>
           </div>
         )}
       </div>
 
       {/* Actions */}
-      <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
+      <div className="flex items-center justify-between pt-2 border-t border-gray-700">
         <div className="flex items-center space-x-2">
           {asset.status === 'AVAILABLE' && (
             <button
@@ -161,7 +148,7 @@ export default function MobileAssetCard({
           {onPreview && (
             <button
               onClick={onPreview}
-              className="px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+              className="px-3 py-1.5 text-xs font-medium text-gray-300 hover:bg-gray-700 rounded-md transition-colors"
             >
               Preview
             </button>
@@ -172,7 +159,7 @@ export default function MobileAssetCard({
         <div className="relative">
           <button
             onClick={() => setShowActions(!showActions)}
-            className="p-1.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            className="p-1.5 text-gray-400 hover:text-gray-200"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
@@ -180,11 +167,11 @@ export default function MobileAssetCard({
           </button>
 
           {showActions && (
-            <div className="absolute right-0 bottom-full mb-1 w-40 bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10">
+            <div className="absolute right-0 bottom-full mb-1 w-40 bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10">
               <div className="py-1">
                 <Link
                   href={`/assets/${asset.id}`}
-                  className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
                   onClick={() => setShowActions(false)}
                 >
                   View Details
@@ -195,7 +182,7 @@ export default function MobileAssetCard({
                       onDuplicate()
                       setShowActions(false)
                     }}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
                   >
                     Duplicate
                   </button>

@@ -280,7 +280,7 @@ export default function AssetTable({
                           onClick={() => handleAssetClick(asset.id)}
                         >
                           <span className="text-sm">
-                            {getCategoryIcon(asset.category)}
+                            {getCategoryIcon(asset.category?.id || 'OTHER')}
                           </span>
                         </div>
                       )}
@@ -308,7 +308,7 @@ export default function AssetTable({
                 
                 <td className="px-3 py-3 whitespace-nowrap border-r border-gray-600 text-center" style={getColumnStyle('category')}>
                   <span className="text-sm text-brand-primary-text capitalize">
-                    {asset.category.toLowerCase().replace('_', ' ')}
+                    {asset.category?.name || 'N/A'}
                   </span>
                 </td>
                 

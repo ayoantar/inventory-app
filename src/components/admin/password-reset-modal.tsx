@@ -76,7 +76,7 @@ export default function PasswordResetModal({ isOpen, onClose, user, onSuccess }:
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg max-w-md w-full">
+      <div className="bg-gray-900 rounded-lg max-w-md w-full border border-gray-700">
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-brand-primary-text">
@@ -98,7 +98,7 @@ export default function PasswordResetModal({ isOpen, onClose, user, onSuccess }:
                 <p className="text-sm text-brand-primary-text mb-4">
                   Are you sure you want to reset the password for:
                 </p>
-                <div className="bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm rounded-lg p-4">
+                <div className="bg-gray-800 rounded-lg p-4">
                   <p className="font-medium text-brand-primary-text">
                     {user.name || 'Unnamed User'}
                   </p>
@@ -112,8 +112,8 @@ export default function PasswordResetModal({ isOpen, onClose, user, onSuccess }:
               </div>
 
               {error && (
-                <div className="mb-4 bg-red-50 border border-red-200 rounded-lg p-3">
-                  <p className="text-red-800 text-sm">{error}</p>
+                <div className="mb-4 bg-red-500/20 border border-red-500/30 rounded-lg p-3">
+                  <p className="text-red-300 text-sm">{error}</p>
                 </div>
               )}
 
@@ -138,8 +138,8 @@ export default function PasswordResetModal({ isOpen, onClose, user, onSuccess }:
             <>
               <div className="mb-6">
                 <div className="flex items-center mb-4">
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center mr-3">
+                    <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
@@ -148,22 +148,22 @@ export default function PasswordResetModal({ isOpen, onClose, user, onSuccess }:
                   </p>
                 </div>
 
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                  <p className="text-sm font-medium text-yellow-800 mb-2">
+                <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4">
+                  <p className="text-sm font-medium text-yellow-300 mb-2">
                     Temporary Password:
                   </p>
                   <div className="flex items-center space-x-2">
-                    <code className="flex-1 bg-white/90 dark:bg-brand-dark-blue/90 backdrop-blur-sm border border-gray-600 rounded px-3 py-2 text-sm font-mono text-brand-primary-text">
+                    <code className="flex-1 bg-gray-800 border border-gray-600 rounded px-3 py-2 text-sm font-mono text-brand-primary-text">
                       {tempPassword}
                     </code>
                     <button
                       onClick={copyToClipboard}
-                      className="px-3 py-2 text-sm text-blue-600 hover border border-blue-300 rounded hover transition-colors"
+                      className="px-3 py-2 text-sm text-blue-400 hover:text-blue-300 border border-blue-500/30 rounded hover:border-blue-500/50 transition-colors"
                     >
                       Copy
                     </button>
                   </div>
-                  <p className="text-xs text-yellow-700 mt-2">
+                  <p className="text-xs text-yellow-200 mt-2">
                     ⚠️ Please share this password securely with the user and ask them to change it immediately after login.
                   </p>
                 </div>

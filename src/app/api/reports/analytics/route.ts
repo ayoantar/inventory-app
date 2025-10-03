@@ -41,8 +41,8 @@ export async function GET(request: NextRequest) {
 
       // Assets by category
       prisma.asset.groupBy({
-        by: ['category'],
-        _count: { category: true }
+        by: ['categoryId'],
+        _count: { categoryId: true }
       }),
 
       // Assets by status
@@ -147,9 +147,9 @@ export async function GET(request: NextRequest) {
       },
       assets: {
         byCategory: assetsByCategory.map(item => ({
-          category: item.category,
-          count: item._count.category,
-          label: item.category.toLowerCase().replace(/[_-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+          category: item.categoryId,
+          count: item._count.categoryId,
+          label: item.categoryId?.toLowerCase().replace(/[_-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'No Category'
         })),
         byStatus: assetsByStatus.map(item => ({
           status: item.status,

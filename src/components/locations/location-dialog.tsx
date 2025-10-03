@@ -148,8 +148,8 @@ export default function LocationDialog({
             </div>
 
             {error && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-600">{error}</p>
+              <div className="mb-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
+                <p className="text-sm text-red-300">{error}</p>
               </div>
             )}
 
@@ -266,7 +266,7 @@ export default function LocationDialog({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-4 py-2 text-sm font-medium text-gray-300 bg-gray-900/5 hover rounded-lg transition-colors"
+                  className="px-4 py-2 text-sm font-medium text-gray-300 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors"
                 >
                   Cancel
                 </button>

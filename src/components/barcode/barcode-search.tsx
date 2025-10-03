@@ -97,7 +97,7 @@ export default function BarcodeSearch({ onAssetFound, placeholder = "Search by b
         <button
           type="button"
           onClick={() => setShowScanner(true)}
-          className="px-3 py-2 bg-gray-100 dark:bg-gray-800 hover border border-l-0 border-gray-600 text-gray-300 transition-colors"
+          className="px-3 py-2 bg-gray-800 hover:bg-gray-700 border border-l-0 border-gray-600 text-gray-300 transition-colors"
           title="Scan QR Code or Barcode"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,8 +122,8 @@ export default function BarcodeSearch({ onAssetFound, placeholder = "Search by b
       </form>
 
       {error && (
-        <div className="absolute top-full left-0 right-0 mt-1 p-2 bg-red-50 border border-red-200 rounded-md z-10">
-          <p className="text-sm text-red-800">{error}</p>
+        <div className="absolute top-full left-0 right-0 mt-1 p-2 bg-red-500/20 border border-red-500/30 rounded-md z-10">
+          <p className="text-sm text-red-300">{error}</p>
         </div>
       )}
 

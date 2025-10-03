@@ -1,29 +1,17 @@
 import { prisma } from './prisma'
-import { AssetCategory } from '../../generated/prisma'
-
-/**
- * Maps asset categories to short type codes
- */
-const ASSET_TYPE_CODES: Record<AssetCategory, string> = {
-  CAMERA: 'CAM',
-  LENS: 'LEN',
-  LIGHTING: 'LIT',
-  AUDIO: 'AUD',
-  COMPUTER: 'COM',
-  STORAGE: 'STO',
-  ACCESSORY: 'ACC',
-  FURNITURE: 'FUR',
-  SOFTWARE: 'SOF',
-  INFORMATION_TECHNOLOGY: 'ITE',
-  OTHER: 'OTH'
-}
 
 /**
  * Generates a unique asset number in the format [ClientCode]-[AssetType]-[Serial]
  * Example: LSVR-CAM-0001, ACME-LIT-0023
  */
-export async function generateAssetNumber(clientCode: string, category: AssetCategory): Promise<string> {
-  const assetTypeCode = ASSET_TYPE_CODES[category]
+export async function generateAssetNumber(clientCode: string, categoryId: string): Promise<string> {
+  // Fetch the category code from the database
+  const category = await prisma.customCategory.findUnique({
+    where: { id: categoryId },
+    select: { code: true }
+  })
+
+  const assetTypeCode = category?.code || 'OTH'
   const prefix = `${clientCode}-${assetTypeCode}-`
   
   // Find the highest existing asset number for this client and category
@@ -66,8 +54,12 @@ export function validateAssetNumber(assetNumber: string): boolean {
 }
 
 /**
- * Gets the asset type code for a category
+ * Gets the asset type code for a category ID from the database
  */
-export function getAssetTypeCode(category: AssetCategory): string {
-  return ASSET_TYPE_CODES[category]
+export async function getAssetTypeCode(categoryId: string): Promise<string> {
+  const category = await prisma.customCategory.findUnique({
+    where: { id: categoryId },
+    select: { code: true }
+  })
+  return category?.code || 'OTH'
 }

@@ -18,6 +18,9 @@ export async function GET(
     const asset = await prisma.asset.findUnique({
       where: { id },
       include: {
+        category: {
+          select: { id: true, name: true }
+        },
         client: {
           select: { name: true, code: true, isActive: true }
         },
@@ -85,7 +88,7 @@ export async function PUT(
     const {
       name,
       description,
-      category,
+      categoryId,
       serialNumber,
       barcode,
       qrCode,
@@ -148,7 +151,7 @@ export async function PUT(
     const updateData: any = {
       name,
       description,
-      category,
+      categoryId,
       status,
       location,
       locationId: locationId || null,
@@ -193,6 +196,9 @@ export async function PUT(
       where: { id },
       data: updateData,
       include: {
+        category: {
+          select: { id: true, name: true }
+        },
         client: {
           select: { name: true, code: true, isActive: true }
         },

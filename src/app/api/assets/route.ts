@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     }
   const { searchParams } = new URL(request.url)
   const search = searchParams.get('search') || ''
-  const category = searchParams.get('category') || ''
+  const categoryId = searchParams.get('categoryId') || ''
   const status = searchParams.get('status') || ''
   const condition = searchParams.get('condition') || ''
   const location = searchParams.get('location') || ''
@@ -43,8 +43,8 @@ export async function GET(request: NextRequest) {
     ]
   }
 
-  if (category) {
-    where.category = category
+  if (categoryId) {
+    where.categoryId = categoryId
   }
 
   if (status) {
@@ -90,6 +90,7 @@ export async function GET(request: NextRequest) {
   }
 
     const includeConfig: any = {
+      category: { select: { id: true, name: true } },
       client: { select: { name: true, code: true, isActive: true } },
       createdBy: { select: { name: true, email: true } },
       lastModifiedBy: { select: { name: true, email: true } },
@@ -152,7 +153,7 @@ export async function POST(request: NextRequest) {
     const {
       name,
       description,
-      category,
+      categoryId,
       assetNumber,
       clientId,
       serialNumber,
@@ -170,7 +171,7 @@ export async function POST(request: NextRequest) {
     } = body
 
     // Validate required fields
-    if (!name || !category || !clientId) {
+    if (!name || !categoryId || !clientId) {
       return NextResponse.json(
         { error: 'Name, category, and client are required' },
         { status: 400 }
@@ -193,7 +194,7 @@ export async function POST(request: NextRequest) {
     // Generate asset number if not provided
     let finalAssetNumber = assetNumber
     if (!finalAssetNumber) {
-      finalAssetNumber = await generateAssetNumber(client.code, category)
+      finalAssetNumber = await generateAssetNumber(client.code, categoryId)
     }
 
     // Check for duplicate asset number
@@ -250,7 +251,7 @@ export async function POST(request: NextRequest) {
       data: {
         name,
         description,
-        category,
+        categoryId,
         assetNumber: finalAssetNumber,
         clientId,
         serialNumber: serialNumber && serialNumber.trim() !== '' ? serialNumber : null,
@@ -272,6 +273,9 @@ export async function POST(request: NextRequest) {
         client: {
           select: { name: true, code: true }
         },
+        locationRef: {
+          select: { id: true, name: true, building: true, floor: true, room: true }
+        },
         createdBy: {
           select: { name: true, email: true }
         },
@@ -280,6 +284,20 @@ export async function POST(request: NextRequest) {
         }
       }
     })
+
+    // Update the location string field based on locationRef
+    if (asset.locationRef) {
+      const locationString = asset.locationRef.building && asset.locationRef.floor
+        ? `${asset.locationRef.name} (${asset.locationRef.building} - Floor ${asset.locationRef.floor})`
+        : asset.locationRef.building
+          ? `${asset.locationRef.name} (${asset.locationRef.building})`
+          : asset.locationRef.name
+
+      await prisma.asset.update({
+        where: { id: asset.id },
+        data: { location: locationString }
+      })
+    }
 
     return NextResponse.json(asset, { status: 201 })
   } catch (error) {

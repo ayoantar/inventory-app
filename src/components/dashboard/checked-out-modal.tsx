@@ -86,7 +86,7 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
       
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-gray-900/5 rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] flex flex-col">
+        <div className="bg-gray-900 rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] flex flex-col border border-gray-700">
           {/* Header */}
           <div className="p-6 border-b border-gray-700">
             <div className="flex items-center justify-between">
@@ -118,8 +118,8 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
             )}
 
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-md">
-                <p className="text-sm text-red-800">{error}</p>
+              <div className="p-4 bg-red-500/20 border border-red-500/30 rounded-md">
+                <p className="text-sm text-red-300">{error}</p>
               </div>
             )}
 
@@ -143,8 +143,8 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
                   const overdueDays = activeTransaction?.expectedReturnDate ? getOverdueDays(activeTransaction.expectedReturnDate) : 0
                   
                   return (
-                    <div key={asset.id} className={`bg-gray-900 rounded-lg border p-4 transition-all duration-200 hover:shadow-md ${
-                      overdue ? 'border-red-300 bg-red-50' : 'border-gray-700'
+                    <div key={asset.id} className={`bg-gray-800 rounded-lg border p-4 transition-all duration-200 hover:shadow-md ${
+                      overdue ? 'border-red-500/50 bg-red-500/10' : 'border-gray-700'
                     }`}>
                       <div className="flex items-center space-x-3">
                         {/* Asset Image/Icon */}
@@ -156,7 +156,7 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
                               className="w-12 h-12 object-cover rounded-lg border border-gray-600"
                             />
                           ) : (
-                            <div className="w-12 h-12 bg-gray-900/5 rounded-lg flex items-center justify-center">
+                            <div className="w-12 h-12 bg-gray-700/50 rounded-lg flex items-center justify-center">
                               <span className="text-lg">📦</span>
                             </div>
                           )}
@@ -185,9 +185,9 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
                                 )}
                               </div>
                             </div>
-                            
+
                             {overdue && (
-                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 ml-2">
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-500/20 text-red-400 ml-2">
                                 {overdueDays}d overdue
                               </span>
                             )}
@@ -217,7 +217,7 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
                         <div className="flex-shrink-0">
                           <Link
                             href={`/assets/${asset.id}`}
-                            className="p-2 text-white/50 hover:text-white/80 transition-colors hover:bg-gray-100 dark:hover:bg-gray-100 dark:bg-gray-800 rounded transition-colors"
+                            className="p-2 text-white/50 hover:text-white/80 transition-colors hover:bg-gray-700 bg-gray-800 rounded transition-colors"
                             title="View Details"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -235,7 +235,7 @@ export default function CheckedOutModal({ isOpen, onClose }: CheckedOutModalProp
           </div>
 
           {/* Footer */}
-          <div className="p-6 border-t border-gray-700 bg-gray-900/5/50">
+          <div className="p-6 border-t border-gray-700 bg-gray-800/50">
             <div className="flex items-center justify-between">
               <div className="text-sm text-white/50 hover:text-white/80 transition-colors">
                 {assets.filter(asset => {

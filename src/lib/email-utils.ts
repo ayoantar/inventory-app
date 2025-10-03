@@ -10,7 +10,7 @@ interface SendTransactionEmailParams {
     name: string
     assetNumber?: string | null
     serialNumber?: string | null
-    category: string
+    category: string | { id: string; name: string } | null
     currentValue?: number | null
     purchasePrice?: number | null
     imageUrl?: string | null
@@ -85,7 +85,7 @@ function generateHtmlEmail({
     name: string
     assetNumber?: string | null
     serialNumber?: string | null
-    category: string
+    category: string | { id: string; name: string } | null
     currentValue?: number | null
     purchasePrice?: number | null
     imageUrl?: string | null
@@ -113,7 +113,7 @@ function generateHtmlEmail({
             `}
             <div>
               <h4 style="margin: 0 0 8px 0; color: #1A2332; font-size: 16px; font-weight: 600;">${asset.name}</h4>
-              <p style="margin: 4px 0; color: #6b7280; font-size: 14px;">Category: ${asset.category.replace(/_/g, ' ')}</p>
+              <p style="margin: 4px 0; color: #6b7280; font-size: 14px;">Category: ${typeof asset.category === 'object' && asset.category ? asset.category.name : (asset.category || 'No Category').replace(/_/g, ' ')}</p>
               ${asset.assetNumber ? `<p style="margin: 4px 0; color: #6b7280; font-size: 14px;">Asset #: ${asset.assetNumber}</p>` : ''}
               ${asset.serialNumber ? `<p style="margin: 4px 0; color: #6b7280; font-size: 14px;">Serial #: ${asset.serialNumber}</p>` : ''}
               ${value ? `<p style="margin: 4px 0; color: #6b7280; font-size: 14px;">Value: $${value.toLocaleString()}</p>` : ''}
@@ -230,7 +230,7 @@ function generatePlainTextEmail({
     name: string
     assetNumber?: string | null
     serialNumber?: string | null
-    category: string
+    category: string | { id: string; name: string } | null
     currentValue?: number | null
     purchasePrice?: number | null
     notes?: string | null
@@ -254,7 +254,7 @@ function generatePlainTextEmail({
   assets.forEach((asset, index) => {
     const value = asset.currentValue || asset.purchasePrice
     text += `${index + 1}. ${asset.name}\n`
-    text += `   Category: ${asset.category.replace(/_/g, ' ')}\n`
+    text += `   Category: ${typeof asset.category === 'object' && asset.category ? asset.category.name : (asset.category || 'No Category').replace(/_/g, ' ')}\n`
     if (asset.assetNumber) text += `   Asset #: ${asset.assetNumber}\n`
     if (asset.serialNumber) text += `   Serial #: ${asset.serialNumber}\n`
     if (value) text += `   Value: $${value.toLocaleString()}\n`

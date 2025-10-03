@@ -8,9 +8,10 @@ interface QRScannerProps {
   onScanError?: (error: string) => void
   isOpen: boolean
   onClose: () => void
+  scanMode?: 'qrcode' | 'barcode' // New prop to control scanning box shape
 }
 
-export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose }: QRScannerProps) {
+export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose, scanMode = 'barcode' }: QRScannerProps) {
   const scannerRef = useRef<Html5Qrcode | null>(null)
   const [isScanning, setIsScanning] = useState(false)
   const [cameraError, setCameraError] = useState<string | null>(null)
@@ -113,14 +114,22 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
           {
             fps: 10,
             qrbox: function(viewfinderWidth, viewfinderHeight) {
-              // Smaller, more focused scanning box for precision
-              // Use a narrow horizontal rectangle to scan one barcode at a time
-              const boxWidth = Math.floor(viewfinderWidth * 0.8); // 80% width
-              const boxHeight = Math.floor(viewfinderHeight * 0.15); // 15% height - narrow horizontal strip
-              return {
-                width: boxWidth,
-                height: boxHeight
-              };
+              if (scanMode === 'qrcode') {
+                // Large square box for QR codes
+                const size = Math.floor(Math.min(viewfinderWidth, viewfinderHeight) * 0.7);
+                return {
+                  width: size,
+                  height: size
+                };
+              } else {
+                // Narrow horizontal rectangle for linear barcodes
+                const boxWidth = Math.floor(viewfinderWidth * 0.8);
+                const boxHeight = Math.floor(viewfinderHeight * 0.15);
+                return {
+                  width: boxWidth,
+                  height: boxHeight
+                };
+              }
             },
             aspectRatio: 1.0,
             videoConstraints: {
@@ -214,15 +223,15 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-brand-dark-blue/95 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl max-w-md w-full mx-4">
+      <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl max-w-md w-full mx-4">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-brand-primary-text">
+            <h3 className="text-lg font-semibold text-brand-primary-text">
               {cameraError ? 'Camera Error' : showManualInput ? 'Enter Barcode' : 'Scan Barcode'}
             </h3>
             <button
               onClick={handleClose}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 active:scale-95 touch-manipulation"
+              className="text-gray-400 hover:text-gray-200 transition-colors p-1 rounded-lg hover:bg-gray-700/50 active:scale-95 touch-manipulation"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -234,7 +243,7 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
             {showManualInput ? (
               <form onSubmit={handleManualSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="manual-input" className="block text-sm font-medium text-gray-900 dark:text-brand-primary-text mb-2">
+                  <label htmlFor="manual-input" className="block text-sm font-medium text-brand-primary-text mb-2">
                     Enter barcode or asset ID:
                   </label>
                   <input
@@ -243,7 +252,7 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                     value={manualInput}
                     onChange={(e) => setManualInput(e.target.value)}
                     placeholder="Type or paste the barcode here..."
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-600 rounded-lg bg-gray-800 text-brand-primary-text focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     autoFocus
                   />
                 </div>
@@ -258,7 +267,7 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                   <button
                     type="button"
                     onClick={() => setShowManualInput(false)}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 active:scale-95 touch-manipulation transition-all"
+                    className="px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-700/50 active:scale-95 touch-manipulation transition-all"
                   >
                     Camera
                   </button>
@@ -266,7 +275,7 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
               </form>
             ) : (
               <>
-                <div className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-black min-h-[500px] flex items-center justify-center relative">
+                <div className="border border-gray-600 rounded-lg overflow-hidden bg-black min-h-[500px] flex items-center justify-center relative">
                   {/* HTML5-QRCode scanner container - always present */}
                   <div
                     id={scannerId}
@@ -300,13 +309,13 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                   {/* Camera Error Overlay */}
                   {cameraError && (
                     <div className="absolute inset-0 bg-black/80 flex items-center justify-center p-4 z-10">
-                      <div className="bg-red-50 dark:bg-red-900/90 border border-red-200 dark:border-red-800 rounded-lg p-4 text-center max-w-sm">
+                      <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 text-center max-w-sm">
                         <div className="flex justify-center mb-3">
-                          <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                           </svg>
                         </div>
-                        <p className="text-sm text-red-800 dark:text-red-200 mb-3">{cameraError}</p>
+                        <p className="text-sm text-red-200 mb-3">{cameraError}</p>
                         <div className="space-x-3">
                           <button
                             onClick={initializeCamera}
@@ -339,8 +348,8 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                 </div>
 
                 {isScanning && (
-                  <div className="text-sm text-gray-600 dark:text-brand-secondary-text text-center space-y-2 mt-4">
-                    <p className="font-medium text-gray-900 dark:text-brand-primary-text">
+                  <div className="text-sm text-brand-secondary-text text-center space-y-2 mt-4">
+                    <p className="font-medium text-brand-primary-text">
                       Align the barcode with the red horizontal box
                     </p>
                     <p className="text-xs opacity-80">
@@ -356,14 +365,14 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
             {!cameraError && !showManualInput && (
               <button
                 onClick={() => setShowManualInput(true)}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors active:scale-95 touch-manipulation"
+                className="px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-700/50 transition-colors active:scale-95 touch-manipulation"
               >
                 Enter Manually
               </button>
             )}
             <button
               onClick={handleClose}
-              className="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors active:scale-95 touch-manipulation"
+              className="px-6 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-700/50 transition-colors active:scale-95 touch-manipulation"
             >
               Cancel
             </button>

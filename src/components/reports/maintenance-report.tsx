@@ -252,7 +252,7 @@ export default function MaintenanceReport({ dateRange }: MaintenanceReportProps)
                         {record.asset.name}
                       </div>
                       <div className="text-xs text-white/50 hover:text-white/80 transition-colors">
-                        {record.asset.serialNumber || 'No S/N'} • {record.asset.category}
+                        {record.asset.serialNumber || 'No S/N'} • {record.asset.category?.name || 'No Category'}
                       </div>
                     </div>
                   </td>

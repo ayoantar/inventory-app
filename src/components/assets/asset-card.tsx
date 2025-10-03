@@ -48,9 +48,10 @@ export default function AssetCard({ asset }: AssetCardProps) {
           const data = await response.json()
           const categoryList = data.categories || []
           setCategories(categoryList)
-          
+
           // Find the icon for this asset's category
-          const categoryData = categoryList.find((cat: Category) => cat.id === asset.category)
+          const categoryId = (asset.category as any)?.id || asset.category
+          const categoryData = categoryList.find((cat: Category) => cat.id === categoryId)
           setCategoryIcon(categoryData?.icon || '📦')
         }
       } catch (error) {

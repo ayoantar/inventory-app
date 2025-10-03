@@ -139,7 +139,7 @@ export default function AssetPreviewModal({ assetId, isOpen, onClose }: AssetPre
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <dt className="text-sm font-medium text-gray-600 dark:text-brand-secondary-text">Category</dt>
-                  <dd className="text-sm text-brand-primary-text capitalize">{asset.category.toLowerCase().replace('_', ' ')}</dd>
+                  <dd className="text-sm text-brand-primary-text capitalize">{asset.category?.name || 'No Category'}</dd>
                 </div>
                 <div>
                   <dt className="text-sm font-medium text-gray-600 dark:text-brand-secondary-text">Client</dt>

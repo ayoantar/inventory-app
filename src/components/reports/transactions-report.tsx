@@ -204,7 +204,7 @@ export default function TransactionsReport({ dateRange }: TransactionsReportProp
                         {transaction.asset.name}
                       </div>
                       <div className="text-xs text-white/50 hover:text-white/80 transition-colors">
-                        {transaction.asset.serialNumber || 'No S/N'} • {transaction.asset.category}
+                        {transaction.asset.serialNumber || 'No S/N'} • {transaction.asset.category?.name || 'No Category'}
                       </div>
                     </div>
                   </td>

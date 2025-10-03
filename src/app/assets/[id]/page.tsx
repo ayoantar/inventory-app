@@ -29,7 +29,7 @@ interface AssetWithRelations extends Asset {
 interface AssetFormData {
   name: string
   description: string
-  category: string
+  categoryId: string
   assetNumber: string
   serialNumber: string
   barcode: string
@@ -103,7 +103,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
   const [formData, setFormData] = useState<AssetFormData>({
     name: '',
     description: '',
-    category: 'OTHER',
+    categoryId: 'OTHER',
     assetNumber: '',
     serialNumber: '',
     barcode: '',
@@ -189,7 +189,7 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
         setFormData({
           name: assetData.name || '',
           description: assetData.description || '',
-          category: assetData.category,
+          categoryId: assetData.category?.id || assetData.categoryId || 'OTHER',
           assetNumber: assetData.assetNumber || '',
           serialNumber: assetData.serialNumber || '',
           barcode: assetData.barcode || '',
@@ -573,8 +573,8 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                         <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Category</dt>
                         {editing ? (
                           <select
-                            name="category"
-                            value={formData.category}
+                            name="categoryId"
+                            value={formData.categoryId}
                             onChange={handleChange}
                             className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
@@ -587,8 +587,9 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                         ) : (
                           <dd className="text-lg font-medium text-brand-primary-text capitalize">
                             {(() => {
-                              const category = categories.find(cat => cat.id === asset.category)
-                              return category ? `${category.icon} ${category.name}` : asset.category.toLowerCase().replace('_', ' ')
+                              const categoryId = asset.category?.id || asset.categoryId
+                              const category = categories.find(cat => cat.id === categoryId)
+                              return category ? `${category.icon} ${category.name}` : (asset.category?.name || 'No Category')
                             })()}
                           </dd>
                         )}

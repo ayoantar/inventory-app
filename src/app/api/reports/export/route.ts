@@ -42,6 +42,7 @@ export async function GET(request: NextRequest) {
       // All assets with full details
       prisma.asset.findMany({
         include: {
+          category: { select: { id: true, name: true } },
           createdBy: { select: { name: true, email: true } },
           lastModifiedBy: { select: { name: true, email: true } },
           _count: { select: { transactions: true } }
@@ -53,7 +54,13 @@ export async function GET(request: NextRequest) {
       prisma.assetTransaction.findMany({
         where: { createdAt: dateFilter },
         include: {
-          asset: { select: { name: true, serialNumber: true } },
+          asset: {
+            select: {
+              name: true,
+              serialNumber: true,
+              category: { select: { id: true, name: true } }
+            }
+          },
           user: { select: { name: true, email: true } }
         },
         orderBy: { createdAt: 'desc' }
@@ -69,7 +76,13 @@ export async function GET(request: NextRequest) {
           ]
         },
         include: {
-          asset: { select: { name: true, serialNumber: true } },
+          asset: {
+            select: {
+              name: true,
+              serialNumber: true,
+              category: { select: { id: true, name: true } }
+            }
+          },
           performedBy: { select: { name: true, email: true } },
           createdBy: { select: { name: true, email: true } }
         },
@@ -78,7 +91,7 @@ export async function GET(request: NextRequest) {
 
       // Asset statistics
       Promise.all([
-        prisma.asset.groupBy({ by: ['category'], _count: { category: true } }),
+        prisma.asset.groupBy({ by: ['categoryId'], _count: { categoryId: true } }),
         prisma.asset.groupBy({ by: ['status'], _count: { status: true } }),
         prisma.asset.groupBy({ by: ['condition'], _count: { condition: true } }),
         prisma.asset.aggregate({ _sum: { currentValue: true, purchasePrice: true } })
@@ -149,7 +162,7 @@ function generateExcelReport(data: any) {
     ['Maintenance Records (Period):', data.maintenanceRecords.length],
     [''],
     ['ASSETS BY CATEGORY'],
-    ...data.assetStats[0].map((cat: any) => [formatCategory(cat.category), cat._count.category]),
+    ...data.assetStats[0].map((cat: any) => [formatCategory(cat.categoryId || 'No Category'), cat._count.categoryId]),
     [''],
     ['ASSETS BY STATUS'],
     ...data.assetStats[1].map((status: any) => [formatStatus(status.status), status._count.status]),

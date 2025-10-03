@@ -29,7 +29,8 @@ export async function GET(request: NextRequest) {
             id: true,
             name: true,
             serialNumber: true,
-            category: true,
+            category: { select: { id: true, name: true } },
+            categoryId: true,
             status: true,
             condition: true,
             manufacturer: true,
@@ -41,7 +42,7 @@ export async function GET(request: NextRequest) {
             createdAt: true
           },
           orderBy: [
-            { category: 'asc' },
+            { categoryId: 'asc' },
             { name: 'asc' }
           ]
         }
@@ -95,7 +96,8 @@ export async function GET(request: NextRequest) {
         totalValue: client.assets.reduce((sum, asset) => sum + (asset.currentValue || 0), 0),
         totalPurchaseValue: client.assets.reduce((sum, asset) => sum + (asset.purchasePrice || 0), 0),
         categoryBreakdown: client.assets.reduce((breakdown: any, asset) => {
-          breakdown[asset.category] = (breakdown[asset.category] || 0) + 1
+          const categoryKey = asset.category?.name || asset.categoryId || 'No Category'
+          breakdown[categoryKey] = (breakdown[categoryKey] || 0) + 1
           return breakdown
         }, {}),
         statusBreakdown: client.assets.reduce((breakdown: any, asset) => {

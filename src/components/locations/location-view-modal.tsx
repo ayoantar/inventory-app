@@ -82,8 +82,8 @@ export default function LocationViewModal({
                 </Dialog.Title>
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                   location.isActive
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
+                    ? 'bg-green-500/20 text-green-400'
+                    : 'bg-gray-700/50 text-gray-300'
                 }`}>
                   {location.isActive ? 'Active' : 'Inactive'}
                 </span>
@@ -187,7 +187,7 @@ export default function LocationViewModal({
                               {asset.name}
                             </p>
                             <p className="text-sm text-white/50 hover:text-white/80 transition-colors">
-                              {asset.category} • {asset.status}
+                              {asset.category?.name || 'No Category'} • {asset.status}
                             </p>
                           </div>
                         </Link>

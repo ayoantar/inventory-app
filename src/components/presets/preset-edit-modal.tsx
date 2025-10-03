@@ -188,7 +188,7 @@ export default function PresetEditModal({ preset, isOpen, onClose, onSave }: Pre
       return
     }
 
-    const validItems = items.filter(item => item.name.trim())
+    const validItems = items.filter(item => item.name && item.name.trim())
     if (validItems.length === 0) {
       setError('Please add at least one item to the preset')
       return
