@@ -276,21 +276,18 @@ export default function BarcodeScanner({ onScanSuccess, onScanError, isOpen, onC
                     }}
                   />
 
-                  {/* Scanning area indicator - narrow horizontal strip */}
+                  {/* Scanning area indicator - large square for QR codes */}
                   {isScanning && !cameraError && (
                     <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-20">
-                      {/* Narrow horizontal scanning box */}
-                      <div className="relative" style={{ width: '80%', height: '15%', maxWidth: '600px' }}>
+                      {/* Large square scanning box for QR codes */}
+                      <div className="relative aspect-square" style={{ width: '90%', maxWidth: '500px' }}>
                         {/* Scanning box border */}
-                        <div className="absolute inset-0 border-2 border-red-500 rounded-sm shadow-[0_0_15px_rgba(239,68,68,0.6)]"></div>
-                        {/* Center horizontal line */}
-                        <div
-                          className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_10px_rgba(239,68,68,0.8)]"
-                          style={{ top: '50%' }}
-                        />
-                        {/* Side indicators */}
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 border-l-2 border-t-2 border-b-2 border-red-500"></div>
-                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 border-r-2 border-t-2 border-b-2 border-red-500"></div>
+                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg shadow-[0_0_15px_rgba(59,130,246,0.6)]"></div>
+                        {/* Corner indicators */}
+                        <div className="absolute left-0 top-0 w-8 h-8 border-l-4 border-t-4 border-blue-500"></div>
+                        <div className="absolute right-0 top-0 w-8 h-8 border-r-4 border-t-4 border-blue-500"></div>
+                        <div className="absolute left-0 bottom-0 w-8 h-8 border-l-4 border-b-4 border-blue-500"></div>
+                        <div className="absolute right-0 bottom-0 w-8 h-8 border-r-4 border-b-4 border-blue-500"></div>
                       </div>
                     </div>
                   )}
@@ -339,10 +336,10 @@ export default function BarcodeScanner({ onScanSuccess, onScanError, isOpen, onC
                 {isScanning && (
                   <div className="text-sm text-brand-secondary-text text-center space-y-2 mt-4">
                     <p className="font-medium text-brand-primary-text">
-                      Align the barcode with the red horizontal box
+                      Center the QR code within the blue square box
                     </p>
                     <p className="text-xs opacity-80">
-                      Tip: When barcodes are stacked, position only ONE barcode inside the scanning box
+                      Tip: Keep the QR code flat and well-lit for best results
                     </p>
                   </div>
                 )}
