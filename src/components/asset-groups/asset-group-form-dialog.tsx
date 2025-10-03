@@ -205,7 +205,7 @@ export default function AssetGroupFormDialog({
     .filter(asset => {
       const searchTerm = assetSearch.toLowerCase()
       const assetName = (asset.name || '').toLowerCase()
-      const assetCategory = (asset.category || '').toLowerCase()
+      const assetCategory = typeof asset.category === 'object' ? (asset.category?.name || '').toLowerCase() : (asset.category || '').toLowerCase()
       const assetManufacturer = (asset.manufacturer || '').toLowerCase()
       const assetId = asset.id.toString()
       
@@ -480,7 +480,7 @@ export default function AssetGroupFormDialog({
                                 </div>
                               )}
                               <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
-                                {asset.category?.replace('_', ' ') || 'No Category'} • 
+                                {typeof asset.category === 'object' ? (asset.category?.name || 'No Category') : (asset.category?.replace('_', ' ') || 'No Category')} • 
                                 <span className={`ml-1 px-2 py-1 rounded-full text-xs font-medium ${
                                   asset.status === 'AVAILABLE'
                                     ? 'bg-green-500/20 text-green-300 border border-green-500/30'

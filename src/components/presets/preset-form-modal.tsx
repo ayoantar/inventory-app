@@ -24,7 +24,7 @@ interface PresetFormModalProps {
 interface Asset {
   id: string
   name: string
-  category: string
+  category: { id: string; name: string } | string
   status: string
   description?: string
   manufacturer?: string
@@ -135,7 +135,7 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
     .filter(asset => {
       const searchTerm = assetSearch.toLowerCase()
       const assetName = (asset.name || '').toLowerCase()
-      const assetCategory = (asset.category || '').toLowerCase()
+      const assetCategory = typeof asset.category === 'object' ? (asset.category?.name || '').toLowerCase() : (asset.category || '').toLowerCase()
       const assetManufacturer = (asset.manufacturer || '').toLowerCase()
       const assetId = asset.id.toString()
       const assetNumber = (asset.assetNumber || '').toLowerCase()
@@ -181,7 +181,7 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
       const items = selectedAssets.map((asset, index) => ({
         assetId: asset.id,
         name: asset.name,
-        category: asset.category,
+        category: typeof asset.category === 'object' ? asset.category.id : asset.category,
         quantity: 1,
         isRequired: true,
         priority: index,
@@ -287,7 +287,7 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                   >
                     <option value="">Select Category</option>
                     {categories.map(category => (
-                      <option key={category.id} value={category.name}>{category.name}</option>
+                      <option key={category.id} value={category?.name || ''}>{category?.name || 'Unknown'}</option>
                     ))}
                   </select>
                 </div>
@@ -355,9 +355,10 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                           const matches = availableAssets.filter(a => {
                             const searchLower = value.toLowerCase()
                             const statusMatch = !statusFilter || a.status === statusFilter
+                            const categoryName = typeof a.category === 'object' ? a.category?.name : a.category
                             return statusMatch && (
                               a.name?.toLowerCase().includes(searchLower) ||
-                              a.category?.toLowerCase().includes(searchLower) ||
+                              categoryName?.toLowerCase().includes(searchLower) ||
                               a.manufacturer?.toLowerCase().includes(searchLower) ||
                               a.model?.toLowerCase().includes(searchLower) ||
                               a.serialNumber?.toLowerCase().includes(searchLower) ||
@@ -479,7 +480,7 @@ export default function PresetFormModal({ isOpen, onClose, onSuccess }: PresetFo
                                 </div>
                               )}
                               <div className="text-sm text-gray-600 dark:text-brand-secondary-text">
-                                {asset.category?.replace('_', ' ') || 'No Category'} • 
+                                {typeof asset.category === 'object' ? (asset.category?.name || 'No Category') : (asset.category || 'No Category')} •
                                 <span className={`ml-1 px-2 py-1 rounded-full text-xs font-medium ${
                                   asset.status === 'AVAILABLE'
                                     ? 'bg-green-500/20 text-green-300 border border-green-500/30'

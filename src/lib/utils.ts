@@ -48,8 +48,13 @@ export function getUserInitials(session: Session | null): string {
 
 /**
  * Format category name (replace underscores with spaces)
+ * Handles both legacy string format and new object format {id, name}
  */
-export function formatCategory(category: string): string {
+export function formatCategory(category: string | { id: string; name: string } | null | undefined): string {
+  if (!category) return 'No Category'
+  if (typeof category === 'object' && category !== null) {
+    return category?.name || 'No Category'
+  }
   return category.replace(/_/g, ' ')
 }
 
@@ -136,8 +141,9 @@ export function getTransactionTypeColor(type: string): string {
 
 /**
  * Get icon for category
+ * Handles both legacy string format and new object format {id, name}
  */
-export function getCategoryIcon(category: string): string {
+export function getCategoryIcon(category: string | { id: string; name: string } | null | undefined): string {
   const icons: Record<string, string> = {
     CAMERA: '📷',
     LENS: '🔍',
@@ -149,8 +155,19 @@ export function getCategoryIcon(category: string): string {
     FURNITURE: '🪑',
     SOFTWARE: '💿',
     INFORMATION_TECHNOLOGY: '🖥️',
+    HEADSET: '🎧',
     OTHER: '📦'
   }
+
+  if (!category) return '📦'
+
+  // Handle object format
+  if (typeof category === 'object' && category !== null) {
+    const categoryId = category.id?.toUpperCase()
+    return icons[categoryId] || '📦'
+  }
+
+  // Handle string format
   return icons[category] || '📦'
 }
 
