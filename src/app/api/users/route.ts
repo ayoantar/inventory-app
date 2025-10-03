@@ -29,8 +29,7 @@ export async function GET(request: NextRequest) {
     if (search) {
       where.OR = [
         { name: { contains: search, mode: 'insensitive' } },
-        { email: { contains: search, mode: 'insensitive' } },
-        { department: { contains: search, mode: 'insensitive' } }
+        { email: { contains: search, mode: 'insensitive' } }
       ]
     }
 
@@ -56,7 +55,6 @@ export async function GET(request: NextRequest) {
 
     // Add admin-only fields
     if (isAdmin) {
-      selectFields.department = true
       selectFields.lastLoginAt = true
       selectFields.createdAt = true
       selectFields.updatedAt = true
@@ -122,11 +120,10 @@ export async function POST(request: NextRequest) {
       email,
       password,
       role,
-      department,
       isActive = true
     } = body
 
-    console.log('📝 Creating user with data:', { name, email, role, department, isActive })
+    console.log('📝 Creating user with data:', { name, email, role, isActive })
 
     // Validate required fields
     if (!name || !email || !password || !role) {
@@ -193,7 +190,6 @@ export async function POST(request: NextRequest) {
         email,
         password: hashedPassword,
         role,
-        department,
         isActive
       },
       select: {
@@ -201,7 +197,6 @@ export async function POST(request: NextRequest) {
         name: true,
         email: true,
         role: true,
-        department: true,
         isActive: true,
         createdAt: true,
         updatedAt: true
