@@ -45,29 +45,34 @@ export async function GET(request: NextRequest) {
     // Check if user is admin - admins get full details, others get basic info only
     const isAdmin = (session.user as any).role === 'ADMIN'
 
+    // Build select object based on role
+    const selectFields: any = {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      isActive: true,
+    }
+
+    // Add admin-only fields
+    if (isAdmin) {
+      selectFields.department = true
+      selectFields.lastLoginAt = true
+      selectFields.createdAt = true
+      selectFields.updatedAt = true
+      selectFields._count = {
+        select: {
+          createdAssets: true,
+          transactions: true,
+          maintenanceRecords: true
+        }
+      }
+    }
+
     const [users, total] = await Promise.all([
       prisma.user.findMany({
         where,
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          role: true,
-          department: isAdmin,
-          isActive: true,
-          lastLoginAt: isAdmin,
-          createdAt: isAdmin,
-          updatedAt: isAdmin,
-          ...(isAdmin && {
-            _count: {
-              select: {
-                createdAssets: true,
-                transactions: true,
-                maintenanceRecords: true
-              }
-            }
-          })
-        },
+        select: selectFields,
         orderBy: { createdAt: 'desc' },
         skip,
         take: limit
