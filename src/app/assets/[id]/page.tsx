@@ -955,20 +955,37 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                     {asset.transactions.map((transaction) => (
                       <div key={transaction.id} className="border border-gray-700 rounded-lg p-4">
                         <div className="flex justify-between items-start">
-                          <div>
-                            <p className="font-medium text-brand-primary-text">
-                              {transaction.type.replace('_', ' ')}
-                            </p>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <p className="font-medium text-brand-primary-text">
+                                {transaction.type.replace('_', ' ')}
+                              </p>
+                              {transaction.user && transaction.type === 'CHECK_OUT' && (
+                                <span className="text-xs px-2 py-0.5 bg-blue-500/20 border border-blue-500/30 text-blue-300 rounded">
+                                  Assigned to: {transaction.user.name || transaction.user.email}
+                                </span>
+                              )}
+                            </div>
                             <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
-                              By {transaction.user.name} on {new Date(transaction.createdAt).toLocaleDateString()}
+                              Performed on {new Date(transaction.createdAt).toLocaleDateString()}
                             </p>
+                            {transaction.expectedReturnDate && (
+                              <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
+                                Expected return: {new Date(transaction.expectedReturnDate).toLocaleDateString()}
+                              </p>
+                            )}
+                            {transaction.actualReturnDate && (
+                              <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
+                                Returned: {new Date(transaction.actualReturnDate).toLocaleDateString()}
+                              </p>
+                            )}
                             {transaction.notes && (
                               <p className="text-sm text-gray-300 mt-2">{transaction.notes}</p>
                             )}
                           </div>
-                          <span className={`px-2 py-1 text-xs rounded-full ${
-                            transaction.status === 'ACTIVE' ? 'bg-amber-100 text-amber-800' :
-                            transaction.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
+                          <span className={`px-2 py-1 text-xs rounded-full flex-shrink-0 ${
+                            transaction.status === 'ACTIVE' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300' :
+                            transaction.status === 'COMPLETED' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
                             'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
                           }`}>
                             {transaction.status}
@@ -1008,7 +1025,88 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
             {activeTab === 'history' && (
               <div className="space-y-4 sm:space-y-6">
                 <h3 className="text-base sm:text-lg font-semibold text-brand-primary-text">Change History</h3>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-brand-secondary-text">Audit trail will be available soon</p>
+                <div className="space-y-3">
+                  {/* Creation Event */}
+                  <div className="border border-gray-700 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-8 h-8 bg-green-500/20 border border-green-500/30 rounded-full flex items-center justify-center">
+                        <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium text-brand-primary-text">Asset Created</p>
+                        <p className="text-sm text-brand-secondary-text">
+                          By {asset.createdBy?.name || asset.createdBy?.email || 'System'} on {new Date(asset.createdAt).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Last Modified Event */}
+                  {asset.updatedAt !== asset.createdAt && (
+                    <div className="border border-gray-700 rounded-lg p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-8 h-8 bg-blue-500/20 border border-blue-500/30 rounded-full flex items-center justify-center">
+                          <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-brand-primary-text">Asset Modified</p>
+                          <p className="text-sm text-brand-secondary-text">
+                            By {asset.lastModifiedBy?.name || asset.lastModifiedBy?.email || 'System'} on {new Date(asset.updatedAt).toLocaleString()}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Transaction History Summary */}
+                  {asset.transactions.length > 0 && (
+                    <div className="border border-gray-700 rounded-lg p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-8 h-8 bg-purple-500/20 border border-purple-500/30 rounded-full flex items-center justify-center">
+                          <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-brand-primary-text">Transaction Activity</p>
+                          <p className="text-sm text-brand-secondary-text">
+                            {asset.transactions.length} transaction{asset.transactions.length !== 1 ? 's' : ''} recorded
+                          </p>
+                          <p className="text-xs text-brand-secondary-text mt-1">
+                            View the Transactions tab for full details
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Maintenance History Summary */}
+                  {asset.maintenanceRecords.length > 0 && (
+                    <div className="border border-gray-700 rounded-lg p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-8 h-8 bg-orange-500/20 border border-orange-500/30 rounded-full flex items-center justify-center">
+                          <svg className="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-brand-primary-text">Maintenance Activity</p>
+                          <p className="text-sm text-brand-secondary-text">
+                            {asset.maintenanceRecords.length} maintenance record{asset.maintenanceRecords.length !== 1 ? 's' : ''} logged
+                          </p>
+                          <p className="text-xs text-brand-secondary-text mt-1">
+                            View the Maintenance tab for full details
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
             </TabPanel>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Asset } from '../../../generated/prisma'
 
 interface CheckoutDialogProps {
@@ -10,14 +10,44 @@ interface CheckoutDialogProps {
   onSuccess: () => void
 }
 
+interface User {
+  id: string
+  name: string | null
+  email: string | null
+  role: string
+}
+
 export default function CheckoutDialog({ asset, isOpen, onClose, onSuccess }: CheckoutDialogProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [users, setUsers] = useState<User[]>([])
+  const [loadingUsers, setLoadingUsers] = useState(true)
   const [formData, setFormData] = useState({
     notes: '',
     dueDate: '',
-    assignedTo: ''
+    userId: ''
   })
+
+  // Fetch users when dialog opens
+  useEffect(() => {
+    if (isOpen) {
+      fetchUsers()
+    }
+  }, [isOpen])
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('/api/users?limit=1000')
+      if (response.ok) {
+        const data = await response.json()
+        setUsers(data.users || [])
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error)
+    } finally {
+      setLoadingUsers(false)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -40,7 +70,7 @@ export default function CheckoutDialog({ asset, isOpen, onClose, onSuccess }: Ch
       if (response.ok) {
         onSuccess()
         onClose()
-        setFormData({ notes: '', dueDate: '', assignedTo: '' })
+        setFormData({ notes: '', dueDate: '', userId: '' })
       } else {
         const errorData = await response.json()
         setError(errorData.error || 'Failed to check out asset')
@@ -52,7 +82,7 @@ export default function CheckoutDialog({ asset, isOpen, onClose, onSuccess }: Ch
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
@@ -95,16 +125,25 @@ export default function CheckoutDialog({ asset, isOpen, onClose, onSuccess }: Ch
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-brand-primary-text mb-2">
-              Assigned To
+              Assigned To *
             </label>
-            <input
-              type="text"
-              name="assignedTo"
-              value={formData.assignedTo}
+            <select
+              name="userId"
+              value={formData.userId}
               onChange={handleChange}
-              placeholder="Person or department name"
-              className="w-full border border-gray-600 rounded-lg px-3 py-2 bg-gray-800 text-brand-primary-text placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+              disabled={loadingUsers}
+              required
+              className="w-full border border-gray-600 rounded-lg px-3 py-2 bg-gray-800 text-brand-primary-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <option value="">
+                {loadingUsers ? 'Loading users...' : 'Select a user'}
+              </option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.name || user.email} {user.role && `(${user.role})`}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="mb-4">
