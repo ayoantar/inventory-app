@@ -113,7 +113,7 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
           {
             fps: 10,
             qrbox: function(viewfinderWidth, viewfinderHeight) {
-              // Narrow horizontal rectangle for linear barcodes
+              // Narrow horizontal rectangle for linear barcodes (serial numbers)
               const boxWidth = Math.floor(viewfinderWidth * 0.8);
               const boxHeight = Math.floor(viewfinderHeight * 0.15);
               return {
@@ -121,7 +121,7 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose 
                 height: boxHeight
               };
             },
-            aspectRatio: 1.0,
+            aspectRatio: 1.777777, // 16:9 aspect ratio keeps horizontal line for barcode scanning
             videoConstraints: {
               width: { ideal: 1920 }, // Higher resolution for better barcode detection
               height: { ideal: 1080 },
