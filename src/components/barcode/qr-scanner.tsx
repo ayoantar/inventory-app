@@ -8,10 +8,9 @@ interface QRScannerProps {
   onScanError?: (error: string) => void
   isOpen: boolean
   onClose: () => void
-  scanMode?: 'qrcode' | 'barcode' // New prop to control scanning box shape
 }
 
-export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose, scanMode = 'barcode' }: QRScannerProps) {
+export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose }: QRScannerProps) {
   const scannerRef = useRef<Html5Qrcode | null>(null)
   const [isScanning, setIsScanning] = useState(false)
   const [cameraError, setCameraError] = useState<string | null>(null)
@@ -114,24 +113,15 @@ export default function QRScanner({ onScanSuccess, onScanError, isOpen, onClose,
           {
             fps: 10,
             qrbox: function(viewfinderWidth, viewfinderHeight) {
-              if (scanMode === 'qrcode') {
-                // Square box for QR codes (90% of viewfinder)
-                const size = Math.floor(Math.min(viewfinderWidth, viewfinderHeight) * 0.9);
-                return {
-                  width: size,
-                  height: size
-                };
-              } else {
-                // Narrow horizontal rectangle for linear barcodes
-                const boxWidth = Math.floor(viewfinderWidth * 0.8);
-                const boxHeight = Math.floor(viewfinderHeight * 0.15);
-                return {
-                  width: boxWidth,
-                  height: boxHeight
-                };
-              }
+              // Narrow horizontal rectangle for linear barcodes
+              const boxWidth = Math.floor(viewfinderWidth * 0.8);
+              const boxHeight = Math.floor(viewfinderHeight * 0.15);
+              return {
+                width: boxWidth,
+                height: boxHeight
+              };
             },
-            aspectRatio: scanMode === 'qrcode' ? 1.0 : 1.777777,
+            aspectRatio: 1.0,
             videoConstraints: {
               width: { ideal: 1920 }, // Higher resolution for better barcode detection
               height: { ideal: 1080 },

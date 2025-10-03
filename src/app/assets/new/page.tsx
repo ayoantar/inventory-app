@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState, Suspense } from 'react'
 import Navbar from '@/components/ui/navbar'
 import QRScanner from '@/components/barcode/qr-scanner'
+import BarcodeScanner from '@/components/barcode/barcode-scanner'
 import { AssetCondition } from '../../../../generated/prisma'
 
 interface Location {
@@ -917,14 +918,13 @@ function NewAssetForm() {
         }}
       />
 
-      <QRScanner
+      <BarcodeScanner
         isOpen={showBarcodeScanner}
         onClose={() => setShowBarcodeScanner(false)}
         onScanSuccess={(code) => {
           setFormData(prev => ({ ...prev, barcode: code }))
           setShowBarcodeScanner(false)
         }}
-        scanMode="qrcode"
       />
 
       {/* New Location Modal */}
