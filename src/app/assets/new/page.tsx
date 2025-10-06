@@ -67,6 +67,8 @@ function NewAssetForm() {
   const [showSerialScanner, setShowSerialScanner] = useState(false)
   const [showBarcodeScanner, setShowBarcodeScanner] = useState(false)
   const [showNewLocationModal, setShowNewLocationModal] = useState(false)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string>('')
   const [newLocationData, setNewLocationData] = useState({
     name: '',
     building: '',
@@ -156,7 +158,11 @@ function NewAssetForm() {
         if (response.ok) {
           const data = await response.json()
           // Show all categories (system + custom) since assets now use CustomCategory relationship
-          setCategories(data.categories || [])
+          // Deduplicate by ID to avoid React key warnings
+          const uniqueCategories = Array.from(
+            new Map((data.categories || []).map((cat: Category) => [cat.id, cat])).values()
+          )
+          setCategories(uniqueCategories)
         }
       } catch (error) {
         console.error('Error fetching categories:', error)
@@ -243,6 +249,44 @@ function NewAssetForm() {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setImageFile(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const base64String = reader.result as string
+        setImagePreview(base64String)
+        setFormData(prev => ({ ...prev, imageUrl: base64String }))
+      }
+      reader.readAsDataURL(file)
+    }
+    // Reset the input so the same file can be selected again
+    e.target.value = ''
+  }
+
+  const handleCameraCapture = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setImageFile(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const base64String = reader.result as string
+        setImagePreview(base64String)
+        setFormData(prev => ({ ...prev, imageUrl: base64String }))
+      }
+      reader.readAsDataURL(file)
+    }
+    // Reset the input so the same file can be selected again
+    e.target.value = ''
+  }
+
+  const handleRemoveImage = () => {
+    setImageFile(null)
+    setImagePreview('')
+    setFormData(prev => ({ ...prev, imageUrl: '' }))
+  }
+
   const handleCreateLocation = async () => {
     try {
       if (!newLocationData.name.trim()) {
@@ -309,41 +353,37 @@ function NewAssetForm() {
         <div className="px-4 py-6 sm:px-0">
           {/* Header with Breadcrumb */}
           <div className="mb-8">
-            <nav className="flex mb-4" aria-label="Breadcrumb">
-              <ol className="inline-flex items-center space-x-2">
-                <li className="inline-flex items-center">
-                  <button 
+            <nav className="mb-4 overflow-x-auto scrollbar-hide" aria-label="Breadcrumb">
+              <ol className="flex items-center space-x-1 whitespace-nowrap">
+                <li className="flex items-center">
+                  <button
                     onClick={() => router.push('/dashboard')}
-                    className="text-gray-600 dark:text-brand-secondary-text hover"
+                    className="text-gray-600 dark:text-brand-secondary-text hover flex items-center"
                   >
-                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                     </svg>
-                    Dashboard
+                    <span>Dashboard</span>
                   </button>
                 </li>
-                <li>
-                  <div className="flex items-center">
-                    <svg className="w-4 h-4 text-gray-500 dark:text-brand-secondary-text hover:text-gray-700 dark:hover:text-brand-primary-text transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <button
-                      onClick={() => router.push('/assets')}
-                      className="ml-2 text-gray-600 dark:text-brand-secondary-text hover"
-                    >
-                      Assets
-                    </button>
-                  </div>
+                <li className="flex items-center">
+                  <svg className="w-4 h-4 text-gray-500 dark:text-brand-secondary-text mx-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <button
+                    onClick={() => router.push('/assets')}
+                    className="text-gray-600 dark:text-brand-secondary-text hover"
+                  >
+                    Assets
+                  </button>
                 </li>
-                <li>
-                  <div className="flex items-center">
-                    <svg className="w-4 h-4 text-gray-500 dark:text-brand-secondary-text hover:text-gray-700 dark:hover:text-brand-primary-text transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="ml-2 text-brand-primary-text font-medium">
-                      {isDuplicate ? 'Duplicate Asset' : 'Add New Asset'}
-                    </span>
-                  </div>
+                <li className="flex items-center">
+                  <svg className="w-4 h-4 text-gray-500 dark:text-brand-secondary-text mx-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-brand-primary-text font-medium">
+                    {isDuplicate ? 'Duplicate Asset' : 'Add New Asset'}
+                  </span>
                 </li>
               </ol>
             </nav>
@@ -781,18 +821,62 @@ function NewAssetForm() {
                   </div>
 
                   <div className="space-y-4">
-                    <div className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center hover:border-gray-400:border-gray-500 transition-colors">
-                      <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-brand-secondary-text hover:text-gray-600 dark:hover:text-brand-primary-text transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      <div className="mt-4">
-                        <p className="text-sm text-brand-primary-text">
-                          <span className="font-medium text-blue-600 hover cursor-pointer">Upload a file</span>
-                          {' '}or drag and drop
-                        </p>
-                        <p className="text-xs text-gray-600 dark:text-brand-secondary-text mt-1">PNG, JPG, GIF up to 10MB</p>
+                    {imagePreview ? (
+                      <div className="relative">
+                        <img
+                          src={imagePreview}
+                          alt="Asset preview"
+                          className="w-full h-48 object-cover rounded-lg border border-gray-600"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleRemoveImage}
+                          className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-2 shadow-lg active:scale-95 touch-manipulation transition-all"
+                          title="Remove image"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
                       </div>
-                    </div>
+                    ) : (
+                      <>
+                        <div className="grid grid-cols-2 gap-3">
+                          <label className="cursor-pointer">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              capture="environment"
+                              onChange={handleCameraCapture}
+                              className="hidden"
+                            />
+                            <div className="border-2 border-dashed border-gray-600 rounded-lg p-4 text-center hover:border-blue-500 hover:bg-blue-500/5 transition-colors active:scale-95 touch-manipulation">
+                              <svg className="mx-auto h-8 w-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>
+                              <p className="text-xs text-brand-primary-text mt-2 font-medium">Take Photo</p>
+                            </div>
+                          </label>
+
+                          <label className="cursor-pointer">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleImageChange}
+                              className="hidden"
+                            />
+                            <div className="border-2 border-dashed border-gray-600 rounded-lg p-4 text-center hover:border-purple-500 hover:bg-purple-500/5 transition-colors active:scale-95 touch-manipulation">
+                              <svg className="mx-auto h-8 w-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                              </svg>
+                              <p className="text-xs text-brand-primary-text mt-2 font-medium">Upload File</p>
+                            </div>
+                          </label>
+                        </div>
+                        <p className="text-xs text-gray-600 dark:text-brand-secondary-text text-center">PNG, JPG, GIF up to 10MB</p>
+                      </>
+                    )}
 
                     <div className="space-y-1">
                       <label htmlFor="imageUrl" className="block text-sm font-semibold text-brand-primary-text">
@@ -804,7 +888,8 @@ function NewAssetForm() {
                         name="imageUrl"
                         value={formData.imageUrl}
                         onChange={handleChange}
-                        className="w-full border border-gray-600 rounded-lg px-4 py-3 bg-gray-900 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                        disabled={!!imagePreview}
+                        className="w-full border border-gray-600 rounded-lg px-4 py-3 bg-gray-900 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors disabled:opacity-50"
                         placeholder="https://example.com/image.jpg"
                       />
                       <p className="text-xs text-gray-600 dark:text-brand-secondary-text">Link to external image</p>
