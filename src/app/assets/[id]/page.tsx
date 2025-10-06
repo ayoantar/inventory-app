@@ -1036,9 +1036,11 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                                 </span>
                               </div>
                             )}
-                            <p className="text-xs sm:text-sm text-gray-600 dark:text-brand-secondary-text">
-                              Performed on {new Date(transaction.createdAt).toLocaleDateString()}
-                            </p>
+                            {transaction.createdAt && (
+                              <p className="text-xs sm:text-sm text-gray-600 dark:text-brand-secondary-text">
+                                Performed on {new Date(transaction.createdAt).toLocaleDateString()}
+                              </p>
+                            )}
                             {transaction.expectedReturnDate && (
                               <p className="text-xs sm:text-sm text-gray-600 dark:text-brand-secondary-text">
                                 Expected return: {new Date(transaction.expectedReturnDate).toLocaleDateString()}

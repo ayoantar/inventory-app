@@ -116,12 +116,14 @@ export default function MobileTransactionCard({ transaction, onQuickReturn }: Mo
           </div>
         )}
 
-        <div>
-          <span className="text-gray-500 dark:text-gray-400">Borrowed:</span>
-          <span className="ml-1 text-brand-primary-text">
-            {formatDate(transaction.borrowDate)}
-          </span>
-        </div>
+        {transaction.borrowDate && (
+          <div>
+            <span className="text-gray-500 dark:text-gray-400">Date:</span>
+            <span className="ml-1 text-brand-primary-text">
+              {formatDate(transaction.borrowDate)}
+            </span>
+          </div>
+        )}
 
         {transaction.expectedReturnDate && !transaction.actualReturnDate && (
           <div>
