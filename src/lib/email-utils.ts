@@ -69,6 +69,50 @@ export async function sendTransactionEmail({
   }
 }
 
+// Send transaction emails to multiple recipients
+export async function sendTransactionEmailToMultiple({
+  transactionType,
+  userName,
+  recipients,
+  assets,
+  transactionDate = new Date(),
+}: {
+  transactionType: 'CHECKOUT' | 'CHECKIN'
+  userName: string
+  recipients: string[]
+  assets: SendTransactionEmailParams['assets']
+  transactionDate?: Date
+}) {
+  try {
+    const results = await Promise.allSettled(
+      recipients.map((recipientEmail) =>
+        sendTransactionEmail({
+          transactionType,
+          userName,
+          userEmail: recipientEmail,
+          assets,
+          transactionDate,
+        })
+      )
+    )
+
+    const successCount = results.filter((r) => r.status === 'fulfilled').length
+    const failureCount = results.filter((r) => r.status === 'rejected').length
+
+    console.log(`📧 Sent ${successCount} emails successfully, ${failureCount} failed`)
+
+    return {
+      success: failureCount === 0,
+      successCount,
+      failureCount,
+      results,
+    }
+  } catch (error) {
+    console.error('Error sending transaction emails to multiple recipients:', error)
+    return { success: false, error }
+  }
+}
+
 // Generate HTML email template
 function generateHtmlEmail({
   transactionType,

@@ -10,6 +10,8 @@ import CheckinDialog from '@/components/assets/checkin-dialog'
 import MaintenanceRecordForm from '@/components/maintenance/maintenance-record-form'
 import MaintenanceTable from '@/components/maintenance/maintenance-table'
 import QRGenerator from '@/components/barcode/qr-generator'
+import QRScanner from '@/components/barcode/qr-scanner'
+import BarcodeScanner from '@/components/barcode/barcode-scanner'
 import Tabs, { TabContent, TabPanel } from '@/components/ui/tabs'
 import { Asset, AssetStatus, AssetCategory, AssetCondition, AssetTransaction, MaintenanceRecord, MaintenanceStatus, User } from '../../../../generated/prisma'
 import { formatStatus } from '@/lib/utils'
@@ -100,6 +102,9 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
     email: '',
     phone: ''
   })
+  const [showQRScanner, setShowQRScanner] = useState(false)
+  const [showBarcodeScanner, setShowBarcodeScanner] = useState(false)
+  const [scannerTargetField, setScannerTargetField] = useState<'serialNumber' | 'barcode' | 'assetNumber'>('serialNumber')
   const [formData, setFormData] = useState<AssetFormData>({
     name: '',
     description: '',
@@ -250,6 +255,26 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleScanSuccess = (decodedText: string, format: string) => {
+    console.log(`Scanned: ${decodedText} (${format})`)
+    setFormData(prev => ({ ...prev, [scannerTargetField]: decodedText }))
+    setShowQRScanner(false)
+    setShowBarcodeScanner(false)
+  }
+
+  const handleScanError = (error: string) => {
+    console.error('Scan error:', error)
+  }
+
+  const openScanner = (field: 'serialNumber' | 'barcode' | 'assetNumber', type: 'qr' | 'barcode') => {
+    setScannerTargetField(field)
+    if (type === 'qr') {
+      setShowQRScanner(true)
+    } else {
+      setShowBarcodeScanner(true)
+    }
   }
 
   const handleCreateLocation = async () => {
@@ -754,13 +779,25 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       <div>
                         <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Serial Number</dt>
                         {editing ? (
-                          <input
-                            type="text"
-                            name="serialNumber"
-                            value={formData.serialNumber}
-                            onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
-                          />
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              name="serialNumber"
+                              value={formData.serialNumber}
+                              onChange={handleChange}
+                              className="flex-1 px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => openScanner('serialNumber', 'qr')}
+                              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 rounded-md transition-colors"
+                              title="Scan QR Code"
+                            >
+                              <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                              </svg>
+                            </button>
+                          </div>
                         ) : (
                           <dd className="text-lg font-medium text-brand-primary-text font-mono">{asset.serialNumber || '-'}</dd>
                         )}
@@ -768,13 +805,25 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       <div>
                         <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Barcode</dt>
                         {editing ? (
-                          <input
-                            type="text"
-                            name="barcode"
-                            value={formData.barcode}
-                            onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
-                          />
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              name="barcode"
+                              value={formData.barcode}
+                              onChange={handleChange}
+                              className="flex-1 px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => openScanner('barcode', 'barcode')}
+                              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 rounded-md transition-colors"
+                              title="Scan Barcode"
+                            >
+                              <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h2v16H3V4zm4 0h1v16H7V4zm3 0h1v16h-1V4zm3 0h2v16h-2V4zm4 0h1v16h-1V4zm3 0h2v16h-2V4z" />
+                              </svg>
+                            </button>
+                          </div>
                         ) : (
                           <dd className="text-lg font-medium text-brand-primary-text font-mono">{asset.barcode || '-'}</dd>
                         )}
@@ -843,14 +892,26 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       <div>
                         <dt className="text-sm text-gray-600 dark:text-brand-secondary-text">Asset ID</dt>
                         {editing ? (
-                          <input
-                            type="text"
-                            name="assetNumber"
-                            value={formData.assetNumber || ''}
-                            onChange={handleChange}
-                            className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
-                            placeholder="Asset number/ID"
-                          />
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              name="assetNumber"
+                              value={formData.assetNumber || ''}
+                              onChange={handleChange}
+                              className="flex-1 px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                              placeholder="Asset number/ID"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => openScanner('assetNumber', 'qr')}
+                              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 rounded-md transition-colors"
+                              title="Scan QR Code"
+                            >
+                              <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                              </svg>
+                            </button>
+                          </div>
                         ) : (
                           <dd className="text-sm font-mono text-brand-primary-text">{asset.assetNumber || asset.id}</dd>
                         )}
@@ -1024,88 +1085,198 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
 
             {activeTab === 'history' && (
               <div className="space-y-4 sm:space-y-6">
-                <h3 className="text-base sm:text-lg font-semibold text-brand-primary-text">Change History</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-brand-primary-text">Complete Activity Timeline</h3>
                 <div className="space-y-3">
-                  {/* Creation Event */}
-                  <div className="border border-gray-700 rounded-lg p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 w-8 h-8 bg-green-500/20 border border-green-500/30 rounded-full flex items-center justify-center">
-                        <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-medium text-brand-primary-text">Asset Created</p>
-                        <p className="text-sm text-brand-secondary-text">
-                          By {asset.createdBy?.name || asset.createdBy?.email || 'System'} on {new Date(asset.createdAt).toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  {(() => {
+                    // Build complete timeline from all events
+                    const timeline: Array<{
+                      date: Date
+                      type: 'created' | 'modified' | 'transaction' | 'maintenance'
+                      data: any
+                    }> = []
 
-                  {/* Last Modified Event */}
-                  {asset.updatedAt !== asset.createdAt && (
-                    <div className="border border-gray-700 rounded-lg p-4">
-                      <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-8 h-8 bg-blue-500/20 border border-blue-500/30 rounded-full flex items-center justify-center">
-                          <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                          </svg>
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-medium text-brand-primary-text">Asset Modified</p>
-                          <p className="text-sm text-brand-secondary-text">
-                            By {asset.lastModifiedBy?.name || asset.lastModifiedBy?.email || 'System'} on {new Date(asset.updatedAt).toLocaleString()}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                    // Add creation event
+                    timeline.push({
+                      date: new Date(asset.createdAt),
+                      type: 'created',
+                      data: asset
+                    })
 
-                  {/* Transaction History Summary */}
-                  {asset.transactions.length > 0 && (
-                    <div className="border border-gray-700 rounded-lg p-4">
-                      <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-8 h-8 bg-purple-500/20 border border-purple-500/30 rounded-full flex items-center justify-center">
-                          <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                          </svg>
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-medium text-brand-primary-text">Transaction Activity</p>
-                          <p className="text-sm text-brand-secondary-text">
-                            {asset.transactions.length} transaction{asset.transactions.length !== 1 ? 's' : ''} recorded
-                          </p>
-                          <p className="text-xs text-brand-secondary-text mt-1">
-                            View the Transactions tab for full details
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                    // Add modification event if different from creation
+                    if (asset.updatedAt !== asset.createdAt) {
+                      timeline.push({
+                        date: new Date(asset.updatedAt),
+                        type: 'modified',
+                        data: asset
+                      })
+                    }
 
-                  {/* Maintenance History Summary */}
-                  {asset.maintenanceRecords.length > 0 && (
-                    <div className="border border-gray-700 rounded-lg p-4">
-                      <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-8 h-8 bg-orange-500/20 border border-orange-500/30 rounded-full flex items-center justify-center">
-                          <svg className="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          </svg>
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-medium text-brand-primary-text">Maintenance Activity</p>
-                          <p className="text-sm text-brand-secondary-text">
-                            {asset.maintenanceRecords.length} maintenance record{asset.maintenanceRecords.length !== 1 ? 's' : ''} logged
-                          </p>
-                          <p className="text-xs text-brand-secondary-text mt-1">
-                            View the Maintenance tab for full details
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                    // Add all transactions
+                    asset.transactions.forEach(transaction => {
+                      timeline.push({
+                        date: new Date(transaction.createdAt),
+                        type: 'transaction',
+                        data: transaction
+                      })
+                    })
+
+                    // Add all maintenance records
+                    asset.maintenanceRecords.forEach(record => {
+                      timeline.push({
+                        date: new Date(record.createdAt),
+                        type: 'maintenance',
+                        data: record
+                      })
+                    })
+
+                    // Sort by date descending (newest first)
+                    timeline.sort((a, b) => b.date.getTime() - a.date.getTime())
+
+                    return timeline.map((event, index) => {
+                      if (event.type === 'created') {
+                        return (
+                          <div key={`created-${index}`} className="border border-gray-700 rounded-lg p-4">
+                            <div className="flex items-start gap-3">
+                              <div className="flex-shrink-0 w-8 h-8 bg-green-500/20 border border-green-500/30 rounded-full flex items-center justify-center">
+                                <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                </svg>
+                              </div>
+                              <div className="flex-1">
+                                <p className="font-medium text-brand-primary-text">Asset Created</p>
+                                <p className="text-sm text-brand-secondary-text">
+                                  By {event.data.createdBy?.name || event.data.createdBy?.email || 'System'} on {event.date.toLocaleString()}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      }
+
+                      if (event.type === 'modified') {
+                        return (
+                          <div key={`modified-${index}`} className="border border-gray-700 rounded-lg p-4">
+                            <div className="flex items-start gap-3">
+                              <div className="flex-shrink-0 w-8 h-8 bg-blue-500/20 border border-blue-500/30 rounded-full flex items-center justify-center">
+                                <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                              </div>
+                              <div className="flex-1">
+                                <p className="font-medium text-brand-primary-text">Asset Modified</p>
+                                <p className="text-sm text-brand-secondary-text">
+                                  By {event.data.lastModifiedBy?.name || event.data.lastModifiedBy?.email || 'System'} on {event.date.toLocaleString()}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      }
+
+                      if (event.type === 'transaction') {
+                        const transaction = event.data
+                        return (
+                          <div key={`transaction-${transaction.id}`} className="border border-gray-700 rounded-lg p-4">
+                            <div className="flex items-start gap-3">
+                              <div className="flex-shrink-0 w-8 h-8 bg-purple-500/20 border border-purple-500/30 rounded-full flex items-center justify-center">
+                                <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                </svg>
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <p className="font-medium text-brand-primary-text">
+                                    {transaction.type.replace('_', ' ')}
+                                  </p>
+                                  <span className={`px-2 py-0.5 text-xs rounded-full ${
+                                    transaction.status === 'ACTIVE' ? 'bg-amber-900/30 text-amber-300' :
+                                    transaction.status === 'COMPLETED' ? 'bg-green-900/30 text-green-300' :
+                                    'bg-gray-800 text-gray-300'
+                                  }`}>
+                                    {transaction.status}
+                                  </span>
+                                </div>
+                                <p className="text-sm text-brand-secondary-text">
+                                  {event.date.toLocaleString()}
+                                </p>
+                                {transaction.user && (
+                                  <p className="text-sm text-blue-300 mt-1">
+                                    Assigned to: {transaction.user.name || transaction.user.email}
+                                  </p>
+                                )}
+                                {transaction.expectedReturnDate && (
+                                  <p className="text-sm text-brand-secondary-text mt-1">
+                                    Expected return: {new Date(transaction.expectedReturnDate).toLocaleDateString()}
+                                  </p>
+                                )}
+                                {transaction.notes && (
+                                  <div className="mt-2 p-2 bg-gray-800/50 border border-gray-700 rounded">
+                                    <p className="text-xs text-brand-secondary-text mb-1">Notes:</p>
+                                    <p className="text-sm text-brand-primary-text">{transaction.notes}</p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      }
+
+                      if (event.type === 'maintenance') {
+                        const record = event.data
+                        return (
+                          <div key={`maintenance-${record.id}`} className="border border-gray-700 rounded-lg p-4">
+                            <div className="flex items-start gap-3">
+                              <div className="flex-shrink-0 w-8 h-8 bg-orange-500/20 border border-orange-500/30 rounded-full flex items-center justify-center">
+                                <svg className="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <p className="font-medium text-brand-primary-text">
+                                    {record.type} Maintenance
+                                  </p>
+                                  <span className={`px-2 py-0.5 text-xs rounded-full ${
+                                    record.status === 'SCHEDULED' ? 'bg-blue-900/30 text-blue-300' :
+                                    record.status === 'IN_PROGRESS' ? 'bg-amber-900/30 text-amber-300' :
+                                    record.status === 'COMPLETED' ? 'bg-green-900/30 text-green-300' :
+                                    record.status === 'CANCELLED' ? 'bg-gray-800 text-gray-300' :
+                                    'bg-red-900/30 text-red-300'
+                                  }`}>
+                                    {record.status.replace('_', ' ')}
+                                  </span>
+                                </div>
+                                <p className="text-sm text-brand-secondary-text">
+                                  Created: {event.date.toLocaleString()}
+                                </p>
+                                <p className="text-sm text-brand-primary-text mt-1">{record.description}</p>
+                                {record.performedBy && (
+                                  <p className="text-sm text-orange-300 mt-1">
+                                    Performed by: {record.performedBy.name || record.performedBy.email}
+                                  </p>
+                                )}
+                                {record.notes && (
+                                  <div className="mt-2 p-2 bg-gray-800/50 border border-gray-700 rounded">
+                                    <p className="text-xs text-brand-secondary-text mb-1">Notes:</p>
+                                    <p className="text-sm text-brand-primary-text">{record.notes}</p>
+                                  </div>
+                                )}
+                                {record.completionNotes && (
+                                  <div className="mt-2 p-2 bg-gray-800/50 border border-gray-700 rounded">
+                                    <p className="text-xs text-brand-secondary-text mb-1">Completion Notes:</p>
+                                    <p className="text-sm text-brand-primary-text">{record.completionNotes}</p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      }
+
+                      return null
+                    })
+                  })()}
                 </div>
               </div>
             )}
@@ -1149,6 +1320,22 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
         assetName={asset.name}
         isOpen={showQRGenerator}
         onClose={() => setShowQRGenerator(false)}
+      />
+
+      {/* QR Scanner for editing */}
+      <QRScanner
+        isOpen={showQRScanner}
+        onClose={() => setShowQRScanner(false)}
+        onScanSuccess={handleScanSuccess}
+        onScanError={handleScanError}
+      />
+
+      {/* Barcode Scanner for editing */}
+      <BarcodeScanner
+        isOpen={showBarcodeScanner}
+        onClose={() => setShowBarcodeScanner(false)}
+        onScanSuccess={handleScanSuccess}
+        onScanError={handleScanError}
       />
 
       {/* New Location Modal */}

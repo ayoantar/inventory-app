@@ -230,40 +230,27 @@ export default function AdvancedFilters({
         </div>
       </div>
 
-      {/* Basic Search */}
-      <div className="p-4">
-        <div className="flex space-x-4">
-          <div className="flex-1">
-            <label htmlFor="search" className="block text-sm font-medium text-gray-300 mb-1">
-              Search Assets
-            </label>
-            <input
-              type="text"
-              id="search"
-              value={filters.search}
-              onChange={(e) => handleChange('search', e.target.value)}
-              placeholder="Search by name, serial number, barcode, manufacturer..."
-              className="w-full border border-gray-600 rounded-md px-3 py-2 bg-gray-900 text-brand-primary-text placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <div className="flex items-end space-x-2">
+      {/* Action Buttons */}
+      {isExpanded && (
+        <div className="p-4 border-b border-gray-700">
+          <div className="flex items-center justify-end space-x-2">
             <button
               onClick={onApply}
-              className="bg-blue-600 hover text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
             >
-              Search
+              Apply Filters
             </button>
             {hasActiveFilters && (
               <button
                 onClick={onReset}
-                className="text-gray-600 dark:text-brand-secondary-text hover px-4 py-2 text-sm font-medium transition-colors"
+                className="text-gray-400 hover:text-gray-200 px-4 py-2 text-sm font-medium transition-colors"
               >
                 Clear All
               </button>
             )}
           </div>
         </div>
-      </div>
+      )}
 
       {/* Advanced Filters */}
       {isExpanded && (

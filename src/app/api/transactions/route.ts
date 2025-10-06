@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { sendTransactionEmailToMultiple } from '@/lib/email-utils'
 
 export async function GET(request: NextRequest) {
   try {
@@ -74,7 +75,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
-    
+
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Authentication required' },
@@ -83,7 +84,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { assetId, type, notes, expectedReturnDate } = body
+    const { assetId, type, notes, expectedReturnDate, userId } = body
 
     if (!assetId || !type) {
       return NextResponse.json(
@@ -92,9 +93,32 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get the asset
+    // For checkout, userId is required (assigned user)
+    if (type === 'CHECK_OUT' && !userId) {
+      return NextResponse.json(
+        { error: 'User assignment is required for checkout' },
+        { status: 400 }
+      )
+    }
+
+    // Get the asset with client relationship
     const asset = await prisma.asset.findUnique({
-      where: { id: assetId }
+      where: { id: assetId },
+      include: {
+        client: {
+          select: {
+            id: true,
+            name: true,
+            email: true
+          }
+        },
+        category: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      }
     })
 
     if (!asset) {
@@ -142,11 +166,11 @@ export async function POST(request: NextRequest) {
 
     // Create transaction and update asset status
     const result = await prisma.$transaction(async (tx) => {
-      // Create the transaction
+      // Create the transaction (use userId from request for checkout, session user for check-in)
       const transaction = await tx.assetTransaction.create({
         data: {
           assetId,
-          userId: session.user.id,
+          userId: type === 'CHECK_OUT' ? userId : session.user.id,
           type,
           status: 'ACTIVE',
           notes,
@@ -154,15 +178,23 @@ export async function POST(request: NextRequest) {
         },
         include: {
           asset: {
-            select: { 
-              id: true, 
-              name: true, 
+            select: {
+              id: true,
+              name: true,
               serialNumber: true,
-              category: true 
+              assetNumber: true,
+              currentValue: true,
+              purchasePrice: true,
+              imageUrl: true,
+              category: true
             }
           },
           user: {
-            select: { name: true, email: true }
+            select: {
+              id: true,
+              name: true,
+              email: true
+            }
           }
         }
       })
@@ -199,6 +231,55 @@ export async function POST(request: NextRequest) {
 
       return transaction
     })
+
+    // Send email notifications for checkout
+    if (type === 'CHECK_OUT' && result.user) {
+      const recipients: string[] = []
+
+      // Add assigned user email
+      if (result.user.email) {
+        recipients.push(result.user.email)
+        console.log(`📧 Adding assigned user email: ${result.user.email}`)
+      }
+
+      // Add client email
+      if (asset.client?.email) {
+        recipients.push(asset.client.email)
+        console.log(`📧 Adding client email: ${asset.client.email}`)
+      }
+
+      // Send emails if we have recipients
+      if (recipients.length > 0) {
+        console.log(`📧 Sending checkout emails to ${recipients.length} recipient(s)`)
+
+        const emailResult = await sendTransactionEmailToMultiple({
+          transactionType: 'CHECKOUT',
+          userName: result.user.name || result.user.email || 'User',
+          recipients,
+          assets: [{
+            id: result.asset.id,
+            name: result.asset.name,
+            assetNumber: result.asset.assetNumber,
+            serialNumber: result.asset.serialNumber,
+            category: result.asset.category,
+            currentValue: result.asset.currentValue,
+            purchasePrice: result.asset.purchasePrice,
+            imageUrl: result.asset.imageUrl,
+            notes,
+            returnDate: expectedReturnDate
+          }],
+          transactionDate: new Date()
+        })
+
+        if (emailResult.success) {
+          console.log('✅ Checkout emails sent successfully')
+        } else {
+          console.error('❌ Error sending checkout emails:', emailResult)
+        }
+      } else {
+        console.log('⚠️ No email recipients found for checkout notification')
+      }
+    }
 
     return NextResponse.json(result, { status: 201 })
 
