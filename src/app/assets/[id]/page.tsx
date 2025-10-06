@@ -479,9 +479,9 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                       placeholder="Asset name"
                     />
                   ) : (
-                    <h1 className="text-2xl sm:text-3xl font-bold text-brand-primary-text truncate">{asset.name}</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-brand-primary-text break-words">{asset.name}</h1>
                   )}
-                  <p className="text-sm text-brand-primary-text truncate">{asset.manufacturer} {asset.model}</p>
+                  <p className="text-sm text-brand-primary-text break-words">{asset.manufacturer} {asset.model}</p>
                 </div>
               </div>
             </div>

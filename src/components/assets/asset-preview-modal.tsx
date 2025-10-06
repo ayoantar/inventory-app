@@ -193,6 +193,16 @@ export default function AssetPreviewModal({ assetId, isOpen, onClose }: AssetPre
                 </div>
               )}
 
+              {/* Notes */}
+              {asset.notes && (
+                <div>
+                  <dt className="text-sm font-medium text-gray-600 dark:text-brand-secondary-text mb-1">Notes</dt>
+                  <dd className="text-sm text-brand-primary-text whitespace-pre-wrap">
+                    {asset.notes}
+                  </dd>
+                </div>
+              )}
+
               {/* Action buttons */}
               <div className="flex space-x-3 pt-4 border-t border-gray-700">
                 <Link
