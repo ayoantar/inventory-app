@@ -1014,43 +1014,45 @@ export default function AssetDetailPage({ params }: { params: Promise<{ id: stri
                 {asset.transactions.length > 0 ? (
                   <div className="space-y-3 sm:space-y-4">
                     {asset.transactions.map((transaction) => (
-                      <div key={transaction.id} className="border border-gray-700 rounded-lg p-4">
-                        <div className="flex justify-between items-start">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <p className="font-medium text-brand-primary-text">
+                      <div key={transaction.id} className="border border-gray-700 rounded-lg p-3 sm:p-4">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2 mb-2">
+                              <p className="font-medium text-brand-primary-text text-sm sm:text-base">
                                 {transaction.type.replace('_', ' ')}
                               </p>
-                              {transaction.user && transaction.type === 'CHECK_OUT' && (
-                                <span className="text-xs px-2 py-0.5 bg-blue-500/20 border border-blue-500/30 text-blue-300 rounded">
+                              <span className={`px-2 py-1 text-xs rounded-full whitespace-nowrap ${
+                                transaction.status === 'ACTIVE' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300' :
+                                transaction.status === 'COMPLETED' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
+                                'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
+                              }`}>
+                                {transaction.status}
+                              </span>
+                            </div>
+                            {transaction.user && transaction.type === 'CHECK_OUT' && (
+                              <div className="mb-2">
+                                <span className="text-xs px-2 py-1 bg-blue-500/20 border border-blue-500/30 text-blue-300 rounded inline-block">
                                   Assigned to: {transaction.user.name || transaction.user.email}
                                 </span>
-                              )}
-                            </div>
-                            <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
+                              </div>
+                            )}
+                            <p className="text-xs sm:text-sm text-gray-600 dark:text-brand-secondary-text">
                               Performed on {new Date(transaction.createdAt).toLocaleDateString()}
                             </p>
                             {transaction.expectedReturnDate && (
-                              <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
+                              <p className="text-xs sm:text-sm text-gray-600 dark:text-brand-secondary-text">
                                 Expected return: {new Date(transaction.expectedReturnDate).toLocaleDateString()}
                               </p>
                             )}
                             {transaction.actualReturnDate && (
-                              <p className="text-sm text-gray-600 dark:text-brand-secondary-text">
+                              <p className="text-xs sm:text-sm text-gray-600 dark:text-brand-secondary-text">
                                 Returned: {new Date(transaction.actualReturnDate).toLocaleDateString()}
                               </p>
                             )}
                             {transaction.notes && (
-                              <p className="text-sm text-gray-300 mt-2">{transaction.notes}</p>
+                              <p className="text-xs sm:text-sm text-gray-300 mt-2 break-words">{transaction.notes}</p>
                             )}
                           </div>
-                          <span className={`px-2 py-1 text-xs rounded-full flex-shrink-0 ${
-                            transaction.status === 'ACTIVE' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300' :
-                            transaction.status === 'COMPLETED' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
-                            'bg-gray-100 dark:bg-gray-800 text-brand-primary-text'
-                          }`}>
-                            {transaction.status}
-                          </span>
                         </div>
                       </div>
                     ))}
